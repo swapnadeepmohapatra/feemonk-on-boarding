@@ -1,0 +1,48 @@
+.body {
+  background: url("../../images/background.png");
+  background-position: bottom;
+  background-repeat: no-repeat;
+  background-size: cover;
+  justify-content: space-between;
+  height: 100vh;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  /* justify-content: center; */
+  height: 100vh;
+  background-color: rgba(255, 255, 255, 0.9);
+}
+
+.homeHeader {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  height: fit-content;
+  width: 100%;
+  padding: 1rem 3rem;
+}
+
+.logo {
+  height: 3rem;
+}
+.icon {
+  height: 2rem;
+}
+
+.eduLoanHeading {
+  display: flex;
+  flex-direction: row;
+  /* justify-content: space-between; */
+  align-items: center;
+  height: fit-content;
+  width: 100%;
+  padding: 1rem 3rem;
+  padding-top: 2rem;
+}
+
+.eduLoanHeading h2 {
+  padding-left: 1rem;
+}
