@@ -3,6 +3,25 @@ import styles from "./index.module.css";
 import BellIcon from "../../images/icons/bell.svg";
 import EduLoanIcon from "../../images/icons/edu_loan.svg";
 import LoanImage from "../../images/hero_images/loan.png";
+import MyApplicationsImage from "../../images/static_assests/my_applications_icon.svg";
+import MyRepaymentsImage from "../../images/static_assests/my_repayments_icon.svg";
+import MyLoansImage from "../../images/static_assests/my_loans_icon.svg";
+import MyEmiImage from "../../images/static_assests/my_repayments_icon.svg";
+
+import HomeIconBlack from "../../images/icons/home_black.svg";
+import GridIconBlack from "../../images/icons/grid_black.svg";
+import UserIconBlack from "../../images/icons/user_black.svg";
+
+import HomeIconWhite from "../../images/icons/home_white.svg";
+import GridIconWhite from "../../images/icons/grid_white.svg";
+import UserIconWhite from "../../images/icons/user_white.svg";
+
+const loanSections = [
+  { text: "My Applications", image: MyApplicationsImage },
+  { text: "My Loans", image: MyLoansImage },
+  { text: "My Repayments", image: MyRepaymentsImage },
+  { text: "My  EMI", image: MyEmiImage },
+];
 
 function HomeHeadBar() {
   return (
@@ -22,6 +41,44 @@ function Heading() {
   );
 }
 
+function LoanSection() {
+  return (
+    <div className={styles.loanSectionContainer}>
+      {loanSections.map((item) => (
+        <div className={styles.loanSection}>
+          <img src={item.image} alt="" />
+          <p>{item.text}</p>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+function BottomNavigationBar() {
+  return (
+    <div className={styles.bottomNavContainer}>
+      <div className={styles.bottomNav}>
+        <img src={HomeIconWhite} alt="" />
+      </div>
+      <div className={styles.bottomNav} style={{ backgroundColor: "white" }}>
+        <img src={GridIconBlack} alt="" />
+      </div>
+      <div className={styles.bottomNav} style={{ backgroundColor: "white" }}>
+        <img src={UserIconBlack} alt="" />
+      </div>
+      {/* <div className={styles.bottomNav}>
+        <img src={HomeIconBlack} alt="" />
+      </div>
+      <div className={styles.bottomNav}>
+        <img src={GridIconBlack} alt="" />
+      </div>
+      <div className={styles.bottomNav}>
+        <img src={UserIconBlack} alt="" />
+      </div> */}
+    </div>
+  );
+}
+
 function Home() {
   return (
     <div className={styles.body}>
@@ -29,6 +86,13 @@ function Home() {
         <HomeHeadBar />
         <Heading />
         <img src={LoanImage} alt="" />
+        <LoanSection />
+        <div
+          style={{
+            flex: 1,
+          }}
+        ></div>
+        <BottomNavigationBar />
       </div>
     </div>
   );
