@@ -16,6 +16,7 @@ import HomeIconWhite from "../../images/icons/home_white.svg";
 import GridIconWhite from "../../images/icons/grid_white.svg";
 import UserIconWhite from "../../images/icons/user_white.svg";
 import LoginDialog from "./components/LoginDialog";
+import BottomNavigationBar from "../../components/molecules/BottomNavBar";
 
 const loanSections = [
   { text: "My Applications", image: MyApplicationsImage },
@@ -55,31 +56,6 @@ function LoanSection() {
   );
 }
 
-function BottomNavigationBar() {
-  return (
-    <div className={styles.bottomNavContainer}>
-      <div className={styles.bottomNav}>
-        <img src={HomeIconWhite} alt="" />
-      </div>
-      <div className={styles.bottomNav} style={{ backgroundColor: "white" }}>
-        <img src={GridIconBlack} alt="" />
-      </div>
-      <div className={styles.bottomNav} style={{ backgroundColor: "white" }}>
-        <img src={UserIconBlack} alt="" />
-      </div>
-      {/* <div className={styles.bottomNav}>
-        <img src={HomeIconBlack} alt="" />
-      </div>
-      <div className={styles.bottomNav}>
-        <img src={GridIconBlack} alt="" />
-      </div>
-      <div className={styles.bottomNav}>
-        <img src={UserIconBlack} alt="" />
-      </div> */}
-    </div>
-  );
-}
-
 function Home() {
   return (
     <div className={styles.body}>
@@ -93,7 +69,7 @@ function Home() {
             flex: 1,
           }}
         ></div>
-        <BottomNavigationBar />
+        <BottomNavigationBar active="Home" />
         <LoginDialog />
       </div>
     </div>

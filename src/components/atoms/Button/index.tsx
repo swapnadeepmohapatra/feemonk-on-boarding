@@ -6,25 +6,28 @@ function Button({
   imageLeft,
   imageRight,
   disabled,
+  fullWidth,
 }: {
   onPress: any;
   text: any;
   imageLeft?: any;
   imageRight?: any;
   disabled?: any;
+  fullWidth?: any;
 }) {
   return (
     <button
       style={{
         display: "flex",
         backgroundColor: disabled ? "#c1c1c1" : "#D32028",
-        padding: "16px 32px",
+        padding: "10px 26px",
         alignItems: "center",
         flexDirection: "row",
         justifyContent: "center",
         borderRadius: 32,
         border: "none",
         cursor: disabled ? "not-allowed" : "pointer",
+        width: fullWidth ? "100%" : "auto",
       }}
       onClick={onPress}
       disabled={disabled}

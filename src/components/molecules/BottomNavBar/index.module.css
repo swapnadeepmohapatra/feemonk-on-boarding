@@ -1,0 +1,29 @@
+.bottomNavContainer {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  height: fit-content;
+  width: 100%;
+  padding: 0rem 5rem;
+  align-self: flex-end;
+}
+
+.bottomNav {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #d32028;
+  padding: 1.5rem 1rem;
+  border-radius: 50% 50% 0% 0%;
+}
+
+.bottomNav img {
+  height: 2rem;
+  width: 2rem;
+}
+
+.bottomNav img svg path {
+  stroke: #fff !important;
+}
