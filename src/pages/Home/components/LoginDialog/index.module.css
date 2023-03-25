@@ -1,0 +1,28 @@
+.backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  background-color: rgba(0, 0, 0, 0.4);
+  height: 100%;
+  width: 100%;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+}
+
+.loginContainer {
+  width: 100%;
+  background: linear-gradient(126.11deg, #fff3f3 -2.34%, #fff2ea 87.21%);
+  padding: 2rem;
+  border-radius: 1rem 1rem 0 0;
+}
+
+.textPreLogin {
+  color: #3a3a3a;
+  font-size: 1rem;
+}
+.textLogin {
+  color: #d32028;
+  font-size: 1.8rem;
+  font-weight: bold;
+}

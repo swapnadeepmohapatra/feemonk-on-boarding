@@ -15,6 +15,7 @@ import UserIconBlack from "../../images/icons/user_black.svg";
 import HomeIconWhite from "../../images/icons/home_white.svg";
 import GridIconWhite from "../../images/icons/grid_white.svg";
 import UserIconWhite from "../../images/icons/user_white.svg";
+import LoginDialog from "./components/LoginDialog";
 
 const loanSections = [
   { text: "My Applications", image: MyApplicationsImage },
@@ -93,6 +94,7 @@ function Home() {
           }}
         ></div>
         <BottomNavigationBar />
+        <LoginDialog />
       </div>
     </div>
   );
