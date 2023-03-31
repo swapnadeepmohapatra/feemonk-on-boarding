@@ -1,0 +1,49 @@
+.card {
+  background: #fff8f4;
+  border: 1px solid #f9d8d6;
+  box-shadow: 0px 3px 3px rgba(211, 32, 40, 0.1);
+  border-radius: 12px;
+  width: 100%;
+  margin: 1rem 0;
+  padding: 0.75rem 1rem;
+}
+
+.cardNumberText {
+  color: #d32028;
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.label {
+  color: #5f5f5f;
+  font-size: 0.875rem;
+}
+
+.cardDetails {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin-top: 1rem;
+}
+
+.cardDate {
+  font-weight: 500;
+}
+.cardStatus {
+  font-weight: 500;
+  border-radius: 16px;
+  padding: 5px 10px;
+}
+
+.Approved {
+  color: #45b21e;
+  background: #ecfdf0;
+}
+.Rejected {
+  color: #d32028;
+  background: #ffeeef;
+}
+.InProgress {
+  color: #fa9b0c;
+  background: #fff6de;
+}

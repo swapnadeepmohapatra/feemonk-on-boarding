@@ -6,33 +6,42 @@ import MonkHeroImage from "../../images/static_assests/monk_with_bg.svg";
 import RepaymentIcon from "../../images/static_assests/repayment_icon.svg";
 import BottomNavigationBar from "../../components/molecules/BottomNavBar";
 import Button from "../../components/atoms/Button";
+import ApplicationsCard from "./components/ApplicationsCard";
+import LoansCard from "./components/LoansCard";
 
 function renderSections(page: "Applications" | "Loans" | "Repayment") {
   switch (page) {
     case "Applications":
       return (
         <div className={styles.loanSectionBody}>
-          <img src={MonkHeroImage} alt="" />
+          <ApplicationsCard status="Approved" />
+          <ApplicationsCard status="In Progress" />
+          <ApplicationsCard status="Rejected" />
+          {/* <img src={MonkHeroImage} alt="" />
           <br />
           <h3>No active application</h3>
           <br />
           <p>Avail up to 2 crores loan</p>
           <br />
-          <br />
-          <Button text={"Apply Now"} onPress={() => {}} />
+          <br /> 
+          <Button text={"Apply Now"} onPress={() => {}} /> */}
         </div>
       );
     case "Loans":
       return (
         <div className={styles.loanSectionBody}>
-          <img src={MonkHeroImage} alt="" />
+          <LoansCard />
+          <LoansCard />
+          <LoansCard />
+          <LoansCard />
+          {/* <img src={MonkHeroImage} alt="" />
           <br />
           <h3>No active loans</h3>
           <br />
           <p>Avail up to 2 crores loan</p>
           <br />
           <br />
-          <Button text={"Apply Now"} onPress={() => {}} />
+          <Button text={"Apply Now"} onPress={() => {}} /> */}
         </div>
       );
     case "Repayment":
