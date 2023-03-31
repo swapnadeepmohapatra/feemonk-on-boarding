@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import Button from "../../../../components/atoms/Button";
 import InputText from "../../../../components/atoms/InputText";
 import styles from "./index.module.css";
@@ -6,9 +6,13 @@ import ArrowRight from "../../../../images/icons/arrow_right.svg";
 import Label from "../../../../components/atoms/Label";
 import FooterText from "../../../../components/atoms/FooterText";
 import OtpText from "../../../../components/atoms/OtpText";
+import { useNavigate } from "react-router-dom";
 
 function LoginDialog() {
-  if (true) {
+  const [otp, setOtp] = useState(false);
+  const navigate = useNavigate();
+
+  if (otp) {
     return (
       <div className={styles.backdrop}>
         <div className={styles.loginContainer}>
@@ -49,7 +53,9 @@ function LoginDialog() {
           <br />
           <Button
             text={"Verify"}
-            onPress={() => {}}
+            onPress={() => {
+              navigate("/menu");
+            }}
             imageRight={ArrowRight}
             fullWidth
           />
@@ -78,7 +84,7 @@ function LoginDialog() {
         <br />
         <Button
           text={"Get OTP"}
-          onPress={() => {}}
+          onPress={() => setOtp(true)}
           imageRight={ArrowRight}
           fullWidth
         />

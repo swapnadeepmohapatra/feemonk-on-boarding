@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import styles from "./index.module.css";
 import BellIcon from "../../images/icons/bell.svg";
 import EduLoanIcon from "../../images/icons/edu_loan.svg";
@@ -57,12 +57,14 @@ function LoanSection() {
 }
 
 function Home() {
+  const [login, setLogin] = useState(false);
+
   return (
     <div className={styles.body}>
       <div className={styles.container}>
         <HomeHeadBar />
         <Heading />
-        <img src={LoanImage} alt="" />
+        <img src={LoanImage} alt="" onClick={() => setLogin(true)} />
         <LoanSection />
         <div
           style={{
@@ -70,7 +72,7 @@ function Home() {
           }}
         ></div>
         <BottomNavigationBar active="Home" />
-        <LoginDialog />
+        {login && <LoginDialog />}
       </div>
     </div>
   );
