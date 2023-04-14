@@ -7,8 +7,11 @@ import BasicDetails from "../../images/static_assests/basic_details.svg";
 import KYC from "../../images/static_assests/kyc.svg";
 import IncomeDetails from "../../images/static_assests/income_details.svg";
 import CourseDetails from "../../images/static_assests/course_details.svg";
+import { useNavigate } from "react-router-dom";
 
 function LoanSteps() {
+  const navigate = useNavigate();
+
   return (
     <div className={styles.body}>
       <div className={styles.container}>
@@ -48,7 +51,9 @@ function LoanSteps() {
           <br />
           <br />
           <Button
-            onPress={() => {}}
+            onPress={() => {
+              navigate("/loan-steps-start");
+            }}
             text="Get started"
             imageRight={ArrowRight}
           />
