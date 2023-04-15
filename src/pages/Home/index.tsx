@@ -17,6 +17,8 @@ import GridIconWhite from "../../images/icons/grid_white.svg";
 import UserIconWhite from "../../images/icons/user_white.svg";
 import LoginDialog from "./components/LoginDialog";
 import BottomNavigationBar from "../../components/molecules/BottomNavBar";
+import { useLocalStorage } from "../../hooks";
+import { useNavigate } from "react-router-dom";
 
 const loanSections = [
   { text: "My Applications", image: MyApplicationsImage },
@@ -57,14 +59,17 @@ function LoanSection() {
 }
 
 function Home() {
-  const [login, setLogin] = useState(false);
+  const [authToken] = useLocalStorage("auth_token", "");
+  const [reaload, setReaload] = useState(false);
+  const navigate = useNavigate();
 
   return (
     <div className={styles.body}>
       <div className={styles.container}>
+        {reaload ? <></> : <> </>}
         <HomeHeadBar />
         <Heading />
-        <img src={LoanImage} alt="" onClick={() => setLogin(true)} />
+        <img src={LoanImage} alt="" onClick={() => navigate("/loan-steps")} />
         <LoanSection />
         <div
           style={{
@@ -72,7 +77,9 @@ function Home() {
           }}
         ></div>
         <BottomNavigationBar active="Home" />
-        {login && <LoginDialog />}
+        {!authToken && (
+          <LoginDialog reload={() => setReaload((reaload) => !reaload)} />
+        )}
       </div>
     </div>
   );

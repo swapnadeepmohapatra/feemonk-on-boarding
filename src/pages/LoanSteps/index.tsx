@@ -52,7 +52,7 @@ function LoanSteps() {
           <br />
           <Button
             onPress={() => {
-              navigate("/loan-steps-start");
+              navigate("/loan-steps-basic-details");
             }}
             text="Get started"
             imageRight={ArrowRight}

@@ -1,9 +1,7 @@
 import React, { useState } from "react";
 import OtpInput from "react-otp-input";
 
-function OtpText() {
-  const [otp, setOtp] = useState("");
-
+function OtpText({ otp, setOtp }: any) {
   return (
     <OtpInput
       value={otp}

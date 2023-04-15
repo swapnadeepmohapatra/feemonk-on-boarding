@@ -8,6 +8,7 @@ import Menu from "./pages/Menu";
 import LoanStepsKYC from "./pages/LoanStepsKYC";
 import LoanStepsIncomeDetails from "./pages/LoanStepsIncomeDetails";
 import LoanStepsCourseDetails from "./pages/LoanStepsCourseDetails";
+import LoanStepsBasicDetails from "./pages/LoanStepsBasicDetails";
 
 const Router: React.FC = () => {
   return (
@@ -19,6 +20,10 @@ const Router: React.FC = () => {
         <Route path="/menu" element={<Menu />} />
         <Route path="/loan-steps" element={<LoanSteps />} />
         <Route path="/loan-steps-start" element={<LoanStepsKYC />} />
+        <Route
+          path="/loan-steps-basic-details"
+          element={<LoanStepsBasicDetails />}
+        />
         <Route
           path="/loan-steps-income-details"
           element={<LoanStepsIncomeDetails />}

@@ -7,12 +7,116 @@ import Label from "../../../../components/atoms/Label";
 import FooterText from "../../../../components/atoms/FooterText";
 import OtpText from "../../../../components/atoms/OtpText";
 import { useNavigate } from "react-router-dom";
+import { API_URL } from "../../../../utils";
+import { useLocalStorage } from "../../../../hooks";
 
-function LoginDialog() {
-  const [otp, setOtp] = useState(false);
+function LoginDialog({ reload }: any) {
+  const [otp, setOtp] = useState("");
+  const [number, setNumber] = useState("");
+  const [state, setState] = useState<"PHONE" | "OTP">("PHONE");
   const navigate = useNavigate();
+  const [authToken, setAuthToken] = useLocalStorage("auth_token", "");
 
-  if (otp) {
+  const sendOtp = () => {
+    var myHeaders = new Headers();
+    myHeaders.append("Content-Type", "application/json");
+
+    var raw = JSON.stringify({
+      mobile: number,
+    });
+
+    var requestOptions: RequestInit = {
+      method: "POST",
+      headers: myHeaders,
+      body: raw,
+      redirect: "follow",
+    };
+
+    fetch(`${API_URL}/login/otp`, requestOptions)
+      .then((response) => response.json())
+      .then((result) => {
+        if (result.error) {
+          alert(result.message[0]);
+        } else if (result.message === "Successful") {
+          setState("OTP");
+        }
+        // console.log(result);
+      })
+      .catch((error) => console.log("error", error));
+  };
+
+  const verifyOtp = () => {
+    var myHeaders = new Headers();
+    myHeaders.append("Content-Type", "application/json");
+
+    var raw = JSON.stringify({
+      mobile: number,
+      otp: otp,
+    });
+
+    var requestOptions: RequestInit = {
+      method: "POST",
+      headers: myHeaders,
+      body: raw,
+      redirect: "follow",
+    };
+
+    fetch(`${API_URL}/login/verify-otp`, requestOptions)
+      .then((response) => response.json())
+      .then(async (result) => {
+        // console.log(result);
+        // console.log(result.message);
+
+        if (result.message === "Invalid OTP") {
+          alert("Invalid OTP");
+        } else if (result.message === "Successful") {
+          // await localStorage.setItem(
+          //   "feemonk_data",
+          //   JSON.stringify({
+          //     auth_token: result.data,
+          //     mobile_number: number,
+          //   })
+          // );
+
+          setAuthToken({
+            value: result.data,
+            mob: number,
+          });
+
+          authenticate(result.data);
+
+          reload();
+
+          window.location.reload();
+        }
+      })
+      .catch((error) => console.log("error", error));
+  };
+
+  const authenticate = (auth_token: string) => {
+    var myHeaders = new Headers();
+
+    myHeaders.append("Authorization", `Bearer ${authToken && authToken.value}`);
+
+    var requestOptions: RequestInit = {
+      method: "GET",
+      headers: myHeaders,
+      redirect: "follow",
+    };
+
+    fetch(`${API_URL}/login/auth`, requestOptions)
+      .then((response) => response.json())
+      .then((result) => {
+        if (result.message === "Successful") {
+          navigate("/home");
+
+          setTimeout(() => {}, 500);
+        }
+      })
+      .catch((error) => console.log("error", error));
+  };
+
+  if (state === "OTP") {
     return (
       <div className={styles.backdrop}>
         <div className={styles.loginContainer}>
@@ -25,7 +129,7 @@ function LoginDialog() {
           <br />
           <br />
           {/* <h1>LoginDialog</h1> */}
-          <OtpText />
+          <OtpText otp={otp} setOtp={setOtp} />
           <br />
           <div
             style={{
@@ -53,9 +157,7 @@ function LoginDialog() {
           <br />
           <Button
             text={"Verify"}
-            onPress={() => {
-              navigate("/menu");
-            }}
+            onPress={verifyOtp}
             imageRight={ArrowRight}
             fullWidth
           />
@@ -80,11 +182,14 @@ function LoginDialog() {
         <br />
         <br />
         {/* <h1>LoginDialog</h1> */}
-        <InputText placeholder="+91" />
+        <InputText
+          placeholder="Mobile Number"
+          changeHandler={(e) => setNumber(e.target.value)}
+        />
         <br />
         <Button
           text={"Get OTP"}
-          onPress={() => setOtp(true)}
+          onPress={sendOtp}
           imageRight={ArrowRight}
           fullWidth
         />
