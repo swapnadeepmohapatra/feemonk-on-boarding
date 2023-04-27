@@ -7,9 +7,10 @@ import LoanStepCard from "../LoanSteps/components/Card";
 import InputText from "../../components/atoms/InputText";
 import Label from "../../components/atoms/Label";
 import ArrowRight from "../../images/icons/arrow_right.svg";
+import { useNavigate } from "react-router-dom";
 
 function LoanStepsBasicDetails() {
-  const [first, setFirst] = useState(false);
+  const navigate = useNavigate();
 
   return (
     <div className={styles.body}>
@@ -76,7 +77,14 @@ function LoanStepsBasicDetails() {
           <br />
           <br />
           <br />
-          <Button onPress={() => {}} text={"Verify"} imageRight={ArrowRight} />
+          <Button
+            onPress={() => {
+              navigate("/loan-steps-start");
+            }}
+            text={"Verify"}
+            imageRight={ArrowRight}
+            fullWidth
+          />
         </div>
       </div>
     </div>

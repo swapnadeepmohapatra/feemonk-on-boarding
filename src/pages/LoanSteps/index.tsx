@@ -56,6 +56,7 @@ function LoanSteps() {
             }}
             text="Get started"
             imageRight={ArrowRight}
+            fullWidth
           />
         </div>
       </div>

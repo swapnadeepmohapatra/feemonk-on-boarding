@@ -73,3 +73,8 @@
 .slider.round:before {
   border-radius: 50%;
 }
+.inputFieldSquare input,
+.inputFieldSquare select,
+.inputFieldSquare textarea {
+  border-radius: 0.5rem !important;
+}

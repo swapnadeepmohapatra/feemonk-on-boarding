@@ -12,6 +12,7 @@ interface InputTextProps {
     placeholder: string;
     value: string;
   }[];
+  square?: boolean;
 }
 
 function InputText({
@@ -22,10 +23,14 @@ function InputText({
   autoComplete,
   options,
   style,
+  square,
   ...props
 }: InputTextProps) {
   return (
-    <div {...props} className={Styles.inputField}>
+    <div
+      {...props}
+      className={`${Styles.inputField} ${square && Styles.inputFieldSquare}`}
+    >
       {type === "textarea" ? (
         <textarea
           onChange={changeHandler}

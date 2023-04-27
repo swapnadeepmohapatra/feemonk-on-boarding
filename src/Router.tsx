@@ -9,6 +9,7 @@ import LoanStepsKYC from "./pages/LoanStepsKYC";
 import LoanStepsIncomeDetails from "./pages/LoanStepsIncomeDetails";
 import LoanStepsCourseDetails from "./pages/LoanStepsCourseDetails";
 import LoanStepsBasicDetails from "./pages/LoanStepsBasicDetails";
+import LoanOffer from "./pages/LoanOffer";
 
 const Router: React.FC = () => {
   return (
@@ -32,6 +33,7 @@ const Router: React.FC = () => {
           path="/loan-steps-course-details"
           element={<LoanStepsCourseDetails />}
         />
+        <Route path="/loan-steps-loan-offer" element={<LoanOffer />} />
       </Routes>
     </BrowserRouter>
   );

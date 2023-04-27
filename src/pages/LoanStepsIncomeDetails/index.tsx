@@ -6,9 +6,11 @@ import Incm2 from "../../images/static_assests/incm2.svg";
 import IncomeDetails from "../../images/static_assests/income_details.svg";
 import LoanStepCard from "../LoanSteps/components/Card";
 import Button from "../../components/atoms/Button";
+import { useNavigate } from "react-router-dom";
 
 function LoanStepsIncomeDetails() {
   const [first, setFirst] = useState(false);
+  const navigate = useNavigate();
 
   return (
     <div className={styles.body}>
@@ -33,7 +35,13 @@ function LoanStepsIncomeDetails() {
           />
           <br />
           <br />
-          <Button onPress={() => {}} text={"Save & Next"} />
+          <Button
+            onPress={() => {
+              navigate("/loan-steps-course-details");
+            }}
+            text={"Save & Next"}
+            fullWidth
+          />
         </div>
       </div>
     </div>
