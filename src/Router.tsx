@@ -10,6 +10,9 @@ import LoanStepsIncomeDetails from "./pages/LoanStepsIncomeDetails";
 import LoanStepsCourseDetails from "./pages/LoanStepsCourseDetails";
 import LoanStepsBasicDetails from "./pages/LoanStepsBasicDetails";
 import LoanOffer from "./pages/LoanOffer";
+import ViewOffer from "./pages/ViewOffer";
+import EVerify from "./pages/EVerify";
+import SanctionLetter from "./pages/SanctionLetter";
 
 const Router: React.FC = () => {
   return (
@@ -34,6 +37,9 @@ const Router: React.FC = () => {
           element={<LoanStepsCourseDetails />}
         />
         <Route path="/loan-steps-loan-offer" element={<LoanOffer />} />
+        <Route path="/view-offer" element={<ViewOffer />} />
+        <Route path="/e-verify" element={<EVerify />} />
+        <Route path="/sanction-letter" element={<SanctionLetter />} />
       </Routes>
     </BrowserRouter>
   );

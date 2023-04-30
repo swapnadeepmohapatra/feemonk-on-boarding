@@ -86,7 +86,7 @@ function LoanOffer() {
           <Button
             text={"View Offer"}
             onPress={() => {
-              // navigate("/home");
+              navigate("/view-offer");
             }}
             imageRight={ArrowRight}
             fullWidth
