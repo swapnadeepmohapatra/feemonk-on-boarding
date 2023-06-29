@@ -122,7 +122,7 @@ function LoginDialog({ reload }: any) {
         <div className={styles.loginContainer}>
           <p className={styles.textLogin}>Enter OTP</p>
           <p className={styles.textPreLogin}>
-            sent to <strong>+91 8098765432</strong>
+            sent to <strong>+91 {number}</strong>
           </p>
           <br />
           {/* <Label text="Mobile Number" /> */}
@@ -185,6 +185,7 @@ function LoginDialog({ reload }: any) {
         <InputText
           placeholder="Mobile Number"
           changeHandler={(e) => setNumber(e.target.value)}
+          type="number"
         />
         <br />
         <Button
