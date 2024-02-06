@@ -1,3 +1,3 @@
-const API_URL = "https://customer-portal-mobile.feemonk.com";
+const API_URL = "https://apply-backend.feemonk.com";
 
 export { API_URL };
