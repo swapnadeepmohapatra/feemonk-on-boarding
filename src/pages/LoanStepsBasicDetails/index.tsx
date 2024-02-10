@@ -26,9 +26,9 @@ function LoanStepsBasicDetails() {
           />
           <br />
           <div className={styles.inputField}>
-            <Label text="Full Name" />
+            <Label text="Pan Number" />
             <InputText
-              placeholder="Full Name"
+              placeholder="EBP0000000XR"
               type="text"
               // value={pan}
               // changeHandler={(e) => setPan(e.target.value)}
@@ -38,15 +38,6 @@ function LoanStepsBasicDetails() {
             <Label text="Date of birth" />
             <InputText
               placeholder="DD-MM-YYYY"
-              type="text"
-              // value={pan}
-              // changeHandler={(e) => setPan(e.target.value)}
-            />
-          </div>
-          <div className={styles.inputField}>
-            <Label text="Pan Number" />
-            <InputText
-              placeholder="EBP0000000XR"
               type="text"
               // value={pan}
               // changeHandler={(e) => setPan(e.target.value)}

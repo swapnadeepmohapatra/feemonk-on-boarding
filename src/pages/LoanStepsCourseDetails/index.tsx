@@ -13,9 +13,9 @@ import Label from "../../components/atoms/Label";
 import { useNavigate } from "react-router-dom";
 
 function LoanStepsCourseDetails() {
-  const [active, setActive] = useState<"PARENT" | "STUDENT" | "COAPP">(
-    "PARENT"
-  );
+  // const [active, setActive] = useState<"PARENT" | "STUDENT" | "COAPP">(
+  //   "PARENT"
+  // );
 
   const navigate = useNavigate();
 
@@ -31,7 +31,7 @@ function LoanStepsCourseDetails() {
             image={CourseDetails}
           />
           <br />
-          <div
+          {/* <div
             style={{
               display: "flex",
               justifyContent: "space-between",
@@ -74,9 +74,9 @@ function LoanStepsCourseDetails() {
                 setActive("COAPP");
               }}
             />
-          </div>
+          </div> */}
           <br />
-          {active === "PARENT" && (
+          {/* {active === "PARENT" && (
             <>
               <div
                 style={{
@@ -290,11 +290,95 @@ function LoanStepsCourseDetails() {
               ></div>
               <br />
             </>
-          )}
+          )} */}
+          <>
+            <div
+              style={{
+                padding: "1rem",
+                background: "#FFF7F2",
+                border: "1px solid #F9D8D6",
+                borderRadius: "12px 12px 0px 0px",
+              }}
+            >
+              <p>
+                <strong
+                  style={{
+                    fontSize: "1.2rem",
+                  }}
+                >
+                  Program details
+                </strong>
+              </p>
+            </div>
+            <div
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                // justifyContent: "center",
+                // alignItems: "center",
+                gap: "1rem",
+                border: "1px solid #F9D8D6",
+                background: "#FFFCFA",
+                padding: "1rem",
+                boxShadow: "0px 3px 3px rgba(211, 32, 40, 0.1)",
+                borderRadius: "0px 0px 12px 12px",
+              }}
+            >
+              <Label text="Student name" />
+              <InputText square placeholder="Student name" />
+              <Label text="School / College name" />
+              <InputText square placeholder="Enter School / College name" />
+              <Label text="Total program fee" />
+              <InputText square placeholder="Total program fee" />
+              {/* <Button onPress={() => {}} text={"Save"} fullWidth secondary /> */}
+            </div>
+            <br />
+            <br />
+            <div
+              style={{
+                padding: "1rem",
+                background: "#FFF7F2",
+                border: "1px solid #F9D8D6",
+                borderRadius: "12px 12px 0px 0px",
+              }}
+            >
+              <p>
+                <strong
+                  style={{
+                    fontSize: "1.2rem",
+                  }}
+                >
+                  Institute payment details
+                </strong>
+              </p>
+            </div>
+            <div
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                // justifyContent: "center",
+                // alignItems: "center",
+                gap: "1rem",
+                border: "1px solid #F9D8D6",
+                background: "#FFFCFA",
+                padding: "1rem",
+                boxShadow: "0px 3px 3px rgba(211, 32, 40, 0.1)",
+                borderRadius: "0px 0px 12px 12px",
+              }}
+            >
+              <Label text="Account number" />
+              <InputText square placeholder="Enter Account number" />
+              <Label text="IFSC code" />
+              <InputText square placeholder="Enter IFSC code" />
+              {/* <Label text="Bank name" />
+                <InputText square placeholder="Enter Bank name" /> */}
+              {/* <Button onPress={() => {}} text={"Save"} fullWidth secondary /> */}
+            </div>
+          </>
           <br />
           <Button
             onPress={() => {
-              navigate("/loan-steps-loan-offer");
+              navigate("/parking-page");
             }}
             text={"Get loan offer"}
             fullWidth

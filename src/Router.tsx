@@ -13,6 +13,7 @@ import LoanOffer from "./pages/LoanOffer";
 import ViewOffer from "./pages/ViewOffer";
 import EVerify from "./pages/EVerify";
 import SanctionLetter from "./pages/SanctionLetter";
+import ParkingPage from "./pages/ParkingPage";
 
 const Router: React.FC = () => {
   return (
@@ -40,6 +41,7 @@ const Router: React.FC = () => {
         <Route path="/view-offer" element={<ViewOffer />} />
         <Route path="/e-verify" element={<EVerify />} />
         <Route path="/sanction-letter" element={<SanctionLetter />} />
+        <Route path="/parking-page" element={<ParkingPage />} />
       </Routes>
     </BrowserRouter>
   );
