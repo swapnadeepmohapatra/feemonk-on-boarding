@@ -2,6 +2,7 @@ import React from "react";
 import Styles from "./index.module.css";
 
 interface InputTextProps {
+  id?: string; // Make the id prop optional
   placeholder: string;
   style?: Object;
   type?: string;
@@ -16,6 +17,7 @@ interface InputTextProps {
 }
 
 function InputText({
+  id, // Accept the id prop
   placeholder,
   type,
   changeHandler,
@@ -33,6 +35,7 @@ function InputText({
     >
       {type === "textarea" ? (
         <textarea
+          id={id} // Pass the id to the textarea
           onChange={changeHandler}
           value={value}
           placeholder={placeholder}
@@ -40,8 +43,8 @@ function InputText({
         ></textarea>
       ) : type === "option" ? (
         <select
+          id={id} // Pass the id to the select
           name={placeholder}
-          id={placeholder}
           onChange={changeHandler}
           value={value}
         >
@@ -69,6 +72,7 @@ function InputText({
         </div>
       ) : (
         <input
+          id={id} // Pass the id to the input field
           style={style}
           onChange={changeHandler}
           type={type ? type : "text"}

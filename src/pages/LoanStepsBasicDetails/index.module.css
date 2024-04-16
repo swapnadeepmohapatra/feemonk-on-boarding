@@ -50,3 +50,14 @@
   /* width: 80%; */
   margin: 10px 0px;
 }
+
+.Header{
+  display: inline-flex;
+  justify-content: space-between;
+  margin-top: 2rem;
+}
+
+.dateInputWrapper {
+  width: 100%;
+  cursor: pointer;
+}

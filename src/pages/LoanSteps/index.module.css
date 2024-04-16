@@ -28,16 +28,25 @@
 .headerNextText {
   text-align: center;
   color: #d32028;
+  font-weight: 500;
 }
 .headerLabelText {
   text-align: start;
   color: #101828;
-  font-size: 1.3rem;
-  margin-top: 1rem;
+  font-weight: 600;
+  font-size: 1rem;
+  margin-top: 0.5rem;
 }
 .nextStepsCard {
   background: #fff8f4;
   border: 1px solid rgba(212, 33, 41, 0.15);
   border-radius: 12px;
   padding: 2rem 1rem;
+  margin-top: -0.5rem;
+}
+
+.Header{
+  display: inline-flex;
+  justify-content: space-between;
+  margin-top: 2rem;
 }

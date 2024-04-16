@@ -31,7 +31,7 @@
 }
 
 .icon {
-  height: 2rem;
+  height: 2.5rem;
 }
 
 /* Education Loan Heading Styles */
@@ -180,9 +180,12 @@
   font-size: 1rem;
   font-weight: bold;
   color: #000000;
-  text-align: center;
-  margin-top: -1rem;
-  position: absolute;
+  text-align: right;
+  margin-top: -2rem;
+  margin-right: -4rem;
+  padding-left: 4,5rem;
+  
+  margin-left: 14rem;
   right:2.5rem;
 }
 
