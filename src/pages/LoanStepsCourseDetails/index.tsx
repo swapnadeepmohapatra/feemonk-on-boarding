@@ -1,7 +1,9 @@
 import React, { useState } from "react";
 import styles from "./index.module.css";
-import Progress from "../../images/static_assests/progress_90.svg";
+// import Progress from "../../images/static_assests/progress_90.svg";
+import Progress from "../../images/static_assests/process.svg";
 // import Course1 from "../../images/static_assests/course1.svg";
+import BackArrow from "../../images/icons/arrow-left-circle.svg";
 import ParentTab from "../../images/static_assests/parent_tab.svg";
 import CoAppTab from "../../images/static_assests/co_applicant_tab.svg";
 import StudentTab from "../../images/static_assests/student_tab.svg";
@@ -23,12 +25,28 @@ function LoanStepsCourseDetails() {
     <div className={styles.body}>
       <div className={styles.container}>
         <div className={styles.main}>
-          <img src={Progress} alt="" />
+        <div className={styles.Header}>
+            <button
+              style={{ border: "none", background: "none" }}
+              onClick={() => {
+                navigate("/loan-steps");
+              }}
+            >
+              <img
+                style={{ marginLeft: "0.5rem", height: "1.5rem" }}
+                src={BackArrow}
+                alt=""
+              />
+            </button>
+            <p style={{ marginRight: "0.5rem", fontWeight: "bold" }}>T&C</p>
+          </div>
+          <img style={{maxWidth: "90%", paddingLeft: "2rem"}}src={Progress} alt="" />
           <br />
           <LoanStepCard
             // description="Permanent Address & Current Location"
             title="Course details"
             image={CourseDetails}
+            tiime="3 min"
           />
           <br />
           {/* <div

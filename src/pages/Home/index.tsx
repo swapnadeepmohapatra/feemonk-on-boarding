@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import styles from "./index.module.css";
-import BellIcon from "../../images/icons/bell.svg";
+import redProfile from "../../images/icons/redProfile.svg";
 import EduLoanIcon from "../../images/icons/edu_loan.svg";
 import LoanAdpng from "../../images/LoanAd.png";
 import MyApplicationsImage from "../../images/static_assests/my_applications_icon.svg";
@@ -22,7 +22,7 @@ import { useNavigate } from "react-router-dom";
 
 const loanAd = {
   title: "Avail up to",
-  amount: "₹ 2 crores of loan",
+  amount: "₹ 10 lakhs of loan",
   action: {
     text: "Apply Now",
     url: "/loan-steps"
@@ -55,7 +55,7 @@ function Home() {
         {reload ? null : null}
         <div className={styles.homeHeader}>
           <img className={styles.logo} src="main_logo.png" alt="" />
-          <img className={styles.icon} src={BellIcon} alt="" />
+          <img className={styles.icon} src={redProfile} alt="" />
         </div>
         
         <div className={styles.loanAdContainer}>
@@ -75,7 +75,8 @@ function Home() {
         justifyContent: "center",
         borderRadius: 32,
         border: "none",
-        marginRight:"6rem" ,
+        marginRight:"-8rem" ,
+        marginBottom:"1.85rem"
         }} onClick={() => {
           navigate("/loan-steps");
         }}

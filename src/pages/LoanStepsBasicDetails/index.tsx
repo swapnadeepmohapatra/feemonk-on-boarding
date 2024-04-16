@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import styles from "./index.module.css";
+import BackArrow from "../../images/icons/arrow-left-circle.svg";
 import Progress from "../../images/static_assests/progress_first.svg";
 import BasicDetails from "../../images/static_assests/basic_details.svg";
 import Button from "../../components/atoms/Button";
@@ -11,36 +12,66 @@ import { useNavigate } from "react-router-dom";
 
 function LoanStepsBasicDetails() {
   const navigate = useNavigate();
+  const [dob, setDob] = useState("");
+
+  const handleDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setDob(e.target.value);
+  };
 
   return (
     <div className={styles.body}>
       <div className={styles.container}>
         <div className={styles.main}>
+          <div className={styles.Header}>
+            <button
+              style={{ border: "none", background: "none" }}
+              onClick={() => {
+                navigate("/loan-steps");
+              }}
+            >
+              <img
+                style={{ marginLeft: "0.5rem", height: "1.5rem" }}
+                src={BackArrow}
+                alt=""
+              />
+            </button>
+            <p style={{ marginRight: "0.5rem", fontWeight: "bold" }}>T&C</p>
+          </div>
           <br />
-          <img src={Progress} alt="" />
+          <img style={{ maxWidth: "90%", paddingLeft: "2rem" }} src={Progress} alt="" />
           <br />
           <LoanStepCard
-            // description="Permanent Address & Current Location"
             title="Basic Details"
             image={BasicDetails}
+            tiime="1 min"
           />
           <br />
+          {/* <div className={styles.inputField}>
+            <Label text="Full name" />
+            <InputText
+              placeholder="Full name"
+              type="text"
+            />
+          </div> */}
           <div className={styles.inputField}>
-            <Label text="Pan Number" />
+  <Label text="Date of birth" />
+  <div className={styles.dateInputWrapper} onClick={() => document.getElementById('dob-input')?.click()}>
+    <InputText
+      id="dob-input"
+      placeholder="Date of birth"
+      type="date"
+      value={dob}
+      changeHandler={(e) => setDob(e.target.value)}
+    />
+  </div>
+</div>
+
+
+          <div className={styles.inputField}>
+            <Label text="PAN number" />
             <InputText
               placeholder="EBP0000000XR"
               type="text"
-              // value={pan}
-              // changeHandler={(e) => setPan(e.target.value)}
-            />
-          </div>
-          <div className={styles.inputField}>
-            <Label text="Date of birth" />
-            <InputText
-              placeholder="DD-MM-YYYY"
-              type="text"
-              // value={pan}
-              // changeHandler={(e) => setPan(e.target.value)}
             />
           </div>
           <br />
@@ -49,28 +80,22 @@ function LoanStepsBasicDetails() {
               display: "flex",
               alignItems: "self-start",
               gap: "8px",
+              
             }}
           >
-            <input type="checkbox" />
-            <p>
-              I consent and authorize Feemonk to get a background check and a
+            <input style={{marginTop:"0.3rem",width:"1rem"}}type="checkbox" />
+            <p style={{marginBottom:"1rem",paddingBottom:"1rem",color:"#667085",fontSize:"1.2rem"}}>
+              I consent and authorize <span style={{color:"#d32028"}}>Fee</span><span style={{color:"black"}}>monk</span> to get a background check and a
               consumer credit report on me
             </p>
           </div>
-          {/* <img
-            src={Basic1}
-            alt=""
-            onClick={() => {
-              setFirst(!first);
-            }}
-          /> */}
           <br />
           <br />
           <br />
           <br />
           <Button
             onPress={() => {
-              navigate("/loan-steps-start");
+              navigate("/loan-steps-course-details");
             }}
             text={"Verify"}
             imageRight={ArrowRight}
