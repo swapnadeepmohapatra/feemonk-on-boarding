@@ -14,6 +14,9 @@ import ViewOffer from "./pages/ViewOffer";
 import EVerify from "./pages/EVerify";
 import SanctionLetter from "./pages/SanctionLetter";
 import ParkingPage from "./pages/ParkingPage";
+import CibilLow from "./pages/CibilLow";
+import CoAppDetails from "./pages/CoAppDetails";
+
 
 const Router: React.FC = () => {
   return (
@@ -42,6 +45,8 @@ const Router: React.FC = () => {
         <Route path="/e-verify" element={<EVerify />} />
         <Route path="/sanction-letter" element={<SanctionLetter />} />
         <Route path="/parking-page" element={<ParkingPage />} />
+        <Route path="/cibil-low" element={<CibilLow />} />
+        <Route path="/coapp-details" element={<CoAppDetails />} />
       </Routes>
     </BrowserRouter>
   );

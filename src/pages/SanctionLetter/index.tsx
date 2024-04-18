@@ -329,6 +329,14 @@ function SanctionLetter() {
           <br />
 
           <br />
+          <Button
+            text={"Accept for loan"}
+            onPress={() => {
+              navigate("/view-offer");
+            }}
+            imageRight={ArrowRight}
+            fullWidth
+          />
         </div>
       </div>
     </div>

@@ -29,6 +29,7 @@ function LoanStepCard({ title, description, image,tiime }: LoanStepCardProps) {
           borderRadius: "50%",
           backgroundColor: "#F4E5DD",
         }}
+        
       />
       <div style={{}}>
         <div style={{display:'flex',alignItems:'center',flexDirection: 'row',}}>

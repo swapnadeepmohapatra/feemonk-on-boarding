@@ -28,6 +28,9 @@ function LoanStepsCourseDetails() {
   const [active, setActive] = useState<"PARENT" | "STUDENT" | "COAPP">("PARENT");
   const navigate = useNavigate();
 
+  const [selectedClass, setSelectedClass] = useState(""); // Initialize selectedClass state
+
+
   const [isProgramDetailsFilled, setIsProgramDetailsFilled] = useState(false);
   const [isProgramDetailsMinimized, setIsProgramDetailsMinimized] = useState(false);
 
@@ -36,7 +39,7 @@ function LoanStepsCourseDetails() {
 
   const [isChildDetailsFilled, setIsChildDetailsFilled] = useState(false);
   const [isChildDetailsMinimized, setIsChildDetailsMinimized] = useState(false);
-  
+
   const [isSchoolPaymentDetailsMinimized, setIsSchoolPaymentDetailsMinimized] = useState(false);
   const [isSchoolPaymentDetailsFilled,setIsSchoolPaymentDetailsFilled]=useState(false)
   const toggleProgramDetails = () => {
@@ -48,19 +51,15 @@ function LoanStepsCourseDetails() {
   };
 
   const handleSaveProgramDetails = () => {
-    // Add your logic here to save program details
     
-    // Assuming all details are filled and saved successfully
     setIsProgramDetailsFilled(true);
-    setIsProgramDetailsMinimized(true); // Minimize program details after saving
+    setIsProgramDetailsMinimized(true); 
   };
   
   const handleSaveInstitutePaymentDetails = () => {
-    // Add your logic here to save institute payment details
-    
-    // Assuming all details are filled and saved successfully
+   
     setIsInstitutePaymentDetailsFilled(true);
-    setIsInstitutePaymentDetailsMinimized(true); // Minimize institute payment details after saving
+    setIsInstitutePaymentDetailsMinimized(true); 
   };
   
   const toggleChildDetails = () => {
@@ -72,19 +71,21 @@ function LoanStepsCourseDetails() {
   };
   
   const handleSaveChildDetails = () => {
-    // Add your logic here to save child details
-    
-    // Assuming all details are filled and saved successfully
+
     setIsChildDetailsFilled(true);
-    setIsChildDetailsMinimized(true); // Minimize child details after saving
+    setIsChildDetailsMinimized(true);
   };
   
   const handleSaveSchoolPaymentDetails = () => {
-    // Add your logic here to save school payment details
-    
-    // Assuming all details are filled and saved successfully
+   
     setIsSchoolPaymentDetailsFilled(true)
-    setIsSchoolPaymentDetailsMinimized(true); // Minimize school payment details after saving
+    setIsSchoolPaymentDetailsMinimized(true); 
+  };
+
+  const [dob, setDob] = useState("");
+
+  const handleDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setDob(e.target.value);
   };
   
 
@@ -229,14 +230,34 @@ function LoanStepsCourseDetails() {
         >
           <Label text="Full name" />
           <InputText square placeholder="Full name" />
-          <Label text="Date of Birth" />
-          <InputText square placeholder="Date of Birth" />
-          <Label text="Class/Standard" />
-          <InputText square placeholder="Class" />
+          <Label text="Date of birth" />
+              <div className={styles.dateInputWrapper} onClick={() => document.getElementById('dob-input')?.click()}>
+                <InputText
+                  id="dob-input"
+                  placeholder="Date of birth"
+                  type="date"
+                  value={dob}
+                  changeHandler={(e) => setDob(e.target.value)}
+                />
+              </div>
+              <Label text="Class/Standard" />
+                <select
+                  style={{ width: "100%", padding: "0.5rem", borderRadius: "0.5rem", border: "1px solid #6f6f6f",background: "#fff",fontWeight:"500" ,fontSize:"1rem",resize:"vertical"}}
+                  value={selectedClass}
+                  onChange={(e) => setSelectedClass(e.target.value)}
+                >
+                  {Array.from({ length: 12 }, (_, index) => index + 1).map((value) => (
+                    <option key={value} value={value}>
+                      Class {value}
+                    </option>
+                  ))}
+                </select>
+
+
           <Label text="School name" />
           <InputText square placeholder="Enter School name" />
           <Label text="Total annual fee" />
-          <InputText square placeholder="Total annual fee" />
+          <InputText square placeholder="₹" />
           <Button onPress={handleSaveChildDetails} text={"Save"} fullWidth secondary />
         </div>
       )}
@@ -509,7 +530,7 @@ function LoanStepsCourseDetails() {
           <br />
           <Button
             onPress={() => {
-              navigate("/parking-page");
+              navigate("/loan-steps-loan-offer-");
             }}
             text={"Get loan offer"}
             imageRight={ArrowRight}

@@ -15,7 +15,7 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Button from "../../components/atoms/Button";
 import styles from "./index.module.css";
-import ArrowRight from "../../images/icons/arrow_right.svg";
+import closebtn from "../../images/icons/close-btn.svg";
 import Confeti from "../../images/static_assests/confeti.svg";
 
 function LoanOffer() {
@@ -29,6 +29,18 @@ function LoanOffer() {
           alt=""
           style={{
             position: "fixed",
+          }}
+          
+        />
+        <img
+          src={closebtn}
+          alt=""
+          style={{
+            width:"1.3rem",
+            position:"relative",
+            marginLeft:"2rem",
+            marginBottom:"40rem"
+
           }}
         />
         <div
