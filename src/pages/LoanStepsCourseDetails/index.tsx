@@ -29,11 +29,14 @@ function LoanStepsCourseDetails() {
   const navigate = useNavigate();
 
   const [isProgramDetailsFilled, setIsProgramDetailsFilled] = useState(false);
-  const [isInstitutePaymentDetailsFilled, setIsInstitutePaymentDetailsFilled] = useState(false);
   const [isProgramDetailsMinimized, setIsProgramDetailsMinimized] = useState(false);
+
+  const [isInstitutePaymentDetailsFilled, setIsInstitutePaymentDetailsFilled] = useState(false);
   const [isInstitutePaymentDetailsMinimized, setIsInstitutePaymentDetailsMinimized] = useState(false);
+
   const [isChildDetailsFilled, setIsChildDetailsFilled] = useState(false);
   const [isChildDetailsMinimized, setIsChildDetailsMinimized] = useState(false);
+  
   const [isSchoolPaymentDetailsMinimized, setIsSchoolPaymentDetailsMinimized] = useState(false);
   const [isSchoolPaymentDetailsFilled,setIsSchoolPaymentDetailsFilled]=useState(false)
   const toggleProgramDetails = () => {
