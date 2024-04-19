@@ -16,6 +16,7 @@ import SanctionLetter from "./pages/SanctionLetter";
 import ParkingPage from "./pages/ParkingPage";
 import CibilLow from "./pages/CibilLow";
 import CoAppDetails from "./pages/CoAppDetails";
+import IncomeDetails from "./pages/IncomeDetails"
 
 
 const Router: React.FC = () => {
@@ -47,6 +48,7 @@ const Router: React.FC = () => {
         <Route path="/parking-page" element={<ParkingPage />} />
         <Route path="/cibil-low" element={<CibilLow />} />
         <Route path="/coapp-details" element={<CoAppDetails />} />
+        <Route path="/income-details" element={<IncomeDetails/>}/>
       </Routes>
     </BrowserRouter>
   );
