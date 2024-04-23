@@ -14,86 +14,68 @@ interface LoansCardProps {
   status: "Active" | "Inactive";
 }
 
-function LoansCard({ status }: LoansCardProps) {
+function RepaymentsCard({ status }: LoansCardProps) {
   const navigate = useNavigate();
 
   const renderActiveCard = () => (
     <div className={styles.card}>
       <div style={{ display: "flex", flexDirection: "row", justifyContent: "space-between" }}>
         <div className={styles.cardNumber}>
-          <p className={styles.cardDate}><span><img style={{ marginRight: "0.3rem" }} src={cashBag} /></span>Principal Amount</p>
+          <p className={styles.cardDate}><span><img style={{ marginRight: "0.3rem" }} src={cashBag} /></span>Outstanding Amount</p>
           <p className={styles.cardNumberText}>₹ 10,00,000</p>
         </div>
         <div className={styles.actionContainer}>
           <div className={styles.action}>
-            <p className={styles.seeMore}>see more</p>
+            <p  style={{color:"#d23028",fontSize:"0.875rem"}}>#EL202303010</p>
           </div>
-          <div className={styles.arrowContainer}>
-            <img src={rightArrow} alt="Right Arrow" className={styles.arrow} />
-          </div>
+         
         </div>
-      </div>
-      <div className={styles.cardDetails}>
-        <div>
-          <p className={styles.label}><span><img style={{ marginRight: "0.3rem" }} src={calendar} /></span>Loan Start Date</p>
-          <p className={styles.cardDate}>20/03/2023</p>
         </div>
+        <div className={styles.cardDetails}>
         <div style={{marginRight:"1.2rem"}}>
           <p className={styles.label}><span><img style={{ marginRight: "0.3rem" }} src={emi} /></span>EMI</p>
           <p className={styles.cardDate}>₹ 25,000</p>
         </div>
-      </div>
-      <div className={styles.offerContainer}>
-        <div>
-          <p className={styles.offerText}>
-            <span><img src={doc} alt="Document" /></span>Pre-closure offer
-          </p>
+        <div style={{marginRight:"2rem"}}>
+          <p className={styles.label}><span><img style={{ marginRight: "0.3rem" }} src={calendar} /></span>Due Date</p>
+          <p className={styles.cardDate}>20/03/2023</p>
         </div>
-        <div>
+        <div style={{marginTop:"0.5rem",marginRight:"0.3rem"}}>
           <button className={styles.offerButton} onClick={() => navigate("/loan-steps")}>
             <span><img src={wallet} alt="Cash Bag" /></span>Pay now
           </button>
         </div>
       </div>
+      
     </div>
   );
 
   const renderInactiveCard = () => (
     <div className={styles.card}>
-      <div style={{ display: "flex", flexDirection: "row", justifyContent: "space-between" }}>
+     <div style={{ display: "flex", flexDirection: "row", justifyContent: "space-between" }}>
         <div className={styles.cardNumber}>
-          <p className={styles.cardDate}><span><img style={{ marginRight: "0.3rem" }} src={cashBag} /></span>Principal Amount</p>
+          <p className={styles.cardDate}><span><img style={{ marginRight: "0.3rem" }} src={cashBag} /></span>Outstanding Amount</p>
           <p className={styles.cardNumberText}>₹ 10,00,000</p>
         </div>
         <div className={styles.actionContainer}>
           <div className={styles.action}>
-            <p className={styles.seeMore}>see more</p>
+            <p  style={{color:"#d23028",fontSize:"0.875rem"}}>#EL202303010</p>
           </div>
-          <div className={styles.arrowContainer}>
-            <img src={rightArrow} alt="Right Arrow" className={styles.arrow} />
-          </div>
+         
         </div>
-      </div>
-      <div className={styles.cardDetails}>
-        <div>
-          <p className={styles.label}><span><img style={{ marginRight: "0.3rem" }} src={calendar} /></span>Loan Closure Date</p>
-          <p className={styles.cardDate}>20/03/2023</p>
         </div>
+        <div className={styles.cardDetails}>
         <div style={{marginRight:"1.2rem"}}>
           <p className={styles.label}><span><img style={{ marginRight: "0.3rem" }} src={emi} /></span>EMI</p>
           <p className={styles.cardDate}>₹ 25,000</p>
         </div>
-        
-      </div>
-      <div className={styles.offerContainer}>
-        <div>
-          <p className={styles.offerText}>
-            <span><img src={doc} alt="Document" /></span>No-due Certificate
-          </p>
+        <div style={{marginRight:"2rem"}}>
+          <p className={styles.label}><span><img style={{ marginRight: "0.3rem" }} src={calendar} /></span>Due Date</p>
+          <p className={styles.cardDate}>20/03/2023</p>
         </div>
-        <div>
+        <div style={{marginTop:"0.5rem",marginRight:"0.3rem"}}>
           <button className={styles.offerButton} onClick={() => navigate("/loan-steps")}>
-            <span><img src={eye} alt="EMI History" /></span>EMI History
+            <span><img src={eye} alt="Cash Bag" /></span>View
           </button>
         </div>
       </div>
@@ -105,4 +87,4 @@ function LoansCard({ status }: LoansCardProps) {
   return status === "Active" ? renderActiveCard() : renderInactiveCard();
 }
 
-export default LoansCard;
+export default RepaymentsCard;

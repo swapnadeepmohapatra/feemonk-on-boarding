@@ -32,6 +32,7 @@ function IncomeDetails() {
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const selectedFile = event.target.files?.[0];
     if (selectedFile) {
+      console.log("File selected:", selectedFile);
       setFile(selectedFile);
       // Simulate file upload progress
       let progress = 0;
@@ -42,6 +43,8 @@ function IncomeDetails() {
           clearInterval(interval);
         }
       }, 500);
+      setIsBankDetailsMinimized(false); // Show Div-1
+      console.log("isBankDetailsMinimized set to false");
     }
   };
 
@@ -59,6 +62,7 @@ function IncomeDetails() {
   
   const toggleBankDetails = () => {
     setIsBankDetailsMinimized(!isBankDetailsMinimized);
+    console.log("isBankDetailsMinimized toggled to", !isBankDetailsMinimized);
   };
   
   const handleSaveWorkDetails = () => {
@@ -71,6 +75,8 @@ function IncomeDetails() {
    
     setIsBankDetailsFilled(true)
     setIsBankDetailsMinimized(true); 
+    console.log("isBankDetailsFilled set to true");
+    console.log("isBankDetailsMinimized set to true");
   };
 
   const [dob, setDob] = useState("");
@@ -317,86 +323,88 @@ function IncomeDetails() {
           <InputText square placeholder="Enter IFSC code" />
           <Label text="Bank name" />
           <InputText square placeholder="Enter Bank name" />
-          <div style={{
-            position: "relative",
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-            justifyContent: "center",
-            gap: "0.5rem", // Adjust as needed
-            padding: "0.25rem",
-            background: "#FFFFFF",
-            border: "1px solid #40B64B",
-            borderRadius: isBankDetailsMinimized ? "12px" : "12px 12px 12px 12px",
-            transition: "border-radius 0.3s ease",
-        }}>
-            {/* Loading Icon */}
-            <img
-                src={upload}
-                style={{ position: "absolute", top: "0.5rem", left: "0.5rem", width: "2.5rem" }}
-                alt="Loading"
-            />
-            {/* File Name */}
-            {file && (
-                <>
-                    <p style={{ color: "#333", fontSize: "1rem", fontWeight: "500", margin: 0 }}>File Name: {file.name}</p>
-                    {/* File Size */}
-                    <p style={{ color: "#333", fontSize: "1rem", fontWeight: "500", margin: 0 }}>File Size: {(file.size / 1024 / 1024).toFixed(0)} MB</p>
-                    {/* Loading Bar and Percentage */}
-                    <div style={{ display: "flex", alignItems: "center", width: "70%" ,marginLeft:"1.5rem"}}>
-                        <div style={{ flex: "1", height: "0.5rem", background: "#E0E0E0", borderRadius: "0.25rem", position: "relative" }}>
-                            <div style={{ width: `${progress}%`, height: "100%", background: "#40B64B", borderRadius: "0.25rem", position: "absolute", top: 0, left: 0 }}></div>
-                        </div>
-                        <p style={{ color: "#333", fontSize: "0.8rem", fontWeight: "500", margin: "0.25rem 0", marginLeft: "0.5rem" }}>{progress.toFixed(0)}%</p>
-                    </div>
-                </>
-            )}
-            {/* Delete Icon */}
-            <img
-                src={delete_icon}
-                style={{ position: "absolute", top: "0.5rem", right: "0.5rem", width: "2rem" }}
-                alt="Delete"
-            />
-            {/* File Input */}
-            <input type="file" onChange={handleFileChange} style={{ opacity: 0, position: "absolute", top: 0, left: 0, width: "100%", height: "100%" }} />
-          </div>
-
-          <label htmlFor="file-upload" style={{ cursor: "pointer" }}>
-              <div
-                style={{
-                  display: "flex",
-                  flexDirection: "column",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  gap: "0.5rem",
-                  padding: "0.25rem",
-                  background: "#FFFCFA",
-                  border: "1px solid #6f6f6f",
-                  borderRadius: isBankDetailsMinimized ? "12px" : "12px 12px 12px 12px",
-                  transition: "border-radius 0.3s ease",
-                }}
-              >
-                {/* Upload Icon */}
+          {file && (
+              <div style={{
+                position: "relative",
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+                justifyContent: "center",
+                gap: "0.5rem", // Adjust as needed
+                padding: "0.25rem",
+                background: "#FFFFFF",
+                border: "1px solid #40B64B",
+                borderRadius: isBankDetailsMinimized ? "12px" : "12px 12px 12px 12px",
+                transition: "border-radius 0.3s ease",
+              }}>
+                {/* Loading Icon */}
                 <img
                   src={upload}
-                  style={{ width: "5rem", marginBottom: "0.75rem" }}
-                  alt="Upload"
+                  style={{ position: "absolute", top: "0.5rem", left: "0.5rem", width: "2.5rem" }}
+                  alt="Loading"
                 />
-                <p style={{ color: "#D32028", fontSize: "1.2rem", fontWeight: "600", marginBottom: "0.5rem" }}>Click to upload</p>
-                <p style={{ color: "#667085", fontSize: "1rem", fontWeight: "500", marginBottom: "1rem" }}>SVG, PNG, JPG or GIF (max. 800x400px)</p>
+                {/* File Name */}
+                <p style={{ color: "#333", fontSize: "1rem", fontWeight: "500", margin: 0 }}>File Name: {file.name}</p>
+                {/* File Size */}
+                <p style={{ color: "#333", fontSize: "1rem", fontWeight: "500", marginRight:"7.23rem" }}>{(file.size / 1024 / 1024).toFixed(0)} MB</p>
+                {/* Loading Bar and Percentage */}
+                <div style={{ display: "flex", alignItems: "center", width: "70%" ,marginLeft:"1.5rem"}}>
+                  <div style={{ flex: "1", height: "0.5rem", background: "#E0E0E0", borderRadius: "0.25rem", position: "relative" }}>
+                    <div style={{ width: `${progress}%`, height: "100%", background: "#40B64B", borderRadius: "0.25rem", position: "absolute", top: 0, left: 0 }}></div>
+                  </div>
+                  <p style={{ color: "#333", fontSize: "0.8rem", fontWeight: "500", margin: "0.25rem 0", marginLeft: "0.5rem" }}>{progress.toFixed(0)}%</p>
+                </div>
+                {/* Delete Icon */}
+                <img
+                  src={delete_icon}
+                  style={{ position: "absolute", top: "0.5rem", right: "0.5rem", width: "2rem" }}
+                  alt="Delete"
+                />
+                {/* File Input */}
+                <input type="file" onChange={handleFileChange} style={{ opacity: 0, position: "absolute", top: 0, left: 0, width: "100%", height: "100%" }} />
               </div>
-              <input
-                id="file-upload"
-                type="file"
-                onChange={handleFileChange}
-                style={{ display: "none" }}
-              />
-            </label>
+            )}
 
-            <p style= {{display:"flex",color:"#667085",fontSize:"1.2rem",fontWeight:"500",flexDirection:"column", marginBottom:"1rem",justifyContent:"center",alignContent:"center",alignItems:"center",marginLeft:"1rem"}}> Uploading a bank account statement can enhance your chances of availing better loan amount</p>
-        
-          <Button onPress={handleSaveBankDetails} text={"Save"} fullWidth secondary />
-          
+
+            {!file && (
+              <div> 
+                <label htmlFor="file-upload" style={{ cursor: "pointer" }}>
+                  <div
+                    style={{
+                      display: "flex",
+                      flexDirection: "column",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      gap: "0.5rem",
+                      padding: "0.25rem",
+                      background: "#FFFCFA",
+                      border: "1px solid #6f6f6f",
+                      borderRadius: isBankDetailsMinimized ? "12px" : "12px 12px 12px 12px",
+                      transition: "border-radius 0.3s ease",
+                    }}
+                  >
+                    {/* Upload Icon */}
+                    <img
+                      src={upload}
+                      style={{ width: "5rem", marginBottom: "0.75rem" }}
+                      alt="Upload"
+                    />
+                    <p style={{ color: "#D32028", fontSize: "1.2rem", fontWeight: "600", marginBottom: "0.5rem" }}>Click to upload</p>
+                    <p style={{ color: "#667085", fontSize: "1rem", fontWeight: "500", marginBottom: "1rem" }}>SVG, PNG, JPG or GIF (max. 800x400px)</p>
+                  </div>
+                  <input
+                    id="file-upload"
+                    type="file"
+                    onChange={handleFileChange}
+                    style={{ display: "none" }}
+                  />
+                </label>
+                <p style= {{display:"flex",color:"#667085",fontSize:"1.2rem",fontWeight:"500",flexDirection:"column", marginBottom:"1rem",justifyContent:"center",alignContent:"center",alignItems:"center",marginLeft:"1rem"}}> Uploading a bank account statement can enhance your chances of availing better loan amount</p>
+                
+              </div>
+            )}
+                  <Button onPress={handleSaveBankDetails} text={"Save"} fullWidth secondary />
+
         </div>
       )}
     </div>

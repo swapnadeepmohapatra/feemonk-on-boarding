@@ -17,6 +17,7 @@
 .label {
   color: #5f5f5f;
   font-size: 0.875rem;
+  /* padding-bottom: 1rem; */
 }
 
 .cardDetails {
@@ -28,6 +29,7 @@
 
 .cardDate {
   font-weight: bold;
+  margin-left: 0.75rem;
 }
 .cardStatus {
   font-weight: bold;
@@ -49,3 +51,14 @@
   color: #fa9b0c;
   background: #fff6de;
 }
+
+.actionContainer {
+  display: flex;
+  align-items: center;
+}
+
+.action {
+  margin-right: 0.75rem /* Adjust as needed */
+}
+
+

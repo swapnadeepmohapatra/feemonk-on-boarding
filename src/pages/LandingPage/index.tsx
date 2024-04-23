@@ -62,10 +62,10 @@ function LandingPage() {
             style={{
               fontSize: 22,
               textAlign: "center",
-              marginBottom: "1rem",
+              marginBottom: "5rem",
             }}
           >
-            Simplified education loans & fee payments
+            Simplified education loans &<p> fee payments</p>
           </p>
           <div
             style={{
