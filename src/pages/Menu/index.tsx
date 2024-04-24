@@ -10,6 +10,7 @@ import ApplicationsCard from "./components/ApplicationsCard";
 import LoansCard from "./components/LoansCard";
 import redProfile from "../../images/icons/redProfile.svg";
 import RepaymentsCard from "./components/RepaymentsCard"
+import FeepaymentsCard from "./components/FeepaymentsCard"
 
 function renderSections(page: "Applications" | "Loans" | "Repayment" | "Fee Payment") {
   switch (page) {
@@ -45,6 +46,17 @@ function renderSections(page: "Applications" | "Loans" | "Repayment" | "Fee Paym
       );
     case "Fee Payment":
       return (
+        <div className={styles.FeepaymentSectionBody}>
+          <h3 className={styles.heading}>Current Fee Payments</h3>
+          <FeepaymentsCard status="Active" />
+          <FeepaymentsCard status="Active" />
+          <h3 className={styles.heading}>Previous Fee Payments</h3>
+          <FeepaymentsCard status="Inactive" />
+          <FeepaymentsCard  status="Inactive"/>
+        </div>
+      );    
+    default:
+      return (
         <div className={styles.loanSectionBody}>
           <img src={MonkHeroImage} alt="" />
           <br />
@@ -56,8 +68,6 @@ function renderSections(page: "Applications" | "Loans" | "Repayment" | "Fee Paym
           <Button text={"Apply Now"} onPress={() => {}} />
         </div>
       );
-    default:
-      return <div></div>;
   }
 }
 
