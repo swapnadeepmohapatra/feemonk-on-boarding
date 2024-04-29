@@ -153,34 +153,114 @@
 
 .offerButton2 {
   background-color: #d32028;
-  padding: 8px 12px; /* Adjust padding as needed */
-  border-radius: 32px;
+  padding: 14px 12px; /* Adjust padding as needed */
+  border-radius: 12px;
   border: none;
   color: #ffffff;
   display: flex;
   align-items: center;
-  width: 10rem; /* Adjust width as needed */
+  width: 8rem; /* Adjust width as needed */
   margin-right: "1rem";
 }
 
 .offerButton2 img {
   margin-right: 0.5rem;
-  width: 1rem; /* Adjust image size as needed */
+  width: 0.875rem; /* Adjust image size as needed */
 }
 
-.offerButton1 {
-  background-color: #ffffff;
-  padding: 8px 12px; /* Adjust padding as needed */
-  border-radius: 32px;
-  border-color: #000000;
-  color: #000000;
+
+.backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  /* background-color: rgba(0, 0, 0, 0.4); */
+  height: 100%;
+  width: 100%;
   display: flex;
-  align-items: center;
-  width: 10rem; /* Adjust width as needed */
+  align-items: flex-end;
+  justify-content: center;
 }
 
-.offerButton1 img {
-  margin-right: 0.5rem;
-  width: 1rem; /* Adjust image size as needed */
+.loginContainer {
+  width: 100%;
+  background: linear-gradient(126.11deg, #fff3f3 -2.34%, #fff2ea 87.21%);
+  padding: 2rem;
+  height: 27rem;
+  border-radius: 1rem 1rem 0 0;
 }
+
+.textEMIno {
+  color: #5F5F5F;
+  font-size: 0.675rem;
+}
+.textEMI {
+  color: #d32028;
+  font-size: 1.2rem;
+  font-weight: bold;
+}
+
+.row
+{
+  border-bottom:1px solid #F4DCDC  ;
+  margin-bottom: 1rem;
+}
+
+.checkboxContainer {
+  display: inline-block;
+  position: relative;
+}
+
+.checkboxContainer input {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.checkmark {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  border: 2px solid #d23028;
+  border-radius: 4px;
+  background-color: #fff;
+}
+
+.checkmark:after {
+  content: "";
+  display: none;
+  width: 3px;
+  margin-left: 5px;
+  height: 12px;
+  border: solid #d23028;
+  border-width: 0 3px 3px 0;
+  transform: rotate(45deg);
+}
+
+.checkboxContainer input:checked ~ .checkmark:after {
+  display: block;
+}
+
+.tableRow {
+  border-bottom: 1px solid #F4DCDC;
+ /* padding: 1rem; */
+ /* background-color: #d32028; */
+ /* font-size: larger; */
+
+ 
+}
+.tableBody {
+  overflow-y: scroll;
+ height: 15rem;
+ width: 24rem;
+}
+
+tbody{  display: block;
+  overflow: auto;
+  table-layout: fixed;
+}
+/* index.module.css */
+
+
+
+
 

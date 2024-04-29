@@ -18,6 +18,8 @@ import CibilLow from "./pages/CibilLow";
 import CoAppDetails from "./pages/CoAppDetails";
 import IncomeDetails from "./pages/IncomeDetails"
 import LoanDetails from "./pages/LoanDetails"
+import RepaymentDetails from "./pages/RepaymentDetails"
+import FeePayment from "./pages/FeePayment";
 
 
 const Router: React.FC = () => {
@@ -51,6 +53,9 @@ const Router: React.FC = () => {
         <Route path="/coapp-details" element={<CoAppDetails />} />
         <Route path="/income-details" element={<IncomeDetails/>}/>
         <Route path="/loan-details" element={<LoanDetails />} />
+        <Route path="/repayment-details" element={<RepaymentDetails/>}/>
+        
+        <Route path="/feepayment" element={<FeePayment/>}/>
       </Routes>
     </BrowserRouter>
   );
