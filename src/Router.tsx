@@ -20,7 +20,8 @@ import IncomeDetails from "./pages/IncomeDetails"
 import LoanDetails from "./pages/LoanDetails"
 import RepaymentDetails from "./pages/RepaymentDetails"
 import FeePayment from "./pages/FeePayment";
-
+import Profile from "./pages/Profile"
+import Support from "./pages/Support"
 
 const Router: React.FC = () => {
   return (
@@ -56,6 +57,9 @@ const Router: React.FC = () => {
         <Route path="/repayment-details" element={<RepaymentDetails/>}/>
         
         <Route path="/feepayment" element={<FeePayment/>}/>
+        <Route path="/profile" element={<Profile/>}/>
+        
+        <Route path="/support" element={<Support/>}/>
       </Routes>
     </BrowserRouter>
   );

@@ -7,6 +7,8 @@ import MyApplicationsImage from "../../images/static_assests/my_applications_ico
 import MyLoansImage from "../../images/static_assests/my_loans_icon.svg";
 import MyRepaymentsImage from "../../images/static_assests/my_repayments_icon.svg";
 import MyEmiImage from "../../images/static_assests/my_repayments_icon.svg";
+
+import redClose from "../../images/static_assests/redClose.svg";
 import ArrowRight from "../../images/icons/RedArrow.svg";
 import Button from "../../components/atoms/Button";
 import HomeIconBlack from "../../images/icons/home_black.svg";
@@ -48,6 +50,12 @@ function Home() {
   const [authToken] = useLocalStorage("auth_token", "");
   const [reload, setReload] = useState(false);
   const navigate = useNavigate();
+  
+  const [isProfileClicked, setIsProfileClicked] = useState(false);
+const toggleProfile = () => {
+  setIsProfileClicked(!isProfileClicked);
+  };
+
 
   return (
     <div className={styles.body}>
@@ -55,7 +63,13 @@ function Home() {
         {reload ? null : null}
         <div className={styles.homeHeader}>
           <img className={styles.logo} src="main_logo.png" alt="" />
-          <img className={styles.icon} src={redProfile} alt="" />
+          <img
+          style={{ height: "2.5rem" ,width:"2.5rem"}}
+          src={redProfile}
+          onClick={() => {
+            navigate("/profile");
+          }}
+        />
         </div>
         
         <div className={styles.loanAdContainer}>
