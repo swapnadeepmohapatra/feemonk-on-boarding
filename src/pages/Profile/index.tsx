@@ -118,36 +118,39 @@ const toggleProfile = () => {
         </div>
         <br/>
         <div style={{ display: "flex", gap: "0.75rem" }}>
-      <img style={{ width: "1.2rem" }} src={notification} alt="camera" />
-      <p>Notification</p>
-      <div
-        style={{
-          width: "36px",
-          height: "22px",
-          background: isOn ? "#D32028" : "transparent",
-          borderRadius: "25px",
-          position: "relative",
-          cursor: "pointer",
-          border: "1px solid #D32028",
-          marginLeft:"auto"
+          <img style={{ width: "1.2rem" }} src={notification} alt="camera" />
+          <p>Notification</p>
+          <div
+            style={{
+              width: "36px",
+              height: "23px",
+              background: isOn ? "#D32028" : "transparent",
+              borderRadius: "25px",
+              position: "relative",
+              cursor: "pointer",
+              border: "1px solid #D32028",
+              marginLeft: "auto",
+              display: "flex",
+              alignItems: "center"
+            }}
+            onClick={handleClick}
+          >
+            <div
+              style={{
+                width: "18px",
+                height: "18px",
+                backgroundColor: isOn ? "#FFFFFF" : "#D32028",
+                borderRadius: "50%",
+                position: "absolute",
+                top: "50%",
+                transform: "translateY(-50%)",
+                left: isOn ? "calc(100% - 20px)" : "2px",
+                transition: "left 0.3s ease-in-out"
+              }}
+            />
+          </div>
+        </div>
 
-        }}
-        onClick={handleClick}
-      >
-        <div
-          style={{
-            width: "20px",
-            height: "20px",
-            backgroundColor: isOn ? "#FFFFFF" : "#D32028",
-            borderRadius: "50%",
-            position: "absolute",
-            top: "-0.5px",
-            left: isOn ? "13px" : "0",
-            transition: "left 0.3s ease-in-out"
-          }}
-        />
-      </div>
-    </div>
         <br/>
         <div style={{display:"flex" , gap:"0.75rem"}}>
         <img style = {{width :"1.2rem"}} src={infoGrey}/>

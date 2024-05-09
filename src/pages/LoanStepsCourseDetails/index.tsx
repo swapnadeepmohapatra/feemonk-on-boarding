@@ -5,8 +5,8 @@ import Progress from "../../images/static_assests/process.svg";
 // import Course1 from "../../images/static_assests/course1.svg";
 import BackArrow from "../../images/icons/arrow-left-circle.svg";
 import ParentTab from "../../images/static_assests/parent_tab.svg";
-import CoAppTab from "../../images/static_assests/co_applicant_tab.svg";
-import StudentTab from "../../images/static_assests/student_tab.svg";
+import CoAppTab from "../../images/static_assests/co_app_icon.svg";
+import StudentTab from "../../images/static_assests/student_icon.svg";
 import Button from "../../components/atoms/Button";
 import CourseDetails from "../../images/icons/course_details.svg";
 import maximize from "../../images/icons/maximize.svg";
@@ -17,6 +17,8 @@ import institute_payment_detials from "../../images/static_assests/institute_pay
 import school_payment_detials from "../../images/static_assests/institute_payment_detials.svg";
 import tick_mark from "../../images/static_assests/tick_mark.svg";
 import child_details from "../../images/static_assests/child_details.svg"
+
+import parents_icon from "../../images/static_assests/parents_icon.svg"
 import LoanStepCard from "../LoanSteps/components/Card";
 import InputText from "../../components/atoms/InputText";
 import Label from "../../components/atoms/Label";
@@ -118,55 +120,97 @@ function LoanStepsCourseDetails() {
           />
           <br />
           <div
-            style={{
-              display: "flex",
-              justifyContent: "space-between",
-              width: "100%",
-            }}
-          >
-            <img
-              style={{
-                width: "100%",
-                border: active === "PARENT" ? "2px solid #D32028" : "",
-                // boxShadow: active === "PARENT" ? "2px #D32028" : "none",
-                borderRadius: active === "PARENT" ? "1rem" : "",
-              }}
-              src={ParentTab}
-              alt="ParentTab"
-              onClick={() => {
-                setActive("PARENT");
-              }}
-            />
-            <img
-              style={{
-                width: "100%",
-                position:"relative",
+                style={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  width: "100%",
+                }}
+              >
+                <div
+                  style={{
+                    flex: 1,
+                    display: "flex",
+                    flexDirection: "column",
+                    alignItems: "center",
+                    border: active === "PARENT" ? "2px solid #D32028" : "",
+                    backgroundColor: "#FFF7F2",
+                    paddingTop: "1rem",
+                    borderRadius: "1rem",
+                    boxShadow: "0 2px 4px 0 rgba(249, 216, 214, 1)",
+                    marginRight: "0.5rem", // Adjust spacing between elements
+                  }}
+                  onClick={() => {
+                    setActive("PARENT");
+                  }}
+                >
+                  <img
+                    style={{
+                      width: "3rem",
+                      marginBottom: "0.5rem", // Adjust spacing between image and text
+                    }}
+                    src={parents_icon}
+                    alt="ParentTab"
+                  />
+                  <p style={{ color: "#646464", margin: "0" }}>Parent</p>
+                </div>
+                <div
+                  style={{
+                    flex: 1,
+                    display: "flex",
+                    flexDirection: "column",
+                    alignItems: "center",
+                    border: active === "STUDENT" ? "2px solid #D32028" : "",
+                    backgroundColor: "#FFF7F2",
+                    paddingTop: "1rem",
+                    borderRadius: "1rem",
+                    boxShadow: "0 2px 4px 0 rgba(249, 216, 214, 1)",
+                    marginRight: "0.5rem", // Adjust spacing between elements
+                    marginLeft: "0.5rem", // Adjust spacing between elements
+                  }}
+                  onClick={() => {
+                    setActive("STUDENT");
+                  }}
+                >
+                  <img
+                    style={{
+                      width: "3rem",
+                      marginBottom: "0.5rem", // Adjust spacing between image and text
+                    }}
+                    src={StudentTab}
+                    alt="StudentTab"
+                  />
+                  <p style={{ color: "#646464", margin: "0.75rem" }}>Student</p>
+                </div>
+                <div
+                  style={{
+                    flex: 1,
+                    display: "flex",
+                    flexDirection: "column",
+                    alignItems: "center",
+                    border: active === "COAPP" ? "2px solid #D32028" : "",
+                    backgroundColor: "#FFF7F2",
+                    paddingTop: "1rem",
+                    borderRadius: "1rem",
+                    boxShadow: "0 2px 4px 0 rgba(249, 216, 214, 1)",
+                    marginLeft: "0.5rem", // Adjust spacing between elements
+                  }}
+                  onClick={() => {
+                    setActive("COAPP");
+                  }}
+                >
+                  <img
+                    style={{
+                      width: "3rem",
+                      marginBottom: "0.5rem", // Adjust spacing between image and text
+                    }}
+                    src={CoAppTab}
+                    alt="CoAppTab"
+                  />
+                  <p style={{ color: "#646464", margin: "0.5rem" }}>Co-applicant</p>
+                </div>
+            </div> 
 
-                border: active === "STUDENT" ? "2px solid #D32028" : "",
-                 borderRadius: active === "STUDENT" ? "1rem" : "",
 
-                
-                
-              }}
-              src={StudentTab}
-              alt="StudentTab"
-              onClick={() => {
-                setActive("STUDENT");
-              }}
-            />
-            <img
-              style={{
-                width: "100%",
-                border: active === "COAPP" ? "2px solid #D32028" : "",
-                borderRadius: active === "COAPP" ? "1rem" : "",
-              }}
-              src={CoAppTab}
-              alt="CoAppTab"
-              onClick={() => {
-                setActive("COAPP");
-              }}
-            />
-          </div>
           <br />
           {active === "PARENT" && (
   <>

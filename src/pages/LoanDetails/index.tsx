@@ -50,7 +50,7 @@ function LoanDetails() {
             </button>
             <p style={{ fontSize: "1.4rem", margin: "0 0rem", display: "flex" }}>Loan details
               <span>
-                <p style={{ fontSize: "0.675rem", marginLeft: "0.5rem", padding: "6px 12px", backgroundColor: "#DFF8E4", color: "#45B21E", borderRadius: "16px", fontWeight: "bold", position: "fixed", marginRight: "10rem" }}>Active</p>
+                <p style={{ fontSize: "0.675rem", marginLeft: "0.5rem", padding: "6px 12px", backgroundColor: "#DFF8E4", color: "#45B21E", borderRadius: "16px", fontWeight: "bold", position: "absolute", marginRight: "10rem" }}>Active</p>
               </span>
             </p>
             <div style={{ marginLeft: "auto", display: "flex", alignItems: "center" }}>

@@ -61,3 +61,38 @@
   width: 100%;
   cursor: pointer;
 }
+
+.checkboxContainer {
+  display: inline-block;
+  position: relative;
+}
+
+.checkboxContainer input {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.checkmark {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  border: 2px solid #d23028;
+  border-radius: 4px;
+  background-color: #fff;
+}
+
+.checkmark:after {
+  content: "";
+  display: none;
+  width: 3px;
+  margin-left: 5px;
+  height: 12px;
+  border: solid #d32028;
+  border-width: 0 3px 3px 0;
+  transform: rotate(45deg);
+}
+
+.checkboxContainer input:checked ~ .checkmark:after {
+  display: block;
+}
