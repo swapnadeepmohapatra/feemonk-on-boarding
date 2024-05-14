@@ -1,0 +1,79 @@
+.backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  background-color: rgba(0, 0, 0, 0.4);
+  height: 100%;
+  width: 100%;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+}
+
+.loginContainer {
+  width: 100%;
+  background: linear-gradient(126.11deg, #fff3f3 -2.34%, #fff2ea 87.21%);
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  border-radius: 1rem 1rem 0 0;
+}
+
+.textPreLogin {
+  color: #000000;
+  margin-top: 1rem;
+  font-size: 1.5rem;
+  margin-bottom: 1REM;
+}
+.textLogin {
+  color: #d32028;
+  font-size: 1.75rem;
+  font-weight: bold;
+}
+
+.loader {
+  width: 60px;
+  display: flex;
+  justify-content: space-evenly;
+  place-self: CENTER;
+  margin: 1REM;
+}
+
+.ball {
+  list-style: none;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background-color: #000000;
+}
+
+.ball:nth-child(1) {
+  animation: bounce-1 2.1s ease-in-out infinite;
+}
+
+@keyframes bounce-1 {
+  50% {
+    transform: translateY(-18px);
+  }
+}
+
+.ball:nth-child(2) {
+  animation: bounce-3 2.1s ease-in-out 0.3s infinite;
+}
+
+@keyframes bounce-2 {
+  50% {
+    transform: translateY(-18px);
+  }
+}
+
+.ball:nth-child(3) {
+  animation: bounce-3 2.1s ease-in-out 0.6s infinite;
+}
+
+@keyframes bounce-3 {
+  50% {
+    transform: translateY(-18px);
+  }
+}

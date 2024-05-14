@@ -18,7 +18,7 @@ import {jwtDecode} from 'jwt-decode';
 import {  Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 import { createApplication } from "../../services/application";
 import { Console } from "console";
-
+import LoginDialog from "./components/LoginDialog";
 function LoanStepsBasicDetails() {
   const navigate = useNavigate();
   // Define types or interfaces if necessary
@@ -50,7 +50,8 @@ interface CkycData {
       id: string;
   }[];
 }
-
+const [loading, setLoading] = useState(false); // State for loading screen
+  // const [toggleConsent, setToggleConsent] = useState(false);
 // Assuming panProDetails and ckycData are objects of type PanProDetails and CkycData respectively
 
   const [panProDetails, setpanProDetails] = useState<PanProDetails>();
@@ -192,6 +193,7 @@ interface CkycData {
 
 
   const getPanPro=()=>{
+    setLoading(true);
     const panProUrl=`${API_URL}/pan-pro`
     const panBody={
         
@@ -206,7 +208,7 @@ interface CkycData {
       {
       axiosInstance.post(panProUrl,panBody)
       .then((res: any)=>{
-        
+        setLoading(false);
         if(res?.data?.data?.user_address?.full?.length>0)
         {
 
@@ -227,6 +229,7 @@ interface CkycData {
     )
 
       .catch((err: any)=>{
+        setLoading(false);
         window.alert("Invalid PAN Details or Date of Birth")
       })
     }
@@ -356,115 +359,105 @@ interface CkycData {
   
   return (
     <>
-    
-    <div className={styles.body}>
-     
-      <div className={styles.container}>
-      
-      { !toggleConsent? <div className={styles.main}>
-         
-          <div className={styles.Header}>
-         
-            <button
-              style={{ border: "none", background: "none" }}
-              onClick={() => {
-                navigate("/loan-steps");
+      <div className={styles.body}>
+        <div className={styles.container}>
+          {loading ? ( // Show loading screen if loading is true
+            <LoginDialog />
+          ) : !toggleConsent ? ( // Show main content if toggleConsent is false
+            <div className={styles.main}>
+              <div className={styles.Header}>
+                <button
+                  style={{ border: "none", background: "none" }}
+                  onClick={() => {
+                    navigate("/loan-steps");
+                  }}
+                >
+                  <img
+                    style={{ marginLeft: "0.5rem", height: "1.5rem" }}
+                    src={BackArrow}
+                    alt=""
+                  />
+                </button>
+                <p style={{ marginRight: "0.5rem", fontWeight: "bold" }}>T&C</p>
+              </div>
+              <br />
+              <img style={{ maxWidth: "90%", paddingLeft: "2rem" }} src={Progress} alt="" />
+              <br />
+              <LoanStepCard
+                title="Basic Details"
+                image={BasicDetails}
+                tiime="1 min"
+              />
+              <br />
+              <div className={styles.inputField}>
+                <Label text="Date of birth" />
+                <div className={styles.dateInputWrapper}>
+                  <InputText
+                    placeholder="Date of birth"
+                    type="date"
+                    value={dob}
+                    changeHandler={handleDateChange}
+                  />
+                </div>
+              </div>
+              <div className={styles.inputField}>
+                <Label text="PAN number" />
+                <InputText
+                  placeholder="EBP0000000XR"
+                  type="text"
+                  value={pan}
+                  changeHandler={handlePanChange}
+                />
+              </div>
+              <br />
+              <br />
+              <br />
+              <br />
+              {!loading && !toggleConsent && ( // Render checkbox only when loading and toggleConsent are false
+            <div
+              style={{
+                display: "flex",
+                alignItems: "self-start",
+                gap: "8px",
               }}
             >
-              <img
-                style={{ marginLeft: "0.5rem", height: "1.5rem" }}
-                src={BackArrow}
-                alt=""
-              />
-            </button>
-            <p style={{ marginRight: "0.5rem", fontWeight: "bold" }}>T&C</p>
-          </div>
-          <br />
-          <img style={{ maxWidth: "90%", paddingLeft: "2rem" }} src={Progress} alt="" />
-          <br />
-          <LoanStepCard
-            title="Basic Details"
-            image={BasicDetails}
-            tiime="1 min"
-          />
-          <br />
-          <div className={styles.inputField}>
-            <Label text="Date of birth" />
-            <div className={styles.dateInputWrapper}>
-              <InputText
-                placeholder="Date of birth"
-                type="date"
-                value={dob}
-                changeHandler={handleDateChange}
+              <label className={styles.checkboxContainer}>
+                <input type="checkbox" checked={isChecked} onChange={handleCheckboxChange} />
+                <span className={styles.checkmark}></span>
+              </label>
+              <p style={{ marginBottom: "1rem", paddingBottom: "1rem", color: "#667085", fontSize: "1.2rem" }}>
+                I consent and authorize <span style={{ color: "#d32028" }}>Fee</span><span style={{ color: "black" }}>monk</span> to get a background check and a
+                consumer credit report on me
+              </p>
+            </div>
+          )}
+              <Button
+                onPress={getPanPro}
+                text={"Verify"}
+                imageRight={ArrowRight}
+                fullWidth
+                disabled={!isChecked}
               />
             </div>
-          </div>
-
-          <div className={styles.inputField}>
-            <Label text="PAN number" />
-            <InputText
-              placeholder="EBP0000000XR"
-              type="text"
-              value={pan}
-              changeHandler={handlePanChange}
-            />
-          </div>
-          <br />
-          <div
-            style={{
-              display: "flex",
-              alignItems: "self-start",
-              gap: "8px",
-            }}
-          >
-            <label className={styles.checkboxContainer}>
-              <input type="checkbox" checked={isChecked} onChange={handleCheckboxChange} />
-              <span className={styles.checkmark}></span>
-            </label>
-            <p style={{ marginBottom: "1rem", paddingBottom: "1rem", color: "#667085", fontSize: "1.2rem" }}>
-              I consent and authorize <span style={{ color: "#d32028" }}>Fee</span><span style={{ color: "black" }}>monk</span> to get a background check and a
-              consumer credit report on me
-            </p>
-
-           
-          </div>
-          <br />
-          <br />
-          <br />
-          <br />
+          ) : (
+            <div style={{display:"flex",flexDirection:"column",paddingTop:"1rem",paddingBottom:"1rem",justifyContent:"center",alignItems:"center",marginTop:"4rem"}}>
+              <div>
+                <div style={{display:"flex",flexDirection:"row",justifyContent:"space-between"}}>
+                  <p style={{paddingTop:"0.5rem",fontWeight:"bold",fontSize:"1.3rem"}}>Consent:</p>
+                  <img src={closee}style={{width:'2rem',cursor:'pointer',paddingBottom:"0.5rem"}} onClick={()=>setToggleConsent(!toggleConsent)}/>
+                </div>
+                <div>
+                  <iframe style={{top:'0'}} width="350" height="600" src={consentLink} onLoad={handleLoadSession} title="bureau"> </iframe> 
+                </div>
+              </div>
+            </div>
+          )}
           
-          <Button
-            onPress={getPanPro} // Call getPanPro function on button click
-            text={"Verify"}
-            imageRight={ArrowRight}
-            fullWidth
-            disabled={!isChecked} // Disable button if checkbox is not checked
-          />
-        </div>: <div style={{display:"flex",flexDirection:"column",paddingTop:"1rem",paddingBottom:"1rem",justifyContent:"center",alignItems:"center",marginTop:"4rem"}}>
-    <div >
-        <div style={{display:"flex",flexDirection:"row",justifyContent:"space-between"}}>
-          <p style={{paddingTop:"0.5rem",fontWeight:"bold",fontSize:"1.3rem"}}>Consent:</p>
-         <img src={closee}style={{width:'2rem',cursor:'pointer',paddingBottom:"0.5rem"}} onClick={()=>setToggleConsent(!toggleConsent)}/></div>
-        <div>
-        <iframe style={{top:'0'}} width="350" height="600" src={consentLink} onLoad={handleLoadSession} title="bureau"> </iframe> 
         </div>
-        {/* <ModalFooter>
-          <button color="primary" onClick={()=>toggle()}>
-            Do Something
-          </button>{' '}
-          <button color="secondary" onClick={()=>toggle()}>
-            Cancel
-          </button>
-        </ModalFooter> */}
-      
       </div>
-    </div>}
-
-      </div>
-    </div>
-   
     </>
   );
+  
 }
 
 export default LoanStepsBasicDetails;
