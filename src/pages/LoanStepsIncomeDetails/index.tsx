@@ -18,6 +18,9 @@ import InputText from "../../components/atoms/InputText";
 import Label from "../../components/atoms/Label";
 import { useNavigate } from "react-router-dom";
 import { relative } from "path";
+import { API_URL } from "../../utils";
+
+import {jwtDecode} from 'jwt-decode';
 
 function IncomeDetails() {
 
@@ -25,10 +28,11 @@ function IncomeDetails() {
   const [active, setActive] = useState<"SALARIED" | "SELF_EMPLOYEE">("SALARIED");
 
   const navigate = useNavigate();
-
+  
   const [file, setFile] = useState<File | null>(null);
   const [progress, setProgress] = useState<number>(0);
-
+  const user=sessionStorage.getItem('auth_token') || ""
+  const headerVal= JSON.parse(user).value
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const selectedFile = event.target.files?.[0];
     if (selectedFile) {
@@ -52,7 +56,10 @@ function IncomeDetails() {
 
   const [isBankDetailsMinimized, setIsBankDetailsMinimized] = useState(false);
   const [isBankDetailsFilled,setIsBankDetailsFilled]=useState(false)
-
+  const [companyName, setCompanyName] = useState<string>("");
+  const [annualSalary, setAnnualSalary] = useState<string>("");
+  const [profession, setProfession] = useState<string>("");
+  const [monthlyIncome, setMonthlyIncome] = useState<string>("");
   const toggleWorkDetails = () => {
     setIsWorkDetailsMinimized(!isWorkDetailsMinimized);
   };
@@ -60,13 +67,37 @@ function IncomeDetails() {
   const toggleBankDetails = () => {
     setIsBankDetailsMinimized(!isBankDetailsMinimized);
   };
-  
-  const handleSaveWorkDetails = () => {
+  const handleSaveWorkDetails = async () => {
+    const employmentDetails = {
+      employmentType: active,
+      employerName: active === "SALARIED" ? companyName : "",
+      salary: active === "SALARIED" ? parseFloat(annualSalary) : 0,
+      incomePerMonth: active === "SELF_EMPLOYEE" ? parseFloat(monthlyIncome) : 0,
+      typeOfBusiness: active === "SELF_EMPLOYEE" ? profession : ""
+    };
 
-    setIsWorkDetailsFilled(true);
-    setIsWorkDetailsMinimized(true);
-  };
-  
+    try {
+      const response = await fetch(`${API_URL}/users/employment-details/create`, {
+        method: "POST",
+        headers: {
+          'Authorization': `Bearer ${headerVal}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(employmentDetails),
+      });
+
+      if (response.ok) {
+        setIsWorkDetailsFilled(true);
+        setIsWorkDetailsMinimized(true);
+        // Optionally handle successful response here
+      } else {
+        // Optionally handle errors here
+        console.error("Failed to save work details");
+      }
+    } catch (error) {
+      console.error("Error:", error);
+    }
+  };  
   const handleSaveBankDetails = () => {
    
     setIsBankDetailsFilled(true)
@@ -109,144 +140,143 @@ function IncomeDetails() {
           />
           <br />
   <>
-    {/* My Work Details Section */}
+{/* My Work Details Section */}
+<div
+  style={{
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "space-between",
+    gap: "1rem",
+    padding: "1rem",
+    background: "#FFF7F2",
+    border: "1px solid #F9D8D6",
+    borderRadius: isWorkDetailsMinimized ? "12px" : "12px 12px 0px 0px",
+    transition: "border-radius 0.3s ease",
+  }}
+>
+  <div style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
+    <img
+      style={{ height: "2.2rem", marginRight: "1.2rem", paddingLeft: "0.4rem" }}
+      src={briefcase}
+      alt=""
+    />
+    <strong style={{ fontSize: "1.2rem" }}>Work details</strong>
+  </div>
+  {isWorkDetailsFilled ? (
+    <img style={{ height: "1.5rem" }} src={tick_mark} alt="Details filled" />
+  ) : (
+    <img
+      style={{ height: "1.5rem" }}
+      src={isWorkDetailsMinimized ? maximize : minimize}
+      alt={isWorkDetailsMinimized ? "Maximize" : "Minimize"}
+      onClick={toggleWorkDetails}
+    />
+  )}
+</div>
+{/* My Work Details Input Section */}
+<div
+  style={{
+    overflow: "hidden",
+    transition: "max-height 0.3s ease",
+    maxHeight: isWorkDetailsMinimized ? "0" : "1000px",
+  }}
+>
+  {!isWorkDetailsMinimized && (
     <div
       style={{
         display: "flex",
-        alignItems: "center",
-        justifyContent: "space-between",
+        flexDirection: "column",
         gap: "1rem",
-        padding: "1rem",
-        background: "#FFF7F2",
         border: "1px solid #F9D8D6",
-        borderRadius: isWorkDetailsMinimized ? "12px" : "12px 12px 0px 0px",
-        transition: "border-radius 0.3s ease",
+        background: "#FFFCFA",
+        padding: "1rem",
+        boxShadow: "0px 3px 3px rgba(211, 32, 40, 0.1)",
+        borderRadius: "0px 0px 12px 12px",
       }}
     >
-      <div style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
-        <img
-          style={{ height: "2.2rem", marginRight: "1.2rem",paddingLeft:"0.4rem" }}
-          src={briefcase}
-          alt=""
-        />
-        <strong style={{ fontSize: "1.2rem" }}>Work details</strong>
-      </div>
-      {isWorkDetailsFilled ? (
-        <img
-          style={{ height: "1.5rem" }}
-          src={tick_mark}
-          alt="Details filled"
-        />
-      ) : (
-        <img
-          style={{ height: "1.5rem" }}
-          src={isWorkDetailsMinimized ? maximize : minimize}
-          alt={isWorkDetailsMinimized ? "Maximize" : "Minimize"}
-          onClick={toggleWorkDetails}
-        />
-      )}
-    </div>
-      {/* My Work Details Input Section */}
-  <div
-    style={{
-      overflow: "hidden",
-      transition: "max-height 0.3s ease",
-      maxHeight: isWorkDetailsMinimized ? "0" : "1000px",
-    }}
-  >
-    {!isWorkDetailsMinimized && (
+      <Label text="Employment Details" />
       <div
         style={{
           display: "flex",
-          flexDirection: "column",
-          gap: "1rem",
+          alignItems: "center",
+          justifyContent: "space-between",
+          padding: "0.25rem",
+          background: "#FFF7F2",
           border: "1px solid #F9D8D6",
-          background: "#FFFCFA",
-          padding: "1rem",
-          boxShadow: "0px 3px 3px rgba(211, 32, 40, 0.1)",
-          borderRadius: "0px 0px 12px 12px",
+          borderRadius: isBankDetailsMinimized ? "12px" : "12px 12px 12px 12px",
+          transition: "border-radius 0.3s ease",
         }}
       >
-        <Label text="Employment Details" />
-        <div 
+        <p
           style={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "space-between", // Adjusted to space-between
-            // gap: "0.5rem", // Adjust as needed
-            padding: "0.25rem",
-            background: "#FFF7F2",
-            border: "1px solid #F9D8D6",
-            borderRadius: isBankDetailsMinimized ? "12px" : "12px 12px 12px 12px",
-            transition: "border-radius 0.3s ease",
-          }}
-        >
-          <p style={{  
-            padding: "1rem 3rem", 
+            padding: "1rem 3rem",
             borderRadius: "10px",
-            backgroundColor:active === "SALARIED"?"#FFFFFF":"" ,
-            justifyContent: "center", 
-            flex: "1" ,
+            backgroundColor: active === "SALARIED" ? "#FFFFFF" : "",
+            justifyContent: "center",
+            flex: "1",
             cursor: "pointer",
           }}
-          onClick={() => {setActive("SALARIED");}}>
-            Salaried
-          </p>
-          <p style={{ 
+          onClick={() => setActive("SALARIED")}
+        >
+          Salaried
+        </p>
+        <p
+          style={{
             padding: "1rem 2rem",
             borderRadius: "10px",
-            backgroundColor:active === "SELF_EMPLOYEE"?"#FFFFFF":"" ,
+            backgroundColor: active === "SELF_EMPLOYEE" ? "#FFFFFF" : "",
             cursor: "pointer",
-            flex: "1" ,
+            flex: "1",
           }}
-          onClick={()=>{setActive("SELF_EMPLOYEE")}}>
-            Self Employee
-          </p>
-        </div>
-
-        {/* Conditional rendering for Date of birth and Class/Standard */}
-        {active === "SALARIED" && (
-          <>
-            <Label text="Company Name" />
-            <InputText square placeholder="Enter School name" />
-            <Label text="Net annual Salary" />
-            <InputText square placeholder="₹" />
-          </>
-        )}
-
-        {/* Conditional rendering for School name and Total annual fee */}
-        {active === "SELF_EMPLOYEE" && (
-          <>
-            <Label text="Profession" />
-                <select
-                  style={{ width: "100%", padding: "0.5rem", borderRadius: "0.5rem", border: "1px solid #6f6f6f", background: "#fff", fontWeight: "500", fontSize: "1rem", resize: "vertical" }}
-                  value={selectedProfession}
-                  onChange={(e) => setSelectedProfession(e.target.value)}
-                >
-                  <option value="Doctor">Doctor</option>
-                  <option value="Engineer">Engineer</option>
-                  <option value="Teacher">Teacher</option>
-                  <option value="Lawyer">Lawyer</option>
-                  <option value="Artist">Artist</option>
-                  <option value="Architect">Architect</option>
-                  <option value="Chef">Chef</option>
-                  <option value="Pilot">Pilot</option>
-                  <option value="Accountant">Accountant</option>
-                  <option value="Scientist">Scientist</option>
-                  <option value="Designer">Designer</option>
-                  <option value="Entrepreneur">Entrepreneur</option>
-                </select>
-
-            <Label text="Yearly income" />
-            <InputText square placeholder="₹" />
-            
-          </>
-        )}
-
-        <Button onPress={handleSaveWorkDetails} text={"Save"} fullWidth secondary />
+          onClick={() => setActive("SELF_EMPLOYEE")}
+        >
+          Self Employee
+        </p>
       </div>
-    )}
-  </div>
+
+      {active === "SALARIED" && (
+        <>
+          <Label text="Company Name" />
+          <InputText
+            square
+            placeholder="Enter Company name"
+            value={companyName}
+            changeHandler={(e) => setCompanyName(e.target.value)}
+          />
+          <Label text="Net annual Salary" />
+          <InputText
+            square
+            placeholder="₹"
+            value={annualSalary}
+            changeHandler={(e) => setAnnualSalary(e.target.value)}
+          />
+        </>
+      )}
+
+      {active === "SELF_EMPLOYEE" && (
+        <>
+          <Label text="Profession" />
+          <InputText
+            square
+            placeholder="Enter your profession"
+            value={profession}
+            changeHandler={(e) => setProfession(e.target.value)}
+          />
+          <Label text="Income per month" />
+          <InputText
+            square
+            placeholder="₹"
+            value={monthlyIncome}
+            changeHandler={(e) => setMonthlyIncome(e.target.value)}
+          />
+        </>
+      )}
+
+<Button onPress={handleSaveWorkDetails} text={"Save"} fullWidth secondary />
+    </div>
+  )}
+</div>
+
     <br />
     <br />
     {/* Bank Details Section */}

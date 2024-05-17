@@ -147,49 +147,7 @@ const [loading, setLoading] = useState(false); // State for loading screen
     console.log("Unable to retrieve your location");
   }
 
-
-  const data = {
-    mobile: decode?.mobile,
-    firstName: (panProDetails && panProDetails.user_full_name_split && panProDetails.user_full_name_split[0]) ? panProDetails.user_full_name_split[0].trim() : (ckycData?.fullName?.split(" ")[0] || ""),
-    lastName: (panProDetails && panProDetails.user_full_name_split && panProDetails.user_full_name_split[2]) ? panProDetails.user_full_name_split[2].trim() : (ckycData?.fullName?.split(" ")[1] || ""),
-    instituteName: "", // Assuming instituteName is initialized elsewhere
-    studentName: "", // Assuming studentName is initialized elsewhere
-    dateOfBirth: dob, // Assuming dob is initialized elsewhere
-    courseName: "", // Assuming courseName is initialized elsewhere
-    courseFees: "", // Assuming courseFees is initialized elsewhere
-    gender: (panProDetails?.user_gender === "M" ? "Male" : "Female") || (ckycData?.gender === "M" ? "Male" : "Female"),
-    panId: panProDetails?.pan_number || ckycData?.panNumber || "",
-    aadhaarId: panProDetails?.masked_aadhaar || (ckycData?.indentityList?.find(item => item.name === "E-KYC Authentication")?.id || ""),
-    email: panProDetails?.user_email || ckycData?.email || "",
-    currentAddress: panProDetails?.user_address?.full || ckycData?.currentAddress || "",
-    currentCity: panProDetails?.user_address?.city || ckycData?.currentCity || "",
-    currentState: panProDetails?.user_address?.state || ckycData?.currentState || "",
-    currentPincode: panProDetails?.user_address?.zip || ckycData?.currentPincode || "",
-    // Add other properties as needed
-};
-
-// Use 'data' object as needed in your code
-
-
-// Use 'data' object as needed in your code
-
-
-// Use 'data' object as needed in your code
-
-// Use 'data' object as needed in your code
-
-  
-  // const [panProDetails,setPanProDetails]=useState({})
   const [addFiles,setAddFiles]=useState(false)
-
- 
-  //       .then((result) => {
-  //         console.log(result);
-  //         navigate("/loan-steps-course-details");
-  //       })
-
-
-// Use 'data' object as needed in your code
 
 
   const getPanPro=()=>{
@@ -209,7 +167,7 @@ const [loading, setLoading] = useState(false); // State for loading screen
       axiosInstance.post(panProUrl,panBody)
       .then((res: any)=>{
         setLoading(false);
-        if(res?.data?.data?.user_address?.full?.length>0)
+        if(res?.data?.data?.user_address?.state?.length>0)
         {
 
           setpanProDetails(res?.data?.data)
@@ -270,90 +228,93 @@ const [loading, setLoading] = useState(false); // State for loading screen
     )
   }
 
-  const handleLoadSession=async()=>{
-    const result=await (window as any).startBureauSession()
-    if(result)
-    {
-      switch(result.status)
-      {
-        case "SUCCESS": const headers = {
-                        'Authorization': `Bearer ${user}`,
-                        'Content-Type': 'application/json',
-                      };
-                      
-                      
-                      const data = {
-                        mobile: decode?.mobile,
-                        firstName: panProDetails ? panProDetails?.user_full_name_split[0]?.trim() : ckycData?.fullName?.split(" ")[1],
-                        lastName: panProDetails ? panProDetails?.user_full_name_split[2]?.trim() : ckycData?.fullName?.split(" ")[2],
-                        instituteName: instituteName,
-                        studentName: studentName,
-                        dateOfBirth: dob,
-                        courseName: courseName,
-                        courseFees: courseFee,
-                        gender: panProDetails ? (panProDetails?.user_gender === "M" ? "Male" : "Female") : (ckycData?.gender === "M" ? "Male" : "Female"),
-                        panId: panProDetails ? panProDetails?.pan_number : ckycData?.panNumber,
-                        aadhaarId: panProDetails ? panProDetails?.masked_aadhaar : ckycData?.indentityList?.find(item => item.name === "E-KYC Authentication")?.id,
-                        email: panProDetails ? panProDetails?.user_email || applicantEmail : ckycData?.email,
-                        currentAddress: panProDetails && panProDetails?.user_address?.full ? panProDetails?.user_address?.full : ckycData?.currentAddress,
-                        currentCity: panProDetails && panProDetails?.user_address?.city ? panProDetails?.user_address?.city : ckycData?.currentCity,
-                        currentState: panProDetails && panProDetails?.user_address?.state ? panProDetails?.user_address?.state : ckycData?.currentState,
-                        currentPincode: panProDetails && panProDetails?.user_address?.zip ? panProDetails?.user_address?.zip : ckycData?.currentPincode,
-                        panImage: " ",
-                        aadhaarFrontImage: " ",
-                        aadhaarBackImage: " ",
-                        isCoapplicant: false,
-                        relatedTo: " ",
-                        employmentType: " ",
-                        employerName: " ",
-                        salary: " ",
-                        incomePerMonth: " ",
-                        typeOfBusiness: " ",
-                        salesperson: " ",
-                        loanTenure: " ",
-                        ocrId: "",
-                        channel: 4
-                    };
-                      handleLocationClick()
-                       axiosInstance.post(`${API_URL}/summary/create`, data, { headers })
-                      .then((response) => {
-
-                        const userId = response.data.data;
-                        
-                        
-                        if (userId) {
-                          const data2 = { userId,
-                          latitude : location.latitude,
-                        longitude : location.longitude, };
-                    
-                          
-                          axiosInstance.post(`${API_URL}/end-user/submit`, data2, { headers })
-                            .then(() => {
-                              setToggleConsent(false)
-                              setTimeout(() => {
-                                window.location.reload()
-                              }, 1000);
-                            })
-                            .catch((error) => console.log("error", error));
-                        }
-                      })
-                      .catch((error) => console.log("error", error));
-       
-                      break;
+  const handleLoadSession = async () => {
+    const result = await (window as any).startBureauSession();
+    if (result) {
+      switch (result.status) {
+        case "SUCCESS":
+          const headers = {
+            'Authorization': `Bearer ${user}`,
+            'Content-Type': 'application/json',
+          };
+          console.log(panProDetails)
+          const data = {
+            mobile: decode?.mobile,
+            firstName: panProDetails ? panProDetails?.user_full_name_split[0]?.trim() : ckycData?.fullName?.split(" ")[1],
+            lastName: panProDetails ? panProDetails?.user_full_name_split[2]?.trim() : ckycData?.fullName?.split(" ")[2],
+            instituteName: instituteName,
+            studentName: studentName,
+            dateOfBirth: dob,
+            courseName: courseName,
+            courseFees: courseFee,
+            gender: panProDetails ? (panProDetails?.user_gender === "M" ? "Male" : "Female") : (ckycData?.gender === "M" ? "Male" : "Female"),
+            panId: panProDetails ? panProDetails?.pan_number : ckycData?.panNumber,
+            aadhaarId: panProDetails ? panProDetails?.masked_aadhaar : ckycData?.indentityList?.find(item => item.name === "E-KYC Authentication")?.id,
+            email: panProDetails ? panProDetails?.user_email || applicantEmail : ckycData?.email,
+            currentAddress: panProDetails && panProDetails?.user_address?.full ? panProDetails?.user_address?.full : ckycData?.currentAddress,
+            currentCity: panProDetails && panProDetails?.user_address?.city ? panProDetails?.user_address?.city : ckycData?.currentCity,
+            currentState: panProDetails && panProDetails?.user_address?.state ? panProDetails?.user_address?.state : ckycData?.currentState,
+            currentPincode: panProDetails && panProDetails?.user_address?.zip ? panProDetails?.user_address?.zip : ckycData?.currentPincode,
+            panImage: " ",
+            aadhaarFrontImage: " ",
+            aadhaarBackImage: " ",
+            isCoapplicant: false,
+            relatedTo: " ",
+            employmentType: " ",
+            employerName: " ",
+            salary: " ",
+            incomePerMonth: " ",
+            typeOfBusiness: " ",
+            salesperson: " ",
+            loanTenure: " ",
+            ocrId: "",
+            channel: 4
+          };
+  
+          handleLocationClick();
+  
+          // Simulate the API call with setTimeout
+          setTimeout(() => {
+            const userId = "dummyUserId"; // Simulated user ID
+  
+            if (userId) {
+              const data2 = {
+                userId,
+                latitude: location.latitude,
+                longitude: location.longitude,
+              };
+  
+              // Simulate the second API call
+              setTimeout(() => {
+                console.log("Simulated second API call success");
+  
+                setToggleConsent(false);
+                setTimeout(() => {
+                  console.log(data)
+                  navigate("/loan-steps-start", { state: { data, data2 } });
+                }, 500);
+              }, 500); // Simulate delay for the second API call
+            }
+          }, 500); // Simulate delay for the first API call
+  
+          break;
+  
         case "EXIT":
-                    alert("Retry Submit");
-                    toggle();
-                    break;
+          alert("Retry Submit");
+          toggle();
+          break;
+  
         case "ERROR":
-                    alert("Error Please Try Later");
-                    toggle();
-                    break;
-        default:alert("Contact our team for assistance");
-                break;
+          alert("Error Please Try Later");
+          toggle();
+          break;
+  
+        default:
+          alert("Contact our team for assistance");
+          break;
       }
     }
-  }
-
+  };
 
   
   
