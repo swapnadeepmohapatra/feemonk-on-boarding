@@ -440,7 +440,7 @@ function IncomeDetails() {
           <br />
           <Button
             onPress={() => {
-              navigate("/loan-steps-loan-offer-");
+              navigate("/loan-steps-loan-offer");
             }}
             text={"Get loan offer"}
             imageRight={ArrowRight}

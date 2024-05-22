@@ -272,9 +272,9 @@ function LoanStepsCourseDetails() {
             borderRadius: "0px 0px 12px 12px",
           }}
         >
-          <Label text="Full name" />
-          <InputText square placeholder="Full name" />
-          <Label text="Date of birth" />
+          <Label text="Student name" />
+          <InputText square placeholder="Student name" />
+          {/* <Label text="Date of birth" />
               <div className={styles.dateInputWrapper} onClick={() => document.getElementById('dob-input')?.click()}>
                 <InputText
                   id="dob-input"
@@ -283,7 +283,7 @@ function LoanStepsCourseDetails() {
                   value={dob}
                   changeHandler={(e) => setDob(e.target.value)}
                 />
-              </div>
+              </div> */}
               <Label text="Class/Standard" />
                 <select
                   style={{ width: "100%", padding: "0.5rem", borderRadius: "0.5rem", border: "1px solid #6f6f6f",background: "#fff",fontWeight:"500" ,fontSize:"1rem",resize:"vertical"}}
@@ -298,9 +298,11 @@ function LoanStepsCourseDetails() {
                 </select>
 
 
-          <Label text="School name" />
-          <InputText square placeholder="Enter School name" />
-          <Label text="Total annual fee" />
+          <Label text="School / Institute name" />
+          <InputText square placeholder="Enter School / Institute name" />
+          <Label text="Course Name" />
+          <InputText square placeholder="Enter Course name" />
+          <Label text="Total annual fees" />
           <InputText square placeholder="₹" />
           <Button onPress={handleSaveChildDetails} text={"Save"} fullWidth secondary />
         </div>
@@ -309,7 +311,7 @@ function LoanStepsCourseDetails() {
     <br />
     <br />
     {/* School Payment Details Section */}
-    <div
+    {/* <div
       style={{
         display: "flex",
         alignItems: "center",
@@ -347,9 +349,9 @@ function LoanStepsCourseDetails() {
           onClick={toggleSchoolPaymentDetails}
         />
       )}
-    </div>
+    </div> */}
     {/* School Payment Details Input Section */}
-    <div
+    {/* <div
       style={{
         overflow: "hidden",
         transition: "max-height 0.3s ease",
@@ -378,7 +380,7 @@ function LoanStepsCourseDetails() {
           <Button onPress={handleSaveSchoolPaymentDetails} text={"Save"} fullWidth secondary />
         </div>
       )}
-    </div>
+    </div> */}
   </>
 )}
 
@@ -443,20 +445,46 @@ function LoanStepsCourseDetails() {
                       borderRadius: "0px 0px 12px 12px",
                     }}
                   >
-                    <Label text="Program name" />
-                    <InputText square placeholder="Program name" />
-                    <Label text="Total program fee" />
-                    <InputText square placeholder="Total program fee" />
-                    <Label text="School / College name" />
-                    <InputText square placeholder="Enter School / College name" />
-                    <Button onPress={() => handleSaveProgramDetails()} text={"Save"} fullWidth secondary />
+                    <Label text="Student name" />
+          <InputText square placeholder="Student name" />
+          {/* <Label text="Date of birth" />
+              <div className={styles.dateInputWrapper} onClick={() => document.getElementById('dob-input')?.click()}>
+                <InputText
+                  id="dob-input"
+                  placeholder="Date of birth"
+                  type="date"
+                  value={dob}
+                  changeHandler={(e) => setDob(e.target.value)}
+                />
+              </div> */}
+              <Label text="Class/Standard" />
+                <select
+                  style={{ width: "100%", padding: "0.5rem", borderRadius: "0.5rem", border: "1px solid #6f6f6f",background: "#fff",fontWeight:"500" ,fontSize:"1rem",resize:"vertical"}}
+                  value={selectedClass}
+                  onChange={(e) => setSelectedClass(e.target.value)}
+                >
+                  {Array.from({ length: 12 }, (_, index) => index + 1).map((value) => (
+                    <option key={value} value={value}>
+                      Class {value}
+                    </option>
+                  ))}
+                </select>
+
+
+          <Label text="School / Institute name" />
+          <InputText square placeholder="Enter School / Institute name" />
+          <Label text="Course Name" />
+          <InputText square placeholder="Enter Course name" />
+          <Label text="Total annual fees" />
+          <InputText square placeholder="₹" />
+          <Button onPress={handleSaveChildDetails} text={"Save"} fullWidth secondary />
                   </div>
                 )}
               </div>
               <br />
               <br />
               {/* Institute Payment Details Section */}
-              <div
+              {/* <div
                 style={{
                   display: "flex",
                   alignItems: "center",
@@ -494,7 +522,7 @@ function LoanStepsCourseDetails() {
                     onClick={toggleInstitutePaymentDetails}
                   />
                 )}
-              </div>
+              </div> */}
               {/* Institute Payment Details Input Section */}
               <div
                 style={{
