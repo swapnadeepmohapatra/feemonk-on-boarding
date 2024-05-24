@@ -22,6 +22,9 @@ import RepaymentDetails from "./pages/RepaymentDetails"
 import FeePayment from "./pages/FeePayment";
 import Profile from "./pages/Profile"
 import Support from "./pages/Support"
+import BankSelect from "./pages/Bank/BankSelect"
+import BankPdfUpload from "./pages/Bank/BankPdfUpload"
+import AccountAggregator from "./pages/Bank/AccountAggregator"
 
 const Router: React.FC = () => {
   return (
@@ -60,6 +63,9 @@ const Router: React.FC = () => {
         <Route path="/profile" element={<Profile/>}/>
         
         <Route path="/support" element={<Support/>}/>
+        <Route path="/bank-select" element={<BankSelect/>}/>
+        <Route path="/pdf-upload-bank" element={<BankPdfUpload/>}/>
+        <Route path="/account-aggregator" element={<AccountAggregator/>}/>
       </Routes>
     </BrowserRouter>
   );

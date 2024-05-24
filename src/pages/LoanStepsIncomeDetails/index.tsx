@@ -52,7 +52,7 @@ function IncomeDetails() {
   const [selectedProfession, setSelectedProfession] = useState(""); // Initialize selectedClass state
 
   const [isWorkDetailsFilled, setIsWorkDetailsFilled] = useState(false);
-  const [isWorkDetailsMinimized, setIsWorkDetailsMinimized] = useState(false);
+  // const [isWorkDetailsMinimized, setIsWorkDetailsMinimized] = useState(false);
 
   const [isBankDetailsMinimized, setIsBankDetailsMinimized] = useState(false);
   const [isBankDetailsFilled,setIsBankDetailsFilled]=useState(false)
@@ -60,9 +60,9 @@ function IncomeDetails() {
   const [annualSalary, setAnnualSalary] = useState<string>("");
   const [profession, setProfession] = useState<string>("");
   const [monthlyIncome, setMonthlyIncome] = useState<string>("");
-  const toggleWorkDetails = () => {
-    setIsWorkDetailsMinimized(!isWorkDetailsMinimized);
-  };
+  // const toggleWorkDetails = () => {
+  //   setIsWorkDetailsMinimized(!isWorkDetailsMinimized);
+  // };
   
   const toggleBankDetails = () => {
     setIsBankDetailsMinimized(!isBankDetailsMinimized);
@@ -88,7 +88,7 @@ function IncomeDetails() {
 
       if (response.ok) {
         setIsWorkDetailsFilled(true);
-        setIsWorkDetailsMinimized(true);
+        // setIsWorkDetailsMinimized(true);
         // Optionally handle successful response here
       } else {
         // Optionally handle errors here
@@ -150,7 +150,7 @@ function IncomeDetails() {
     padding: "1rem",
     background: "#FFF7F2",
     border: "1px solid #F9D8D6",
-    borderRadius: isWorkDetailsMinimized ? "12px" : "12px 12px 0px 0px",
+    borderRadius: "12px 12px 0px 0px",
     transition: "border-radius 0.3s ease",
   }}
 >
@@ -162,26 +162,16 @@ function IncomeDetails() {
     />
     <strong style={{ fontSize: "1.2rem" }}>Work details</strong>
   </div>
-  {isWorkDetailsFilled ? (
+  {isWorkDetailsFilled && (
     <img style={{ height: "1.5rem" }} src={tick_mark} alt="Details filled" />
-  ) : (
-    <img
-      style={{ height: "1.5rem" }}
-      src={isWorkDetailsMinimized ? maximize : minimize}
-      alt={isWorkDetailsMinimized ? "Maximize" : "Minimize"}
-      onClick={toggleWorkDetails}
-    />
   )}
+  
 </div>
 {/* My Work Details Input Section */}
 <div
-  style={{
-    overflow: "hidden",
-    transition: "max-height 0.3s ease",
-    maxHeight: isWorkDetailsMinimized ? "0" : "1000px",
-  }}
+  
 >
-  {!isWorkDetailsMinimized && (
+  {(
     <div
       style={{
         display: "flex",
@@ -280,7 +270,7 @@ function IncomeDetails() {
     <br />
     <br />
     {/* Bank Details Section */}
-
+{/* 
     <div
       style={{
         display: "flex",
@@ -301,9 +291,9 @@ function IncomeDetails() {
           alt=""
         />
         <div>
-          <strong style={{ fontSize: "1.2rem" }}>Bank Statement</strong>
+          <strong style={{ fontSize: "1.2rem" }}>Bank Statement</strong> */}
           {/* <p style={{ color: "#525252", fontSize: "0.9rem" }}>Your institute is already registered with us, and we have their bank details</p> */}
-        </div>
+        {/* </div>
       </div>
       {isBankDetailsFilled ? (
         <img
@@ -319,9 +309,9 @@ function IncomeDetails() {
           onClick={toggleBankDetails}
         />
       )}
-    </div>
+    </div> */}
     {/* Bank Details Input Section */}
-    <div
+    {/* <div
       style={{
         overflow: "hidden",
         transition: "max-height 0.3s ease",
@@ -359,36 +349,36 @@ function IncomeDetails() {
             border: "1px solid #40B64B",
             borderRadius: isBankDetailsMinimized ? "12px" : "12px 12px 12px 12px",
             transition: "border-radius 0.3s ease",
-        }}>
+        }}> */}
             {/* Loading Icon */}
-            <img
+            {/* <img
                 src={upload}
                 style={{ position: "absolute", top: "0.5rem", left: "0.5rem", width: "2.5rem" }}
                 alt="Loading"
-            />
+            /> */}
             {/* File Name */}
-            {file && (
-                <>
-                    <p style={{ color: "#333", fontSize: "1rem", fontWeight: "500", margin: 0 }}>File Name: {file.name}</p>
+            {/* {file && (
+                <> */}
+                    {/* <p style={{ color: "#333", fontSize: "1rem", fontWeight: "500", margin: 0 }}>File Name: {file.name}</p> */}
                     {/* File Size */}
-                    <p style={{ color: "#333", fontSize: "1rem", fontWeight: "500", margin: 0 }}>File Size: {(file.size / 1024 / 1024).toFixed(0)} MB</p>
+                    {/* <p style={{ color: "#333", fontSize: "1rem", fontWeight: "500", margin: 0 }}>File Size: {(file.size / 1024 / 1024).toFixed(0)} MB</p> */}
                     {/* Loading Bar and Percentage */}
-                    <div style={{ display: "flex", alignItems: "center", width: "70%" ,marginLeft:"1.5rem"}}>
+                    {/* <div style={{ display: "flex", alignItems: "center", width: "70%" ,marginLeft:"1.5rem"}}>
                         <div style={{ flex: "1", height: "0.5rem", background: "#E0E0E0", borderRadius: "0.25rem", position: "relative" }}>
                             <div style={{ width: `${progress}%`, height: "100%", background: "#40B64B", borderRadius: "0.25rem", position: "absolute", top: 0, left: 0 }}></div>
                         </div>
                         <p style={{ color: "#333", fontSize: "0.8rem", fontWeight: "500", margin: "0.25rem 0", marginLeft: "0.5rem" }}>{progress.toFixed(0)}%</p>
                     </div>
                 </>
-            )}
+            )} */}
             {/* Delete Icon */}
-            <img
+            {/* <img
                 src={delete_icon}
                 style={{ position: "absolute", top: "0.5rem", right: "0.5rem", width: "2rem" }}
                 alt="Delete"
-            />
+            /> */}
             {/* File Input */}
-            <input type="file" onChange={handleFileChange} style={{ opacity: 0, position: "absolute", top: 0, left: 0, width: "100%", height: "100%" }} />
+            {/* <input type="file" onChange={handleFileChange} style={{ opacity: 0, position: "absolute", top: 0, left: 0, width: "100%", height: "100%" }} />
           </div>
 
           <label htmlFor="file-upload" style={{ cursor: "pointer" }}>
@@ -405,9 +395,9 @@ function IncomeDetails() {
                   borderRadius: isBankDetailsMinimized ? "12px" : "12px 12px 12px 12px",
                   transition: "border-radius 0.3s ease",
                 }}
-              >
+              > */}
                 {/* Upload Icon */}
-                <img
+                {/* <img
                   src={upload}
                   style={{ width: "5rem", marginBottom: "0.75rem" }}
                   alt="Upload"
@@ -429,7 +419,7 @@ function IncomeDetails() {
           
         </div>
       )}
-    </div>
+    </div> */}
   </>
 
 
@@ -440,9 +430,9 @@ function IncomeDetails() {
           <br />
           <Button
             onPress={() => {
-              navigate("/loan-steps-loan-offer");
+              navigate("/loan-steps-course-details");
             }}
-            text={"Get loan offer"}
+            text={"Continue"}
             imageRight={ArrowRight}
             fullWidth
             

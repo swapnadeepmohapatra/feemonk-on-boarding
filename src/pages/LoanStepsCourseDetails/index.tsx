@@ -99,7 +99,7 @@ function LoanStepsCourseDetails() {
             <button
               style={{ border: "none", background: "none" }}
               onClick={() => {
-                navigate("/loan-steps");
+                navigate("/loan-steps-income-details");
               }}
             >
               <img
@@ -119,7 +119,7 @@ function LoanStepsCourseDetails() {
             tiime="3 min"
           />
           <br />
-          <div
+          {/* <div
                 style={{
                   display: "flex",
                   justifyContent: "space-between",
@@ -208,11 +208,11 @@ function LoanStepsCourseDetails() {
                   />
                   <p style={{ color: "#646464", margin: "0.5rem" }}>Co-applicant</p>
                 </div>
-            </div> 
+            </div>  */}
 
 
           <br />
-          {active === "PARENT" && (
+          { (
   <>
     {/* My Child Details Section */}
     <div
@@ -234,32 +234,23 @@ function LoanStepsCourseDetails() {
           src={child_details}
           alt=""
         />
-        <strong style={{ fontSize: "1.2rem" }}>My child details</strong>
+        <strong style={{ fontSize: "1.2rem" }}>Student details</strong>
       </div>
-      {isChildDetailsFilled ? (
+      {isChildDetailsFilled && (
         <img
           style={{ height: "1.5rem" }}
           src={tick_mark}
           alt="Details filled"
         />
-      ) : (
-        <img
-          style={{ height: "1.5rem" }}
-          src={isChildDetailsMinimized ? maximize : minimize}
-          alt={isChildDetailsMinimized ? "Maximize" : "Minimize"}
-          onClick={toggleChildDetails}
-        />
+      
       )}
+      
     </div>
     {/* My Child Details Input Section */}
     <div
-      style={{
-        overflow: "hidden",
-        transition: "max-height 0.3s ease",
-        maxHeight: isChildDetailsMinimized ? "0" : "1000px",
-      }}
+      
     >
-      {!isChildDetailsMinimized && (
+      { (
         <div
           style={{
             display: "flex",
@@ -284,24 +275,13 @@ function LoanStepsCourseDetails() {
                   changeHandler={(e) => setDob(e.target.value)}
                 />
               </div> */}
-              <Label text="Class/Standard" />
-                <select
-                  style={{ width: "100%", padding: "0.5rem", borderRadius: "0.5rem", border: "1px solid #6f6f6f",background: "#fff",fontWeight:"500" ,fontSize:"1rem",resize:"vertical"}}
-                  value={selectedClass}
-                  onChange={(e) => setSelectedClass(e.target.value)}
-                >
-                  {Array.from({ length: 12 }, (_, index) => index + 1).map((value) => (
-                    <option key={value} value={value}>
-                      Class {value}
-                    </option>
-                  ))}
-                </select>
+              
 
 
           <Label text="School / Institute name" />
           <InputText square placeholder="Enter School / Institute name" />
-          <Label text="Course Name" />
-          <InputText square placeholder="Enter Course name" />
+          <Label text="Class / Course" />
+          <InputText square placeholder="Enter Class / Course name" />
           <Label text="Total annual fees" />
           <InputText square placeholder="₹" />
           <Button onPress={handleSaveChildDetails} text={"Save"} fullWidth secondary />
@@ -384,11 +364,11 @@ function LoanStepsCourseDetails() {
   </>
 )}
 
-
+{/* 
           {active === "STUDENT" && (
-            <>
+            <> */}
               {/* Program Details Section */}
-              <div
+              {/* <div
                 style={{
                   display: "flex",
                   alignItems: "center",
@@ -423,9 +403,9 @@ function LoanStepsCourseDetails() {
                     onClick={toggleProgramDetails}
                   />
                 )}
-              </div>
+              </div> */}
               {/* Program Details Input Section */}
-              <div
+              {/* <div
                 style={{
                   overflow: "hidden",
                   transition: "max-height 0.3s ease",
@@ -446,7 +426,7 @@ function LoanStepsCourseDetails() {
                     }}
                   >
                     <Label text="Student name" />
-          <InputText square placeholder="Student name" />
+          <InputText square placeholder="Student name" /> */}
           {/* <Label text="Date of birth" />
               <div className={styles.dateInputWrapper} onClick={() => document.getElementById('dob-input')?.click()}>
                 <InputText
@@ -457,7 +437,7 @@ function LoanStepsCourseDetails() {
                   changeHandler={(e) => setDob(e.target.value)}
                 />
               </div> */}
-              <Label text="Class/Standard" />
+              {/* <Label text="Class/Standard" />
                 <select
                   style={{ width: "100%", padding: "0.5rem", borderRadius: "0.5rem", border: "1px solid #6f6f6f",background: "#fff",fontWeight:"500" ,fontSize:"1rem",resize:"vertical"}}
                   value={selectedClass}
@@ -476,11 +456,11 @@ function LoanStepsCourseDetails() {
           <Label text="Course Name" />
           <InputText square placeholder="Enter Course name" />
           <Label text="Total annual fees" />
-          <InputText square placeholder="₹" />
-          <Button onPress={handleSaveChildDetails} text={"Save"} fullWidth secondary />
+            <InputText square placeholder="₹" />
+            <Button onPress={handleSaveChildDetails} text={"Save"} fullWidth secondary />
                   </div>
                 )}
-              </div>
+              </div> */}
               <br />
               <br />
               {/* Institute Payment Details Section */}
@@ -524,7 +504,7 @@ function LoanStepsCourseDetails() {
                 )}
               </div> */}
               {/* Institute Payment Details Input Section */}
-              <div
+              {/* <div
                 style={{
                   overflow: "hidden",
                   transition: "max-height 0.3s ease",
@@ -555,10 +535,10 @@ function LoanStepsCourseDetails() {
                 )}
               </div>
             </>
-          )}
+          )} */}
 
 
-          {active === "COAPP" && (
+          {/* {active === "COAPP" && (
             <>
               <div
                 style={{
@@ -594,7 +574,7 @@ function LoanStepsCourseDetails() {
               ></div>
               <br />
             </>
-          )}
+          )} */}
           
           <>
            
@@ -604,7 +584,7 @@ function LoanStepsCourseDetails() {
             onPress={() => {
               navigate("/loan-steps-loan-offer");
             }}
-            text={"Get loan offer"}
+            text={"Continue"}
             imageRight={ArrowRight}
             fullWidth
             

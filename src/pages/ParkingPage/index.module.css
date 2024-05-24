@@ -148,3 +148,14 @@
   animation: oppDisplay 1s;
 }
 
+.confetti {
+  position: fixed;
+  top: -25%;
+  left: 50%;
+  transform: translateX(-50%);
+  transition: top 1.2s ease-in;
+}
+
+.showConfetti {
+  top: -4rem;
+}
