@@ -9,22 +9,27 @@ import DocumentCard from "./DocCard";
 import styles from "./styles.module.css";
 import Dropzone from "react-dropzone";
 import InputText from "../../../components/atoms/InputText";
+import { Label } from "reactstrap";
 
 const BankPdfUpload: React.FC = () => {
   const [pdf, setPdf] = useState<File | null>(null);
   const [password, setPassword] = useState("");
   const [authToken] = useLocalStorage("feemonk_data", "");
   const navigate = useNavigate();
+  const user=sessionStorage.getItem('auth_token') || ""
+  const decode=(JSON.parse(user).value)  as any
+  console.log(decode)
 
   const uploadPdf = async () => {
     const response = await fetch(`${API_URL}/login/auth`, {
       headers: {
-        Authorization: `Bearer ${authToken.value}`,
+        Authorization: `Bearer ${decode}`,
         "Content-Type": "application/x-www-form-urlencoded",
       },
     });
 
     const result = await response.json();
+    // console.log(result)
 
     const data = new FormData();
     if (pdf !== null) {
@@ -32,8 +37,9 @@ const BankPdfUpload: React.FC = () => {
     }
     data.append("type", "pdf");
     data.append("userId", result.data.userId);
-    data.append("password", password);
 
+    data.append("password", password);
+    
     const pdfResponse = await fetch(
       `${API_URL}/bank-statement-analysis/finbox/upload`,
       {
@@ -49,7 +55,7 @@ const BankPdfUpload: React.FC = () => {
 
     // console.log(pdfResult);
 
-    navigate("/thank-you");
+    navigate("/parking-page");
   };
 
   return (
@@ -108,8 +114,9 @@ const BankPdfUpload: React.FC = () => {
                   />
                 </div>
               </div>
-
+                    <p style={{marginBottom:"1rem"}}>password is optional</p>
               {pdf && (
+                
                 <InputText
                   placeholder="PDF Password"
                   value={password}
@@ -123,7 +130,7 @@ const BankPdfUpload: React.FC = () => {
           onPress={() => {
             uploadPdf();
           }}
-          disabled={!pdf || !password}
+          disabled={!pdf }
           text="Proceed"
         />
         </div>

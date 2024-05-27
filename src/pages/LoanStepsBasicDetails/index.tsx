@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styles from "./index.module.css";
 import BackArrow from "../../images/icons/arrow-left-circle.svg";
 import Progress from "../../images/static_assests/progress_first.svg";
@@ -94,6 +94,25 @@ const [loading, setLoading] = useState(false); // State for loading screen
     }
   };
   
+  const [attempts, setAttempts] = useState(0);
+  const [blockTimestamp, setBlockTimestamp] = useState<number | null>(null);
+  useEffect(() => {
+    const storedAttempts = parseInt(localStorage.getItem("verificationAttempts") || "0");
+    const storedBlockTimestamp = localStorage.getItem("blockTimestamp");
+
+    setAttempts(storedAttempts);
+    if (storedBlockTimestamp) {
+      setBlockTimestamp(parseInt(storedBlockTimestamp));
+    }
+  }, []);
+
+  useEffect(() => {
+    localStorage.setItem("verificationAttempts", attempts.toString());
+    if (blockTimestamp !== null) {
+      localStorage.setItem("blockTimestamp", blockTimestamp.toString());
+    }
+  }, [attempts, blockTimestamp]);
+
   const [consentLink, setLink] = useState("");
   const handleDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setDob(e.target.value);
@@ -189,6 +208,13 @@ const [loading, setLoading] = useState(false); // State for loading screen
       .catch((err: any)=>{
         setLoading(false);
         window.alert("Invalid PAN Details or Date of Birth")
+        setAttempts(prev => {
+          const newAttempts = prev + 1;
+          if (newAttempts >= 5) {
+            setBlockTimestamp(Date.now());
+          }
+          return newAttempts;
+        });
       })
     }
   }
@@ -212,6 +238,13 @@ const [loading, setLoading] = useState(false); // State for loading screen
   )
   .catch((err)=>{
     alert("Error while fetching CKYC")
+    setAttempts(prev => {
+      const newAttempts = prev + 1;
+      if (newAttempts >= 5) {
+        setBlockTimestamp(Date.now());
+      }
+      return newAttempts;
+    });
   })
   };
   
@@ -316,7 +349,28 @@ const [loading, setLoading] = useState(false); // State for loading screen
     }
   };
 
-  
+  const isBlocked = () => {
+    if (blockTimestamp === null) return false;
+    const elapsedTime = Date.now() - blockTimestamp;
+    return elapsedTime < 48 * 60 * 60 * 1000; // 48 hours in milliseconds
+  };
+
+  // Calculate remaining time
+  const getRemainingTime = () => {
+    if (blockTimestamp === null) return null;
+    const elapsedTime = Date.now() - blockTimestamp;
+    const remainingTime = 48 * 60 * 60 * 1000 - elapsedTime;
+    return remainingTime > 0 ? remainingTime : null;
+  };
+
+  const renderRemainingTime = () => {
+    const remainingTime = getRemainingTime();
+    if (remainingTime === null) return null;
+
+    const hours = Math.floor(remainingTime / (60 * 60 * 1000));
+    const minutes = Math.floor((remainingTime % (60 * 60 * 1000)) / (60 * 1000));
+    return `${hours}h ${minutes}m`;
+  };
   
   return (
     <>
@@ -392,13 +446,19 @@ const [loading, setLoading] = useState(false); // State for loading screen
               </p>
             </div>
           )}
-              <Button
-                onPress={getPanPro}
-                text={"Verify"}
-                imageRight={ArrowRight}
-                fullWidth
-                disabled={!isChecked}
-              />
+              {isBlocked() ? (
+                <p style={{ color: "red", marginTop: "1rem" ,textAlign:"center"}}>
+                  You have reached the maximum number of verification attempts. Please try again in <strong>{renderRemainingTime()}</strong>.
+                </p>
+              ) : (
+                <Button
+                  onPress={getPanPro}
+                  text={"Verify"}
+                  imageRight={ArrowRight}
+                  fullWidth
+                  disabled={!isChecked || attempts >= 5} // Disable button if attempts >= 5
+                />
+              )}
             </div>
           ) : (
             <div style={{display:"flex",flexDirection:"column",paddingTop:"1rem",paddingBottom:"1rem",justifyContent:"center",alignItems:"center",marginTop:"4rem"}}>

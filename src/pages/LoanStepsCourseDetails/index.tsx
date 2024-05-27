@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import styles from "./index.module.css";
-// import Progress from "../../images/static_assests/progress_90.svg";
-import Progress from "../../images/static_assests/process.svg";
+import Progress from "../../images/static_assests/progress_90.svg";
+// import Progress from "../../images/static_assests/process.svg";
 // import Course1 from "../../images/static_assests/course1.svg";
 import BackArrow from "../../images/icons/arrow-left-circle.svg";
 import ParentTab from "../../images/static_assests/parent_tab.svg";

@@ -119,7 +119,7 @@ function IncomeDetails() {
             <button
               style={{ border: "none", background: "none" }}
               onClick={() => {
-                navigate("/loan-steps");
+                navigate("/loan-steps-start");
               }}
             >
               <img

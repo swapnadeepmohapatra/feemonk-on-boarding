@@ -4,27 +4,30 @@ import styles from "./index.module.css";
 import Button from "../../../components/atoms/Button";
 import { API_URL } from "../../../utils";
 import { useLocalStorage } from "../../../hooks/useLocalStorage";
-import { useNavigate } from "react-router-dom";import {jwtDecode} from 'jwt-decode';
+import { useNavigate } from "react-router-dom";
+import {jwtDecode} from 'jwt-decode';
 
 
 function AccountAggregator() {
   const [authToken] = useLocalStorage("feemonk_data", "");
   const navigate = useNavigate();
   const [redirectLink, setRedirectLink] = useState("");
-  // const user=sessionStorage.getItem('auth_token') || ""
-  // const decode=jwtDecode(JSON.parse(user).value)  as any
+  const user=sessionStorage.getItem('auth_token') || ""
+  const decode=(JSON.parse(user).value)  as any
+  console.log(decode)
   const getAARedirectLink = async () => {
     try {
-      var myHeaders = new Headers();
-      myHeaders.append("Content-Type", "application/json");
-      myHeaders.append("Authorization", `Bearer ${authToken.value}`);
+      const headers = {
+        'Authorization': `Bearer ${decode}`,
+        'Content-Type': 'application/json',
+      };
 
       const response = await fetch(
         `${API_URL}/account-aggregator/generate`,
         // `${API_URL_STAGING}/account-aggregator/finbox`,
         {
           method: "POST",
-          headers: myHeaders,
+          headers: headers,
           redirect: "follow",
           body: JSON.stringify({}),
         }
