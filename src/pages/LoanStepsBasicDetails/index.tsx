@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from "react";
 import styles from "./index.module.css";
 import BackArrow from "../../images/icons/arrow-left-circle.svg";
@@ -93,7 +94,8 @@ const [loading, setLoading] = useState(false); // State for loading screen
       setOpen(false);
     }
   };
-  
+  const [dobError, setDobError] = useState(false);
+  const [panError, setPanError] = useState(false);
   const [attempts, setAttempts] = useState(0);
   const [blockTimestamp, setBlockTimestamp] = useState<number | null>(null);
   useEffect(() => {
@@ -116,6 +118,7 @@ const [loading, setLoading] = useState(false); // State for loading screen
   const [consentLink, setLink] = useState("");
   const handleDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setDob(e.target.value);
+    setDobError(e.target.value.trim() === "");
   };
   //age
   function getAge(dateString: string) {
@@ -131,6 +134,7 @@ const [loading, setLoading] = useState(false); // State for loading screen
 
   const handlePanChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setPan(e.target.value);
+    setPanError(e.target.value.trim() === "");
   };
 
   const handleCheckboxChange = () => {
@@ -167,7 +171,7 @@ const [loading, setLoading] = useState(false); // State for loading screen
   }
 
   const [addFiles,setAddFiles]=useState(false)
-
+  const [errors, setErrors] = useState({});
 
   const getPanPro=()=>{
     setLoading(true);
@@ -264,90 +268,111 @@ const [loading, setLoading] = useState(false); // State for loading screen
   const handleLoadSession = async () => {
     const result = await (window as any).startBureauSession();
     if (result) {
-      switch (result.status) {
-        case "SUCCESS":
-          const headers = {
-            'Authorization': `Bearer ${user}`,
-            'Content-Type': 'application/json',
-          };
-          console.log(panProDetails)
-          const data = {
-            mobile: decode?.mobile,
-            firstName: panProDetails ? panProDetails?.user_full_name_split[0]?.trim() : ckycData?.fullName?.split(" ")[1],
-            lastName: panProDetails ? panProDetails?.user_full_name_split[2]?.trim() : ckycData?.fullName?.split(" ")[2],
-            instituteName: instituteName,
-            studentName: studentName,
-            dateOfBirth: dob,
-            courseName: courseName,
-            courseFees: courseFee,
-            gender: panProDetails ? (panProDetails?.user_gender === "M" ? "Male" : "Female") : (ckycData?.gender === "M" ? "Male" : "Female"),
-            panId: panProDetails ? panProDetails?.pan_number : ckycData?.panNumber,
-            aadhaarId: panProDetails ? panProDetails?.masked_aadhaar : ckycData?.indentityList?.find(item => item.name === "E-KYC Authentication")?.id,
-            email: panProDetails ? panProDetails?.user_email || applicantEmail : ckycData?.email,
-            currentAddress: panProDetails && panProDetails?.user_address?.full ? panProDetails?.user_address?.full : ckycData?.currentAddress,
-            currentCity: panProDetails && panProDetails?.user_address?.city ? panProDetails?.user_address?.city : ckycData?.currentCity,
-            currentState: panProDetails && panProDetails?.user_address?.state ? panProDetails?.user_address?.state : ckycData?.currentState,
-            currentPincode: panProDetails && panProDetails?.user_address?.zip ? panProDetails?.user_address?.zip : ckycData?.currentPincode,
-            panImage: " ",
-            aadhaarFrontImage: " ",
-            aadhaarBackImage: " ",
-            isCoapplicant: false,
-            relatedTo: " ",
-            employmentType: " ",
-            employerName: " ",
-            salary: " ",
-            incomePerMonth: " ",
-            typeOfBusiness: " ",
-            salesperson: " ",
-            loanTenure: " ",
-            ocrId: "",
-            channel: 4
-          };
-  
-          handleLocationClick();
-  
-          // Simulate the API call with setTimeout
-          setTimeout(() => {
-            const userId = "dummyUserId"; // Simulated user ID
-  
-            if (userId) {
-              const data2 = {
-                userId,
-                latitude: location.latitude,
-                longitude: location.longitude,
-              };
-  
-              // Simulate the second API call
-              setTimeout(() => {
-                console.log("Simulated second API call success");
-  
-                setToggleConsent(false);
-                setTimeout(() => {
-                  console.log(data)
-                  navigate("/loan-steps-start", { state: { data, data2 } });
-                }, 500);
-              }, 500); // Simulate delay for the second API call
-            }
-          }, 500); // Simulate delay for the first API call
-  
-          break;
-  
-        case "EXIT":
-          alert("Retry Submit");
-          toggle();
-          break;
-  
-        case "ERROR":
-          alert("Error Please Try Later");
-          toggle();
-          break;
-  
-        default:
-          alert("Contact our team for assistance");
-          break;
-      }
+        switch (result.status) {
+            case "SUCCESS":
+                const headers = {
+                    'Authorization': `Bearer ${user}`,
+                    'Content-Type': 'application/json',
+                };
+
+                const data = {
+                    mobile: decode?.mobile,
+                    firstName: panProDetails ? panProDetails?.user_full_name_split[0]?.trim() : ckycData?.fullName?.split(" ")[1],
+                    lastName: panProDetails ? panProDetails?.user_full_name_split[2]?.trim() : ckycData?.fullName?.split(" ")[2],
+                    instituteName: instituteName,
+                    studentName: studentName,
+                    dateOfBirth: dob,
+                    courseName: courseName,
+                    courseFees: courseFee,
+                    gender: panProDetails ? (panProDetails?.user_gender === "M" ? "Male" : "Female") : (ckycData?.gender === "M" ? "Male" : "Female"),
+                    panId: panProDetails ? panProDetails?.pan_number : ckycData?.panNumber,
+                    aadhaarId: panProDetails ? panProDetails?.masked_aadhaar : ckycData?.indentityList?.find(item => item.name === "E-KYC Authentication")?.id,
+                    email: panProDetails ? panProDetails?.user_email || applicantEmail : ckycData?.email,
+                    currentAddress: panProDetails && panProDetails?.user_address?.full ? panProDetails?.user_address?.full : ckycData?.currentAddress,
+                    currentCity: panProDetails && panProDetails?.user_address?.city ? panProDetails?.user_address?.city : ckycData?.currentCity,
+                    currentState: panProDetails && panProDetails?.user_address?.state ? panProDetails?.user_address?.state : ckycData?.currentState,
+                    currentPincode: panProDetails && panProDetails?.user_address?.zip ? panProDetails?.user_address?.zip : ckycData?.currentPincode,
+                    panImage: " ",
+                    aadhaarFrontImage: " ",
+                    aadhaarBackImage: " ",
+                    isCoapplicant: false,
+                    relatedTo: " ",
+                    employmentType: " ",
+                    employerName: " ",
+                    salary: " ",
+                    incomePerMonth: " ",
+                    typeOfBusiness: " ",
+                    salesperson: " ",
+                    loanTenure: " ",
+                    ocrId: "",
+                    channel: 4
+                };
+
+                handleLocationClick();
+
+                const userId = decode?.userId; // Ensure userId is available
+                if (userId) {
+                    const data2 = {
+                        userId,
+                        latitude: location.latitude,
+                        longitude: location.longitude,
+                    };
+
+                    // New logic integration
+                    console.log(data)
+                    const mobileNumber = decode?.mobile;
+                    axiosInstance.get(`${API_URL}/rules/eligibility?phone=${mobileNumber}`)
+                        .then((res) => {
+                            const qecBody = {
+                                applicationId: decode?.applicationId,
+                                userId: decode?.userId,
+                                instituteId: decode?.instituteId,
+                                studentName: data.firstName,
+                                applicantName: `${data.firstName} ${data.lastName}`,
+                                panId: data.panId,
+                                dob: dob,
+                                phone: mobileNumber,
+                                status: "Created",
+                                eligibility: res?.data?.data?.status,
+                            };
+                            console.log(qecBody)
+
+                            axiosInstance.post(`${API_URL}/rules/create/eligibility`, qecBody)
+                                .then((result) => {
+                                    console.log(result);
+
+                                    // Navigate to loan steps start after successful API calls
+                                    setToggleConsent(false);
+                                    setTimeout(() => {
+                                        navigate("/loan-steps-start", { state: { data, data2 } });
+                                    }, 500);
+                                })
+                                .catch((err) => {
+                                    console.log(err);
+                                });
+                        })
+                        .catch((err) => {
+                            console.log(err);
+                        });
+                }
+                break;
+
+            case "EXIT":
+                alert("Retry Submit");
+                toggle();
+                break;
+
+            case "ERROR":
+                alert("Error Please Try Later");
+                toggle();
+                break;
+
+            default:
+                alert("Contact our team for assistance");
+                break;
+        }
     }
-  };
+};
 
   const isBlocked = () => {
     if (blockTimestamp === null) return false;
@@ -415,6 +440,7 @@ const [loading, setLoading] = useState(false); // State for loading screen
                   />
                 </div>
               </div>
+              {dobError && <p style={{ color: "#d32028", fontSize: "0.8rem", paddingLeft:"1rem" }}>Date of birth is required.</p>}
               <div className={styles.inputField}>
                 <Label text="PAN number" />
                 <InputText
@@ -424,6 +450,7 @@ const [loading, setLoading] = useState(false); // State for loading screen
                   changeHandler={handlePanChange}
                 />
               </div>
+              {panError && <p style={{ color: "#d32028", fontSize: "0.8rem", paddingLeft:"1rem"}}>PAN number is required.</p>}
               <br />
               <br />
               <br />
@@ -456,7 +483,7 @@ const [loading, setLoading] = useState(false); // State for loading screen
                   text={"Verify"}
                   imageRight={ArrowRight}
                   fullWidth
-                  disabled={!isChecked || attempts >= 5} // Disable button if attempts >= 5
+                  disabled={!isChecked || attempts >= 5 || dobError || panError}  // Disable button if attempts >= 5
                 />
               )}
             </div>

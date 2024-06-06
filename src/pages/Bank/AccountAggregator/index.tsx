@@ -4,7 +4,7 @@ import styles from "./index.module.css";
 import Button from "../../../components/atoms/Button";
 import { API_URL } from "../../../utils";
 import { useLocalStorage } from "../../../hooks/useLocalStorage";
-import { useNavigate } from "react-router-dom";
+import { useLocation,useNavigate } from "react-router-dom";
 import {jwtDecode} from 'jwt-decode';
 
 
@@ -15,6 +15,9 @@ function AccountAggregator() {
   const user=sessionStorage.getItem('auth_token') || ""
   const decode=(JSON.parse(user).value)  as any
   console.log(decode)
+  const { state } = useLocation();
+
+  console.log(state);
   const getAARedirectLink = async () => {
     try {
       const headers = {
@@ -23,13 +26,16 @@ function AccountAggregator() {
       };
 
       const response = await fetch(
-        `${API_URL}/account-aggregator/generate`,
+        // `${API_URL_STAGING}/account-aggregator/generate`,
         // `${API_URL_STAGING}/account-aggregator/finbox`,
+        `${API_URL}/account-aggregator/finbox`,
         {
           method: "POST",
           headers: headers,
           redirect: "follow",
-          body: JSON.stringify({}),
+          body: JSON.stringify({
+            bank: (state as any)?.bank?.Name,
+          }),
         }
       );
 

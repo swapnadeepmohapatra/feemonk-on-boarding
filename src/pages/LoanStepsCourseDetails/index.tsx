@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import styles from "./index.module.css";
 import Progress from "../../images/static_assests/progress_90.svg";
 // import Progress from "../../images/static_assests/process.svg";
@@ -72,11 +72,6 @@ function LoanStepsCourseDetails() {
     setIsSchoolPaymentDetailsMinimized(!isSchoolPaymentDetailsMinimized);
   };
   
-  const handleSaveChildDetails = () => {
-
-    setIsChildDetailsFilled(true);
-    setIsChildDetailsMinimized(true);
-  };
   
   const handleSaveSchoolPaymentDetails = () => {
    
@@ -84,12 +79,87 @@ function LoanStepsCourseDetails() {
     setIsSchoolPaymentDetailsMinimized(true); 
   };
 
+  const [studentName, setStudentName] = useState("");
+  const [schoolName, setSchoolName] = useState("");
+  const [className, setClassName] = useState("");
+  const [annualFees, setAnnualFees] = useState("");
   const [dob, setDob] = useState("");
 
   const handleDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setDob(e.target.value);
   };
+  const [errors, setErrors] = useState({
+    studentName: "",
+    schoolName: "",
+    courseName: "",
+    annualFees: "",
+  });
   
+  useEffect(() => {
+    const isFormValid =
+      studentName.trim() !== "" &&
+      schoolName.trim() !== "" &&
+      className.trim() !== "" &&
+      annualFees.trim() !== "";
+
+    setIsChildDetailsFilled(isFormValid);
+  }, [studentName, schoolName, className, annualFees]);
+  const [isStudentNameValid, setIsStudentNameValid] = useState(true);
+  const [isSchoolNameValid, setIsSchoolNameValid] = useState(true);
+  const [isClassNameValid, setIsClassNameValid] = useState(true);
+  const [isAnnualFeesValid, setIsAnnualFeesValid] = useState(true);
+
+
+  const handleSaveChildDetails = () => {
+    let validationErrors = {
+      studentName: "",
+      schoolName: "",
+      courseName: "",
+      annualFees: "",
+    };
+  
+    if (!studentName) validationErrors.studentName = "Student name is required";
+    if (!schoolName) validationErrors.schoolName = "School/Institute name is required";
+    if (!className) validationErrors.courseName = "Class/Course name is required";
+    if (!annualFees) validationErrors.annualFees = "Total annual fees is required";
+  
+    setErrors(validationErrors);
+  
+    if (!Object.values(validationErrors).some(error => error !== "")) {
+      setIsChildDetailsMinimized(true);
+      setIsChildDetailsFilled(true);
+    } else {
+      setIsChildDetailsMinimized(false); // Show the fields if any error exists
+      setIsChildDetailsFilled(false);
+    }
+  };
+
+  const handleInputChange = (field :any, value:any) => {
+    setErrors((prevErrors) => ({
+      ...prevErrors,
+      [field]: "",
+    }));
+
+    switch (field) {
+      case 'studentName':
+        setStudentName(value);
+        break;
+      case 'schoolName':
+        setSchoolName(value);
+        break;
+      case 'courseName':
+        setClassName(value);
+        break;
+      case 'annualFees':
+        setAnnualFees(value);
+        break;
+      default:
+        break;
+    }
+  };
+
+  const isContinueDisabled= !(studentName && schoolName && className && annualFees);
+
 
   return (
     <div className={styles.body}>
@@ -263,28 +333,42 @@ function LoanStepsCourseDetails() {
             borderRadius: "0px 0px 12px 12px",
           }}
         >
-          <Label text="Student name" />
-          <InputText square placeholder="Student name" />
-          {/* <Label text="Date of birth" />
-              <div className={styles.dateInputWrapper} onClick={() => document.getElementById('dob-input')?.click()}>
+              <Label text="Student name" />
                 <InputText
-                  id="dob-input"
-                  placeholder="Date of birth"
-                  type="date"
-                  value={dob}
-                  changeHandler={(e) => setDob(e.target.value)}
+                  square
+                  placeholder="Student name"
+                  value={studentName}
+                  changeHandler={(e) => handleInputChange('studentName', e.target.value)}
                 />
-              </div> */}
-              
-
-
-          <Label text="School / Institute name" />
-          <InputText square placeholder="Enter School / Institute name" />
-          <Label text="Class / Course" />
-          <InputText square placeholder="Enter Class / Course name" />
-          <Label text="Total annual fees" />
-          <InputText square placeholder="₹" />
-          <Button onPress={handleSaveChildDetails} text={"Save"} fullWidth secondary />
+                {errors.studentName && <span style={{ color: "red" }}>{errors.studentName}</span>}
+                
+                <Label text="School / Institute name" />
+                <InputText
+                  square
+                  placeholder="Enter School / Institute name"
+                  value={schoolName}
+                  changeHandler={(e) => handleInputChange('schoolName', e.target.value)}
+                />
+                {errors.schoolName && <span style={{ color: "red" }}>{errors.schoolName}</span>}
+                
+                <Label text="Class / Course" />
+                <InputText
+                  square
+                  placeholder="Enter Class / Course name"
+                  value={className}
+                  changeHandler={(e) => handleInputChange('courseName', e.target.value)}
+                />
+                {errors.courseName && <span style={{ color: "red" }}>{errors.courseName}</span>}
+                
+                <Label text="Total annual fees" />
+                <InputText
+                  square
+                  placeholder="₹"
+                  value={annualFees}
+                  changeHandler={(e) => handleInputChange('annualFees', e.target.value)}
+                />
+                {errors.annualFees && <span style={{ color: "red" }}>{errors.annualFees}</span>}
+                <Button onPress={handleSaveChildDetails} text={"Save"} fullWidth secondary />
         </div>
       )}
     </div>
@@ -582,12 +666,12 @@ function LoanStepsCourseDetails() {
           <br />
           <Button
             onPress={() => {
-              navigate("/loan-steps-loan-offer");
+              navigate("/bank-select");
             }}
             text={"Continue"}
             imageRight={ArrowRight}
             fullWidth
-            
+            disabled={isContinueDisabled}
           />
         </div>
       </div>

@@ -45,7 +45,7 @@ const BankPdfUpload: React.FC = () => {
       {
         body: data,
         headers: {
-          Authorization: `Bearer ${authToken.value}`,
+          Authorization: `Bearer ${decode}`,
         },
         method: "POST",
       }

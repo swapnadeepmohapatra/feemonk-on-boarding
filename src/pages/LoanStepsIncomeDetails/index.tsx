@@ -109,7 +109,9 @@ function IncomeDetails() {
   const handleDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setDob(e.target.value);
   };
-  
+  const isSaveButtonDisabled = active === "SALARIED"
+  ? !companyName || !annualSalary
+  : !profession || !monthlyIncome;
 
   return (
     <div className={styles.body}>
@@ -262,7 +264,13 @@ function IncomeDetails() {
         </>
       )}
 
-<Button onPress={handleSaveWorkDetails} text={"Save"} fullWidth secondary />
+        <Button
+          onPress={handleSaveWorkDetails}
+          text={"Save"}
+          fullWidth
+          secondary
+          disabled={isSaveButtonDisabled}
+        />
     </div>
   )}
 </div>

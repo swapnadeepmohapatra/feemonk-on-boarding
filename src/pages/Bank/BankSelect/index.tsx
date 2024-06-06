@@ -12,9 +12,8 @@ function BankSelect() {
   // const [authToken] = useLocalStorage("feemonk_data", "");
   const [selectedBank, setSelectedBank] = useState("");
   const [searchText, setSearchText] = useState("");
-  const [fipList, setFipList] = useState<{ name: String; enabled: Boolean }[]>(
-    []
-  );
+  const [fipList, setFipList] = useState<{ bank: String; health_up: Boolean }[]
+  >([]);
 
   const [authToken, setAuthToken] = useLocalStorage("auth_token", "");
 
@@ -30,11 +29,15 @@ function BankSelect() {
         redirect: "follow",
       };
 
-      fetch(`${API_URL}/account-aggregator/get-fips`, requestOptions)
+      // `${"https://apply-backend.feemonk.com"}/account-aggregator/get-fips`
+      fetch(
+        `${API_URL}/account-aggregator/get-active-banks`,
+        requestOptions
+      )
         .then((response) => response.json())
         .then((result) => {
           if (result?.data) {
-            setFipList(result?.data?.banks?.fip);
+            setFipList(result?.data?.banks);
           }
         })
         .catch((error) => console.log("error", error));
@@ -97,15 +100,15 @@ function BankSelect() {
                 (bank) => bank["Name"] === selectedBank
               );
               // if (bank && bank["AA Available"]) {
-              if (
-                bank &&
-                fipList.find(
-                  (a) =>
-                    a?.name.toLocaleLowerCase() ===
-                    bank["Full name"].toLocaleLowerCase()
-                )?.enabled
-              ) {
-                navigate(`/account-aggregator`);
+                if (
+                  bank &&
+                  fipList.find(
+                    (a) =>
+                      a?.bank.toLocaleUpperCase() ===
+                      bank["Name"].toLocaleUpperCase()
+                  )?.health_up
+                ) {
+                navigate(`/account-aggregator`, { state: { bank } });
               } else {
                 navigate(`/pdf-upload-bank`);
               }

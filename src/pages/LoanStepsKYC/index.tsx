@@ -32,39 +32,96 @@ function LoanStepsKYC() {
   const [pincode, setPincode] = useState(data?.currentPincode || "");
   const [isAddressFilled, setIsAddressFilled] = useState(false);
   const [isAddressMinimized, setIsAddressMinimized] = useState(false);
+  const [doorNoError, setDoorNoError] = useState("");
+  const [streetError, setStreetError] = useState("");
+  const [cityError, setCityError] = useState("");
+  const [stateError, setStateError] = useState("");
+  const [pincodeError, setPincodeError] = useState("");
+    
+
   const toggleAddressDetails = () => {
     setIsAddressMinimized(!isAddressMinimized);
   };
+
+  const [isFormValid, setIsFormValid] = useState(false);
+  const validateForm = () => {
+    const isValid = doorNo && street && city && state && pincode;
+    setIsFormValid(isValid);
+  };
+
   const handleAddress = async () => {
+    let isValid = true;
+  
+    if (!doorNo) {
+      setDoorNoError("Door No. is required");
+      isValid = false;
+    } else {
+      setDoorNoError("");
+    }
+  
+    if (!street) {
+      setStreetError("Street / Landmark is required");
+      isValid = false;
+    } else {
+      setStreetError("");
+    }
+  
+    if (!city) {
+      setCityError("City is required");
+      isValid = false;
+    } else {
+      setCityError("");
+    }
+  
+    if (!state) {
+      setStateError("State is required");
+      isValid = false;
+    } else {
+      setStateError("");
+    }
+  
+    if (!pincode) {
+      setPincodeError("Pincode is required");
+      isValid = false;
+    } else {
+      setPincodeError("");
+    }
+  
+    if (!isValid) {
+      return;
+    }
+  
     const requestData = {
       currentAddress: doorNo,
       currentCity: city,
       currentState: state,
       currentPincode: pincode,
     };
-
+  
     try {
       const response = await fetch(`${API_URL}/users/profile-details/create`, {
         method: "POST",
         headers: {
           'Authorization': `Bearer ${headerVal}`,
-            'Content-Type': 'application/json',
+          'Content-Type': 'application/json',
         },
         body: JSON.stringify(requestData),
       });
-
+  
       if (!response.ok) {
         throw new Error("Network response was not ok");
       }
-
+  
       const result = await response.json();
-      console.log("Profile details updated:", result);
+      // console.log("Profile details updated:", result);
       setIsAddressFilled(true);
       setIsAddressMinimized(true);
     } catch (error) {
-      console.error("Failed to update profile details:", error);
+      // console.error("Failed to update profile details:", error);
     }
-  }
+  };
+  
+
   useEffect(() => {
     if (data) {
       // Set other state values from data
@@ -80,12 +137,18 @@ function LoanStepsKYC() {
       }
     }
   }, [data]);
-  console.log(data)
+  // console.log(data)
+
+  useEffect(() => {
+    validateForm();
+  }, [doorNo, street, city, state, pincode]);
 
   const handleInputChange = (setter: React.Dispatch<React.SetStateAction<string>>) => 
     (event: React.ChangeEvent<HTMLInputElement>) => {
       setter(event.target.value);
     };
+    
+    // console.log(data)
 
   return (
     <div className={styles.body}>
@@ -123,7 +186,7 @@ function LoanStepsKYC() {
                 padding: "1rem",
                 background: "#FFF7F2",
                 border: "1px solid #F9D8D6",
-                borderRadius:isAddressMinimized ? "12px":"12px 12px 0px 0px",
+                borderRadius:"12px",
               }}
             >
         <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: "0.5rem" }}>
@@ -138,20 +201,13 @@ function LoanStepsKYC() {
       {/* <p style={{ color: "#525252", fontSize: "0.9rem" }}>Your institute is already registered with us, and we have their bank details</p> */}
     </div>
   </div>
-  {isAddressFilled ? (
+  {isAddressFilled && (
     <img
       style={{ height: "1.5rem" }}
       src={tick_mark}
       alt="Details filled"
     />
-  ) : (
-    <img
-      style={{ height: "1.5rem" }}
-      src={isAddressMinimized ? maximize : minimize}
-      alt={isAddressMinimized ? "Maximize" : "Minimize"}
-      onClick={toggleAddressDetails}
-    />
-  )}
+  ) }
 </div>
 
             </div>
@@ -187,36 +243,62 @@ function LoanStepsKYC() {
                   please feel free to edit in case of changes
                 </p>
               </div>
-              <InputText
-                square
-                placeholder="Door No."
-                value={doorNo}
-                changeHandler={handleInputChange(setDoorNo)}
-              />
-              <InputText
-                square
-                placeholder="Street / Landmark"
-                value={street}
-                changeHandler={handleInputChange(setStreet)}
-              />
-              <InputText
-                square
-                placeholder="City"
-                value={city}
-                changeHandler={handleInputChange(setCity)}
-              />
-              <InputText
-                square
-                placeholder="State"
-                value={state}
-                changeHandler={handleInputChange(setState)}
-              />
-              <InputText
-                square
-                placeholder="Pincode"
-                value={pincode}
-                changeHandler={handleInputChange(setPincode)}
-              />
+                  <InputText
+                    square
+                    placeholder="Door No."
+                    value={doorNo}
+                    changeHandler={(e) => {
+                      setDoorNo(e.target.value);
+                      validateForm();
+                    }}
+                  />
+                  {doorNoError && <p className={styles.error}>{doorNoError}</p>}
+
+                  <InputText
+                    square
+                    placeholder="Street / Landmark"
+                    value={street}
+                    changeHandler={(e) => {
+                      setStreet(e.target.value);
+                      validateForm();
+                    }}
+                  />
+                  {streetError && <p className={styles.error}>{streetError}</p>}
+
+                  <InputText
+                    square
+                    placeholder="City"
+                    value={city}
+                    changeHandler={(e) => {
+                      setCity(e.target.value);
+                      validateForm();
+                    }}
+                  />
+                  {cityError && <p className={styles.error}>{cityError}</p>}
+
+                  <InputText
+                    square
+                    placeholder="State"
+                    value={state}
+                    changeHandler={(e) => {
+                      setState(e.target.value);
+                      validateForm();
+                    }}
+                  />
+                  {stateError && <p className={styles.error}>{stateError}</p>}
+
+                  <InputText
+                    square
+                    placeholder="Pincode"
+                    value={pincode}
+                    changeHandler={(e) => {
+                      setPincode(e.target.value);
+                      validateForm();
+                    }}
+                  />
+                  {pincodeError && <p className={styles.error}>{pincodeError}</p>}
+
+
               <Button
                 onPress={handleAddress}
                 text={"Save"}
@@ -291,37 +373,62 @@ function LoanStepsKYC() {
                       flexDirection: "column",
                       gap: "1rem",
                     }}
-                  >
-                    <InputText
-                      square
-                      placeholder="Door No."
-                      value={doorNo}
-                      changeHandler={handleInputChange(setDoorNo)}
-                    />
-                    <InputText
-                      square
-                      placeholder="Street / Landmark"
-                      value={street}
-                      changeHandler={handleInputChange(setStreet)}
-                    />
-                    <InputText
-                      square
-                      placeholder="City"
-                      value={city}
-                      changeHandler={handleInputChange(setCity)}
-                    />
-                    <InputText
-                      square
-                      placeholder="State"
-                      value={state}
-                      changeHandler={handleInputChange(setState)}
-                    />
-                    <InputText
-                      square
-                      placeholder="Pincode"
-                      value={pincode}
-                      changeHandler={handleInputChange(setPincode)}
-                    />
+                  >                  <InputText
+                  square
+                  placeholder="Door No."
+                  value={doorNo}
+                  changeHandler={(e) => {
+                    setDoorNo(e.target.value);
+                    validateForm();
+                  }}
+                />
+                {doorNoError && <p className={styles.error}>{doorNoError}</p>}
+
+                <InputText
+                  square
+                  placeholder="Street / Landmark"
+                  value={street}
+                  changeHandler={(e) => {
+                    setStreet(e.target.value);
+                    validateForm();
+                  }}
+                />
+                {streetError && <p className={styles.error}>{streetError}</p>}
+
+                <InputText
+                  square
+                  placeholder="City"
+                  value={city}
+                  changeHandler={(e) => {
+                    setCity(e.target.value);
+                    validateForm();
+                  }}
+                />
+                {cityError && <p className={styles.error}>{cityError}</p>}
+
+                <InputText
+                  square
+                  placeholder="State"
+                  value={state}
+                  changeHandler={(e) => {
+                    setState(e.target.value);
+                    validateForm();
+                  }}
+                />
+                {stateError && <p className={styles.error}>{stateError}</p>}
+
+                <InputText
+                  square
+                  placeholder="Pincode"
+                  value={pincode}
+                  changeHandler={(e) => {
+                    setPincode(e.target.value);
+                    validateForm();
+                  }}
+                />
+                {pincodeError && <p className={styles.error}>{pincodeError}</p>}
+
+
                   </div>
                 </div>
               )}
@@ -332,14 +439,16 @@ function LoanStepsKYC() {
           <br />
           <br />
           <Button
-            text="Save & Next"
-            onPress={() => {
-              navigate("/loan-steps-income-details");
-            }}
-            fullWidth
-            imageRight={ArrowRight}
-          />
-        </div>
+              text="Save & Next"
+              onPress={() => {
+                navigate("/loan-steps-income-details");
+              }}
+              fullWidth
+              imageRight={ArrowRight}
+              disabled={!isFormValid} // Disable the button if the form is invalid
+            />
+
+        </div>)
       </div>
     </div>
   );
