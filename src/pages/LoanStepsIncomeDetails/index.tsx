@@ -16,11 +16,12 @@ import briefcase from "../../images/static_assests/briefcase.svg"
 import LoanStepCard from "../LoanSteps/components/Card";
 import InputText from "../../components/atoms/InputText";
 import Label from "../../components/atoms/Label";
-import { useNavigate } from "react-router-dom";
+import { useNavigate ,useLocation} from "react-router-dom";
 import { relative } from "path";
 import { API_URL } from "../../utils";
 
 import {jwtDecode} from 'jwt-decode';
+import { data } from "../../helpers/ckyc_sample_data";
 
 function IncomeDetails() {
 
@@ -28,9 +29,12 @@ function IncomeDetails() {
   const [active, setActive] = useState<"SALARIED" | "SELF_EMPLOYEE">("SALARIED");
 
   const navigate = useNavigate();
-  
+  const location = useLocation();
+  const stateData = location.state || {};
+  const { data } = stateData;
   const [file, setFile] = useState<File | null>(null);
   const [progress, setProgress] = useState<number>(0);
+  console.log(data)
   const user=sessionStorage.getItem('auth_token') || ""
   const headerVal= JSON.parse(user).value
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -438,7 +442,7 @@ function IncomeDetails() {
           <br />
           <Button
             onPress={() => {
-              navigate("/loan-steps-course-details");
+              navigate("/loan-steps-course-details",{ state: { data } });
             }}
             text={"Continue"}
             imageRight={ArrowRight}

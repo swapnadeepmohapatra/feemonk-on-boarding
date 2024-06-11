@@ -137,7 +137,7 @@ function LoanStepsKYC() {
       }
     }
   }, [data]);
-  // console.log(data)
+  console.log(data)
 
   useEffect(() => {
     validateForm();
@@ -170,7 +170,7 @@ function LoanStepsKYC() {
                 <p style={{ marginRight: "0.5rem", fontWeight: "bold" }}>T&C</p>
               </div>
               <br />
-          <img src={Progress} alt="" />
+          <img style={{maxWidth: "90%", paddingLeft: "2rem"}} src={Progress} alt="" />
           <br />
           <br />
           <LoanStepCard
@@ -441,7 +441,7 @@ function LoanStepsKYC() {
           <Button
               text="Save & Next"
               onPress={() => {
-                navigate("/loan-steps-income-details");
+                navigate("/loan-steps-income-details", { state: { data } });
               }}
               fullWidth
               imageRight={ArrowRight}

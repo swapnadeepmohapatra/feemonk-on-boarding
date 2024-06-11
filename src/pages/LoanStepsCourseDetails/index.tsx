@@ -17,13 +17,27 @@ import institute_payment_detials from "../../images/static_assests/institute_pay
 import school_payment_detials from "../../images/static_assests/institute_payment_detials.svg";
 import tick_mark from "../../images/static_assests/tick_mark.svg";
 import child_details from "../../images/static_assests/child_details.svg"
-
+import axios from "axios";
 import parents_icon from "../../images/static_assests/parents_icon.svg"
 import LoanStepCard from "../LoanSteps/components/Card";
 import InputText from "../../components/atoms/InputText";
 import Label from "../../components/atoms/Label";
-import { useNavigate } from "react-router-dom";
+import { useNavigate ,useLocation} from "react-router-dom";
 import { relative } from "path";
+import axiosInstance from '../../helpers/axios';import {jwtDecode} from 'jwt-decode';
+import { API_URL } from "../../utils";
+
+import closee from "../../images/static_assests/redClose.svg";
+
+import { Dropdown } from 'semantic-ui-react';
+// useEffect(() => {
+//   import('semantic-ui-css/semantic.min.css');
+// }, []);
+type SchoolOption = {
+  key: string;
+  value: string;
+  text: string;
+};
 
 function LoanStepsCourseDetails() {
 
@@ -32,52 +46,14 @@ function LoanStepsCourseDetails() {
 
   const [selectedClass, setSelectedClass] = useState(""); // Initialize selectedClass state
 
-
-  const [isProgramDetailsFilled, setIsProgramDetailsFilled] = useState(false);
-  const [isProgramDetailsMinimized, setIsProgramDetailsMinimized] = useState(false);
-
-  const [isInstitutePaymentDetailsFilled, setIsInstitutePaymentDetailsFilled] = useState(false);
-  const [isInstitutePaymentDetailsMinimized, setIsInstitutePaymentDetailsMinimized] = useState(false);
-
   const [isChildDetailsFilled, setIsChildDetailsFilled] = useState(false);
   const [isChildDetailsMinimized, setIsChildDetailsMinimized] = useState(false);
+  const [dropdownOpen, setDropdownOpen] = useState<boolean>(true);
+  const location = useLocation();
+  const stateData = location.state.data || {};
+  console.log(stateData)
 
-  const [isSchoolPaymentDetailsMinimized, setIsSchoolPaymentDetailsMinimized] = useState(false);
-  const [isSchoolPaymentDetailsFilled,setIsSchoolPaymentDetailsFilled]=useState(false)
-  const toggleProgramDetails = () => {
-    setIsProgramDetailsMinimized(!isProgramDetailsMinimized);
-  };
-
-  const toggleInstitutePaymentDetails = () => {
-    setIsInstitutePaymentDetailsMinimized(!isInstitutePaymentDetailsMinimized);
-  };
-
-  const handleSaveProgramDetails = () => {
-    
-    setIsProgramDetailsFilled(true);
-    setIsProgramDetailsMinimized(true); 
-  };
-  
-  const handleSaveInstitutePaymentDetails = () => {
-   
-    setIsInstitutePaymentDetailsFilled(true);
-    setIsInstitutePaymentDetailsMinimized(true); 
-  };
-  
-  const toggleChildDetails = () => {
-    setIsChildDetailsMinimized(!isChildDetailsMinimized);
-  };
-  
-  const toggleSchoolPaymentDetails = () => {
-    setIsSchoolPaymentDetailsMinimized(!isSchoolPaymentDetailsMinimized);
-  };
-  
-  
-  const handleSaveSchoolPaymentDetails = () => {
-   
-    setIsSchoolPaymentDetailsFilled(true)
-    setIsSchoolPaymentDetailsMinimized(true); 
-  };
+  const  data  = stateData;
 
   const [studentName, setStudentName] = useState("");
   const [schoolName, setSchoolName] = useState("");
@@ -108,8 +84,9 @@ function LoanStepsCourseDetails() {
   const [isSchoolNameValid, setIsSchoolNameValid] = useState(true);
   const [isClassNameValid, setIsClassNameValid] = useState(true);
   const [isAnnualFeesValid, setIsAnnualFeesValid] = useState(true);
-
-
+  const [schoolOptions, setSchoolOptions] = useState<SchoolOption[]>([]);
+  const [isLoading, setIsLoading] = useState(false);
+  
   const handleSaveChildDetails = () => {
     let validationErrors = {
       studentName: "",
@@ -133,37 +110,225 @@ function LoanStepsCourseDetails() {
       setIsChildDetailsFilled(false);
     }
   };
+  
+  const handleInputChange = async (field: any, value: any) => {
+  setErrors((prevErrors) => ({
+    ...prevErrors,
+    [field]: "",
+  }));
 
-  const handleInputChange = (field :any, value:any) => {
-    setErrors((prevErrors) => ({
-      ...prevErrors,
-      [field]: "",
-    }));
+  switch (field) {
+    case 'studentName':
+      setStudentName(value);
+      break;
+    case 'schoolName':
+      setSchoolName(value);
+      // if (value.length > 4) {
+      //   setIsLoading(true);
+      //   try {
+      //     const response = await axiosInstance.get(`${API_URL}/institute/info/name`, { params: { name: value } });
+      //     if (response.data.message === "Successful") {
+      //       const options: SchoolOption[] = response.data.data.map((school: any) => ({
+      //         key: school.id,
+      //         value: school.brandName,
+      //         text: school.brandName,
+      //       }));
+      //       // Combine fetched options with user input as an option
+      //       const allOptions: SchoolOption[] = [...options, { key: value, value, text: value }];
+      //       setSchoolOptions(allOptions);
+      //     } else {
+      //       console.error("Failed to fetch school options:", response.data.message);
+      //     }
+      //   } catch (error) {
+      //     console.error("Error fetching school options:", error);
+      //     // If no response, treat user input as an option
+      //     setSchoolOptions([{ key: value, value, text: value }]);
+      //   }
+      // };
+      break;
+    case 'courseName':
+      setClassName(value);
+      break;
+    case 'annualFees':
+      setAnnualFees(value);
+      break;
+    default:
+      break;
+  }
+};
 
-    switch (field) {
-      case 'studentName':
-        setStudentName(value);
-        break;
-      case 'schoolName':
-        setSchoolName(value);
-        break;
-      case 'courseName':
-        setClassName(value);
-        break;
-      case 'annualFees':
-        setAnnualFees(value);
-        break;
-      default:
-        break;
+  
+  const isContinueDisabled= !(studentName && schoolName && className && annualFees);
+  const user=sessionStorage.getItem('auth_token') || ""
+  const decode=jwtDecode(JSON.parse(user).value)  as any
+  const headerVal= JSON.parse(user).value
+  console.log(headerVal)
+  const [toggleConsent,setToggleConsent]=useState(false)
+  const [consentLink, setLink] = useState("");
+  const [open, setOpen] = useState(false);
+
+  const toggle = ()  => {
+    if (!open) {
+      setOpen(true);
+    } else {
+      setOpen(false);
     }
   };
+  const handleStartSession=(item : any)=>{
+    console.log(item)
+   const randomGen= Date.now().toString(36) + Math.random().toString(36).substr(2);
+  
+   (window as any). getBureauSession('708587bad0904485abe1127847dd62cd',randomGen,item.firstName,'',item.lastName,decode?.mobile).then((res :any)=>{
+   console.log(res)
+   setToggleConsent(true)
+   setLink(res)
+   }
+   )
+ }
 
-  const isContinueDisabled= !(studentName && schoolName && className && annualFees);
+
+ const [location1, setLocation] = useState({
+  latitude:0,
+  longitude:0});
+
+function handleLocationClick() {
+  if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(success,err);
+  } else {
+    console.log("Geolocation not supported");
+  }
+}
+console.log(data)
+function success(position:any) {
+  const latitude = position.coords.latitude;
+  const longitude = position.coords.longitude;
+  
+  setLocation({
+      latitude,
+      longitude
+  });
+  console.log(`Latitude: ${latitude}, Longitude: ${longitude}`);
+
+  
+}
+
+function err() {
+  console.log("Unable to retrieve your location");
+}
+  const handleLoadSession = async () => {
+    const result = await (window as any).startBureauSession();
+    if (result) {
+        switch (result.status) {
+            case "SUCCESS":
+                const headers = {
+                    'Authorization': `Bearer ${user}`,
+                    'Content-Type': 'application/json',
+                };
+
+                const data1 = data
+
+                handleLocationClick();
+                navigate("/bank-select", { state: { data1} });
+                
+                break;
+
+            case "EXIT":
+                alert("Retry Submit");
+                toggle();
+                break;
+
+            case "ERROR":
+                alert("Error Please Try Later");
+                toggle();
+                break;
+
+            default:
+                alert("Contact our team for assistance");
+                break;
+        }
+    }
+};
+  const createLoanApplication = () => {
+    // const headerVal = sessionStorage.getItem('auth_token') || "";
+    const requestBody = {
+        userId: decode?.userId,
+        courseFees: parseInt(annualFees), 
+        instituteName: schoolName,
+        courseName: className, 
+        isCoapplicant: false, 
+    };
+
+    axiosInstance
+        .post(`${API_URL}/application/create`, requestBody, {
+            headers: {
+                'Authorization': `Bearer ${headerVal}`,
+                'Content-Type': 'application/json',
+            },
+        })
+        .then((response) => {
+            console.log("Application created successfully:", response.data);
+            // Redirect the user to the next page, if needed
+            handleStartSession(data)
+        })
+        .catch((error) => {
+            console.error("Error creating application:", error);
+            // Optionally, display an error message to the user
+        });
+};
+
+
+  const handleContinueClick = () => {
+    // Call createLoanApplication when Continue button is clicked
+    createLoanApplication();
+    handleStartSession(data)
+  };
+
+  // const [schoolName, setSchoolName] = useState<string>("");
+  // const [schoolOptions, setSchoolOptions] = useState<SchoolOption[]>([]);
+
+  const handleSchoolNameChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    setSchoolName(value);
+    if (value.length >= 5) {
+      try {
+        const response = await axiosInstance.get(`${API_URL}/institute/info/name`, { params: { name: value } });
+        if (response.data.message === "Successful") {
+          const options: SchoolOption[] = response.data.data.map((school: any) => ({
+            key: school.id,
+            value: school.brandName,
+            text: school.brandName,
+          }));
+          setSchoolOptions(options);
+        } else {
+          console.error("Failed to fetch school options:", response.data.message);
+        }
+      } catch (error) {
+        console.error("Error fetching school options:", error);
+      }
+    } else {
+      setSchoolOptions([]);
+    }
+  };
+  
 
 
   return (
     <div className={styles.body}>
       <div className={styles.container}>
+      {toggleConsent ? (
+          <div style={{ display: "flex", flexDirection: "column", paddingTop: "1rem", paddingBottom: "1rem", justifyContent: "center", alignItems: "center", marginTop: "4rem" }}>
+            <div>
+              <div style={{ display: "flex", flexDirection: "row", justifyContent: "space-between" }}>
+                <p style={{ paddingTop: "0.5rem", fontWeight: "bold", fontSize: "1.3rem" }}>Consent:</p>
+                <img src={closee} style={{ width: '2rem', cursor: 'pointer', paddingBottom: "0.5rem" }} onClick={() => setToggleConsent(!toggleConsent)} />
+              </div>
+              <div>
+                <iframe style={{ top: '0' }} width="350" height="600" src={consentLink} onLoad={handleLoadSession}></iframe>
+              </div>
+            </div>
+          </div>
+        ) : (
+          <>
         <div className={styles.main}>
         <div className={styles.Header}>
             <button
@@ -189,96 +354,7 @@ function LoanStepsCourseDetails() {
             tiime="3 min"
           />
           <br />
-          {/* <div
-                style={{
-                  display: "flex",
-                  justifyContent: "space-between",
-                  width: "100%",
-                }}
-              >
-                <div
-                  style={{
-                    flex: 1,
-                    display: "flex",
-                    flexDirection: "column",
-                    alignItems: "center",
-                    border: active === "PARENT" ? "2px solid #D32028" : "",
-                    backgroundColor: "#FFF7F2",
-                    paddingTop: "1rem",
-                    borderRadius: "1rem",
-                    boxShadow: "0 2px 4px 0 rgba(249, 216, 214, 1)",
-                    marginRight: "0.5rem", // Adjust spacing between elements
-                  }}
-                  onClick={() => {
-                    setActive("PARENT");
-                  }}
-                >
-                  <img
-                    style={{
-                      width: "3rem",
-                      marginBottom: "0.5rem", // Adjust spacing between image and text
-                    }}
-                    src={parents_icon}
-                    alt="ParentTab"
-                  />
-                  <p style={{ color: "#646464", margin: "0" }}>Parent</p>
-                </div>
-                <div
-                  style={{
-                    flex: 1,
-                    display: "flex",
-                    flexDirection: "column",
-                    alignItems: "center",
-                    border: active === "STUDENT" ? "2px solid #D32028" : "",
-                    backgroundColor: "#FFF7F2",
-                    paddingTop: "1rem",
-                    borderRadius: "1rem",
-                    boxShadow: "0 2px 4px 0 rgba(249, 216, 214, 1)",
-                    marginRight: "0.5rem", // Adjust spacing between elements
-                    marginLeft: "0.5rem", // Adjust spacing between elements
-                  }}
-                  onClick={() => {
-                    setActive("STUDENT");
-                  }}
-                >
-                  <img
-                    style={{
-                      width: "3rem",
-                      marginBottom: "0.5rem", // Adjust spacing between image and text
-                    }}
-                    src={StudentTab}
-                    alt="StudentTab"
-                  />
-                  <p style={{ color: "#646464", margin: "0.75rem" }}>Student</p>
-                </div>
-                <div
-                  style={{
-                    flex: 1,
-                    display: "flex",
-                    flexDirection: "column",
-                    alignItems: "center",
-                    border: active === "COAPP" ? "2px solid #D32028" : "",
-                    backgroundColor: "#FFF7F2",
-                    paddingTop: "1rem",
-                    borderRadius: "1rem",
-                    boxShadow: "0 2px 4px 0 rgba(249, 216, 214, 1)",
-                    marginLeft: "0.5rem", // Adjust spacing between elements
-                  }}
-                  onClick={() => {
-                    setActive("COAPP");
-                  }}
-                >
-                  <img
-                    style={{
-                      width: "3rem",
-                      marginBottom: "0.5rem", // Adjust spacing between image and text
-                    }}
-                    src={CoAppTab}
-                    alt="CoAppTab"
-                  />
-                  <p style={{ color: "#646464", margin: "0.5rem" }}>Co-applicant</p>
-                </div>
-            </div>  */}
+          
 
 
           <br />
@@ -347,8 +423,23 @@ function LoanStepsCourseDetails() {
                   square
                   placeholder="Enter School / Institute name"
                   value={schoolName}
-                  changeHandler={(e) => handleInputChange('schoolName', e.target.value)}
+                  changeHandler={handleSchoolNameChange}
                 />
+                {schoolOptions.length > 0 && (
+        <Dropdown
+        placeholder='Select School/Institute'
+        fluid
+        // search
+        selection
+        options={schoolOptions}
+        value={schoolName}
+      onChange={(e, { value }) => {handleInputChange("schoolName", value); setDropdownOpen(false);}}
+        // loading={isLoading}
+        open={dropdownOpen} // Pass open state to the Dropdown component
+        onOpen={() => setDropdownOpen(true)} // Update open state when dropdown opens
+        onClose={() => setDropdownOpen(false)} // Update open state when dropdown closes
+      />
+      )}
                 {errors.schoolName && <span style={{ color: "red" }}>{errors.schoolName}</span>}
                 
                 <Label text="Class / Course" />
@@ -374,291 +465,18 @@ function LoanStepsCourseDetails() {
     </div>
     <br />
     <br />
-    {/* School Payment Details Section */}
-    {/* <div
-      style={{
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "space-between",
-        gap: "1rem",
-        padding: "1rem",
-        background: "#FFF7F2",
-        border: "1px solid #F9D8D6",
-        borderRadius: isSchoolPaymentDetailsMinimized ? "12px" : "12px 12px 0px 0px",
-        transition: "border-radius 0.3s ease",
-      }}
-    >
-      <div style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
-        <img
-          style={{ height: "2.2rem", marginRight: "0.5rem" }}
-          src={school_payment_detials}
-          alt=""
-        />
-        <div>
-          <strong style={{ fontSize: "1.2rem" }}>School payment details</strong>
-          <p style={{ color: "#525252", fontSize: "0.9rem" }}>Your institute is already registered with us, and we have their bank details</p>
-        </div>
-      </div>
-      {isSchoolPaymentDetailsFilled ? (
-        <img
-          style={{ height: "1.5rem" }}
-          src={tick_mark}
-          alt="Details filled"
-        />
-      ) : (
-        <img
-          style={{ height: "1.5rem" }}
-          src={isSchoolPaymentDetailsMinimized ? maximize : minimize}
-          alt={isSchoolPaymentDetailsMinimized ? "Maximize" : "Minimize"}
-          onClick={toggleSchoolPaymentDetails}
-        />
-      )}
-    </div> */}
-    {/* School Payment Details Input Section */}
-    {/* <div
-      style={{
-        overflow: "hidden",
-        transition: "max-height 0.3s ease",
-        maxHeight: isSchoolPaymentDetailsMinimized ? "0" : "1000px",
-      }}
-    >
-      {!isSchoolPaymentDetailsMinimized && (
-        <div
-          style={{
-            display: "flex",
-            flexDirection: "column",
-            gap: "1rem",
-            border: "1px solid #F9D8D6",
-            background: "#FFFCFA",
-            padding: "1rem",
-            boxShadow: "0px 3px 3px rgba(211, 32, 40, 0.1)",
-            borderRadius: "0px 0px 12px 12px",
-          }}
-        >
-          <Label text="Account number" />
-          <InputText square placeholder="Enter Account number" />
-          <Label text="IFSC code" />
-          <InputText square placeholder="Enter IFSC code" />
-          <Label text="Bank name" />
-          <InputText square placeholder="Enter Bank name" />
-          <Button onPress={handleSaveSchoolPaymentDetails} text={"Save"} fullWidth secondary />
-        </div>
-      )}
-    </div> */}
+    
+    
   </>
 )}
 
-{/* 
-          {active === "STUDENT" && (
-            <> */}
-              {/* Program Details Section */}
-              {/* <div
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "space-between",
-                  gap: "1rem",
-                  padding: "1rem",
-                  background: "#FFF7F2",
-                  border: "1px solid #F9D8D6",
-                  borderRadius: isProgramDetailsMinimized ? "12px" : "12px 12px 0px 0px",
-                  transition: "border-radius 0.3s ease",
-                }}
-              >
-                <div style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
-                  <img
-                    style={{height: "2.2rem",marginRight:"0rem"  }}
-                    src={program_details}
-                    alt=""
-                  />
-                  <strong style={{ fontSize: "1.2rem" }}>Program details</strong>
-                </div>
-                {isProgramDetailsFilled ? (
-                  <img
-                    style={{ height: "1.5rem" }}
-                    src={tick_mark}
-                    alt="Details filled"
-                  />
-                ) : (
-                  <img
-                    style={{ height: "1.5rem" }}
-                    src={isProgramDetailsMinimized ? maximize : minimize}
-                    alt={isProgramDetailsMinimized ? "Maximize" : "Minimize"}
-                    onClick={toggleProgramDetails}
-                  />
-                )}
-              </div> */}
-              {/* Program Details Input Section */}
-              {/* <div
-                style={{
-                  overflow: "hidden",
-                  transition: "max-height 0.3s ease",
-                  maxHeight: isProgramDetailsMinimized ? "0" : "1000px", // Set a large value to ensure the full height is reached
-                }}
-              >
-                {!isProgramDetailsMinimized && (
-                  <div
-                    style={{
-                      display: "flex",
-                      flexDirection: "column",
-                      gap: "1rem",
-                      border: "1px solid #F9D8D6",
-                      background: "#FFFCFA",
-                      padding: "1rem",
-                      boxShadow: "0px 3px 3px rgba(211, 32, 40, 0.1)",
-                      borderRadius: "0px 0px 12px 12px",
-                    }}
-                  >
-                    <Label text="Student name" />
-          <InputText square placeholder="Student name" /> */}
-          {/* <Label text="Date of birth" />
-              <div className={styles.dateInputWrapper} onClick={() => document.getElementById('dob-input')?.click()}>
-                <InputText
-                  id="dob-input"
-                  placeholder="Date of birth"
-                  type="date"
-                  value={dob}
-                  changeHandler={(e) => setDob(e.target.value)}
-                />
-              </div> */}
-              {/* <Label text="Class/Standard" />
-                <select
-                  style={{ width: "100%", padding: "0.5rem", borderRadius: "0.5rem", border: "1px solid #6f6f6f",background: "#fff",fontWeight:"500" ,fontSize:"1rem",resize:"vertical"}}
-                  value={selectedClass}
-                  onChange={(e) => setSelectedClass(e.target.value)}
-                >
-                  {Array.from({ length: 12 }, (_, index) => index + 1).map((value) => (
-                    <option key={value} value={value}>
-                      Class {value}
-                    </option>
-                  ))}
-                </select>
 
-
-          <Label text="School / Institute name" />
-          <InputText square placeholder="Enter School / Institute name" />
-          <Label text="Course Name" />
-          <InputText square placeholder="Enter Course name" />
-          <Label text="Total annual fees" />
-            <InputText square placeholder="₹" />
-            <Button onPress={handleSaveChildDetails} text={"Save"} fullWidth secondary />
-                  </div>
-                )}
-              </div> */}
+              
+            
+          
               <br />
               <br />
-              {/* Institute Payment Details Section */}
-              {/* <div
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "space-between",
-                  gap: "1rem",
-                  padding: "1rem",
-                  background: "#FFF7F2",
-                  border: "1px solid #F9D8D6",
-                  borderRadius: isInstitutePaymentDetailsMinimized ? "12px" : "12px 12px 0px 0px",
-                  transition: "border-radius 0.3s ease",
-                }}
-              >
-                <div style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
-                  <img
-                    style={{ height: "2.2rem",marginRight:"0.5rem" }}
-                    src={institute_payment_detials}
-                    alt=""
-                  />
-                  <div>
-                  <strong style={{ fontSize: "1.2rem" }}>Institute payment details</strong>
-                  <p style={{color:"#525252",fontSize:"0.9rem"}}>Your institute is already registered with us, and we have their bank details</p>
-                  </div>
-                </div>
-                {isInstitutePaymentDetailsFilled ? (
-                  <img
-                    style={{ height: "1.5rem" }}
-                    src={tick_mark}
-                    alt="Details filled"
-                  />
-                ) : (
-                  <img
-                    style={{ height: "1.5rem" }}
-                    src={isInstitutePaymentDetailsMinimized ? maximize : minimize}
-                    alt={isInstitutePaymentDetailsMinimized ? "Maximize" : "Minimize"}
-                    onClick={toggleInstitutePaymentDetails}
-                  />
-                )}
-              </div> */}
-              {/* Institute Payment Details Input Section */}
-              {/* <div
-                style={{
-                  overflow: "hidden",
-                  transition: "max-height 0.3s ease",
-                  maxHeight: isInstitutePaymentDetailsMinimized ? "0" : "1000px", // Set a large value to ensure the full height is reached
-                }}
-              >
-                {!isInstitutePaymentDetailsMinimized && (
-                  <div
-                    style={{
-                      display: "flex",
-                      flexDirection: "column",
-                      gap: "1rem",
-                      border: "1px solid #F9D8D6",
-                      background: "#FFFCFA",
-                      padding: "1rem",
-                      boxShadow: "0px 3px 3px rgba(211, 32, 40, 0.1)",
-                      borderRadius: "0px 0px 12px 12px",
-                    }}
-                  >
-                    <Label text="Account number" />
-                    <InputText square placeholder="Enter Account number" />
-                    <Label text="IFSC code" />
-                    <InputText square placeholder="Enter IFSC code" />
-                    <Label text="Bank name" />
-                    <InputText square placeholder="Enter Bank name" />
-                    <Button onPress={() => handleSaveInstitutePaymentDetails()} text={"Save"} fullWidth secondary />
-                  </div>
-                )}
-              </div>
-            </>
-          )} */}
-
-
-          {/* {active === "COAPP" && (
-            <>
-              <div
-                style={{
-                  padding: "1rem",
-                  background: "#FFF7F2",
-                  border: "1px solid #F9D8D6",
-                  borderRadius: "12px 12px 0px 0px",
-                }}
-              >
-                <p>
-                  <strong
-                    style={{
-                      fontSize: "1.2rem",
-                    }}
-                  >
-                    Beneficiary details
-                  </strong>
-                </p>
-              </div>
-              <div
-                style={{
-                  display: "flex",
-                  flexDirection: "column",
-                  // justifyContent: "center",
-                  // alignItems: "center",
-                  gap: "1rem",
-                  border: "1px solid #F9D8D6",
-                  background: "#FFFCFA",
-                  padding: "1rem",
-                  boxShadow: "0px 3px 3px rgba(211, 32, 40, 0.1)",
-                  borderRadius: "0px 0px 12px 12px",
-                }}
-              ></div>
-              <br />
-            </>
-          )} */}
+    
           
           <>
            
@@ -666,14 +484,19 @@ function LoanStepsCourseDetails() {
           <br />
           <Button
             onPress={() => {
-              navigate("/bank-select");
+              // navigate("/bank-select"); // Navigate to "/bank-select" page
+              handleContinueClick(); // Call handleContinueClick function
             }}
             text={"Continue"}
             imageRight={ArrowRight}
             fullWidth
             disabled={isContinueDisabled}
-          />
+          /> 
+          
+
         </div>
+        </>
+        )}
       </div>
     </div>
   );

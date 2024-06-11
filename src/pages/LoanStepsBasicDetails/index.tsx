@@ -202,7 +202,8 @@ const [loading, setLoading] = useState(false); // State for loading screen
           fetchCKYCDetails();
           // window.alert("Invalid PAN Details or Date of Birth")
         }
-        handleStartSession(res?.data?.data)
+        // handleStartSession(res?.data?.data)
+        console.log(res?.data?.data)
 
 
       }
@@ -254,123 +255,102 @@ const [loading, setLoading] = useState(false); // State for loading screen
   
   const [toggleConsent,setToggleConsent]=useState(false)
 
-   const handleStartSession=(item : any)=>{
-    const randomGen= Date.now().toString(36) + Math.random().toString(36).substr(2);
+  //  const handleStartSession=(item : any)=>{
+  //   const randomGen= Date.now().toString(36) + Math.random().toString(36).substr(2);
    
-    (window as any). getBureauSession('708587bad0904485abe1127847dd62cd',randomGen,item.user_full_name_split[0].trim(),'',item.user_full_name_split[2].trim(),decode?.mobile).then((res :any)=>{
-    console.log(res)
-    setToggleConsent(true)
-    setLink(res)
-    }
-    )
-  }
+  //   (window as any). getBureauSession('708587bad0904485abe1127847dd62cd',randomGen,item.user_full_name_split[0].trim(),'',item.user_full_name_split[2].trim(),decode?.mobile).then((res :any)=>{
+  //   console.log(res)
+  //   setToggleConsent(true)
+  //   setLink(res)
+  //   }
+  //   )
+  // }
 
-  const handleLoadSession = async () => {
-    const result = await (window as any).startBureauSession();
-    if (result) {
-        switch (result.status) {
-            case "SUCCESS":
-                const headers = {
-                    'Authorization': `Bearer ${user}`,
-                    'Content-Type': 'application/json',
-                };
+  const handleEligibility = async () => {
+    const headers = {
+      'Authorization': `Bearer ${user}`,
+      'Content-Type': 'application/json',
+  };
 
-                const data = {
-                    mobile: decode?.mobile,
-                    firstName: panProDetails ? panProDetails?.user_full_name_split[0]?.trim() : ckycData?.fullName?.split(" ")[1],
-                    lastName: panProDetails ? panProDetails?.user_full_name_split[2]?.trim() : ckycData?.fullName?.split(" ")[2],
-                    instituteName: instituteName,
-                    studentName: studentName,
-                    dateOfBirth: dob,
-                    courseName: courseName,
-                    courseFees: courseFee,
-                    gender: panProDetails ? (panProDetails?.user_gender === "M" ? "Male" : "Female") : (ckycData?.gender === "M" ? "Male" : "Female"),
-                    panId: panProDetails ? panProDetails?.pan_number : ckycData?.panNumber,
-                    aadhaarId: panProDetails ? panProDetails?.masked_aadhaar : ckycData?.indentityList?.find(item => item.name === "E-KYC Authentication")?.id,
-                    email: panProDetails ? panProDetails?.user_email || applicantEmail : ckycData?.email,
-                    currentAddress: panProDetails && panProDetails?.user_address?.full ? panProDetails?.user_address?.full : ckycData?.currentAddress,
-                    currentCity: panProDetails && panProDetails?.user_address?.city ? panProDetails?.user_address?.city : ckycData?.currentCity,
-                    currentState: panProDetails && panProDetails?.user_address?.state ? panProDetails?.user_address?.state : ckycData?.currentState,
-                    currentPincode: panProDetails && panProDetails?.user_address?.zip ? panProDetails?.user_address?.zip : ckycData?.currentPincode,
-                    panImage: " ",
-                    aadhaarFrontImage: " ",
-                    aadhaarBackImage: " ",
-                    isCoapplicant: false,
-                    relatedTo: " ",
-                    employmentType: " ",
-                    employerName: " ",
-                    salary: " ",
-                    incomePerMonth: " ",
-                    typeOfBusiness: " ",
-                    salesperson: " ",
-                    loanTenure: " ",
-                    ocrId: "",
-                    channel: 4
-                };
+  const data = {
+      mobile: decode?.mobile,
+      firstName: panProDetails ? panProDetails?.user_full_name_split[0]?.trim() : ckycData?.fullName?.split(" ")[1],
+      lastName: panProDetails ? panProDetails?.user_full_name_split[2]?.trim() : ckycData?.fullName?.split(" ")[2],
+      instituteName: instituteName,
+      studentName: studentName,
+      dateOfBirth: dob,
+      courseName: courseName,
+      courseFees: courseFee,
+      gender: panProDetails ? (panProDetails?.user_gender === "M" ? "Male" : "Female") : (ckycData?.gender === "M" ? "Male" : "Female"),
+      panId: panProDetails ? panProDetails?.pan_number : ckycData?.panNumber,
+      aadhaarId: panProDetails ? panProDetails?.masked_aadhaar : ckycData?.indentityList?.find(item => item.name === "E-KYC Authentication")?.id,
+      email: panProDetails ? panProDetails?.user_email || applicantEmail : ckycData?.email,
+      currentAddress: panProDetails && panProDetails?.user_address?.full ? panProDetails?.user_address?.full : ckycData?.currentAddress,
+      currentCity: panProDetails && panProDetails?.user_address?.city ? panProDetails?.user_address?.city : ckycData?.currentCity,
+      currentState: panProDetails && panProDetails?.user_address?.state ? panProDetails?.user_address?.state : ckycData?.currentState,
+      currentPincode: panProDetails && panProDetails?.user_address?.zip ? panProDetails?.user_address?.zip : ckycData?.currentPincode,
+      panImage: " ",
+      aadhaarFrontImage: " ",
+      aadhaarBackImage: " ",
+      isCoapplicant: false,
+      relatedTo: " ",
+      employmentType: " ",
+      employerName: " ",
+      salary: " ",
+      incomePerMonth: " ",
+      typeOfBusiness: " ",
+      salesperson: " ",
+      loanTenure: " ",
+      ocrId: "",
+      channel: 4
+  };
 
-                handleLocationClick();
+  handleLocationClick();
 
-                const userId = decode?.userId; // Ensure userId is available
-                if (userId) {
-                    const data2 = {
-                        userId,
-                        latitude: location.latitude,
-                        longitude: location.longitude,
-                    };
+  const userId = decode?.userId; // Ensure userId is available
+  if (userId) {
+      const data2 = {
+          userId,
+          latitude: location.latitude,
+          longitude: location.longitude,
+      };
 
-                    // New logic integration
-                    console.log(data)
-                    const mobileNumber = decode?.mobile;
-                    axiosInstance.get(`${API_URL}/rules/eligibility?phone=${mobileNumber}`)
-                        .then((res) => {
-                            const qecBody = {
-                                applicationId: decode?.applicationId,
-                                userId: decode?.userId,
-                                instituteId: decode?.instituteId,
-                                studentName: data.firstName,
-                                applicantName: `${data.firstName} ${data.lastName}`,
-                                panId: data.panId,
-                                dob: dob,
-                                phone: mobileNumber,
-                                status: "Created",
-                                eligibility: res?.data?.data?.status,
-                            };
-                            console.log(qecBody)
+      // New logic integration
+      console.log(data)
+      const mobileNumber = decode?.mobile;
+      axiosInstance.get(`${API_URL}/rules/eligibility?phone=${mobileNumber}`)
+          .then((res) => {
+              const qecBody = {
+                  applicationId: decode?.applicationId,
+                  userId: decode?.userId,
+                  instituteId: "NA",
+                  studentName: data.firstName,
+                  applicantName: `${data.firstName} ${data.lastName}`,
+                  panId: data.panId,
+                  dob: dob,
+                  phone: mobileNumber,
+                  status: "Created",
+                  eligibility: res?.data?.data?.status,
+              };
+              console.log(qecBody)
 
-                            axiosInstance.post(`${API_URL}/rules/create/eligibility`, qecBody)
-                                .then((result) => {
-                                    console.log(result);
+              axiosInstance.post(`${API_URL}/rules/create/eligibility`, qecBody)
+                  .then((result) => {
+                      console.log(result);
 
-                                    // Navigate to loan steps start after successful API calls
-                                    setToggleConsent(false);
-                                    setTimeout(() => {
-                                        navigate("/loan-steps-start", { state: { data, data2 } });
-                                    }, 500);
-                                })
-                                .catch((err) => {
-                                    console.log(err);
-                                });
-                        })
-                        .catch((err) => {
-                            console.log(err);
-                        });
-                }
-                break;
-
-            case "EXIT":
-                alert("Retry Submit");
-                toggle();
-                break;
-
-            case "ERROR":
-                alert("Error Please Try Later");
-                toggle();
-                break;
-
-            default:
-                alert("Contact our team for assistance");
-                break;
-        }
+                      // Navigate to loan steps start after successful API calls
+                      setToggleConsent(false);
+                      setTimeout(() => {
+                          navigate("/loan-steps-start", { state: { data, data2 } });
+                      }, 500);
+                  })
+                  .catch((err) => {
+                      console.log(err);
+                  });
+          })
+          .catch((err) => {
+              console.log(err);
+          });
     }
 };
 
@@ -396,14 +376,17 @@ const [loading, setLoading] = useState(false); // State for loading screen
     const minutes = Math.floor((remainingTime % (60 * 60 * 1000)) / (60 * 1000));
     return `${hours}h ${minutes}m`;
   };
-  
+  const handleContinue = () => {
+    getPanPro(); // Call getPanPro
+    handleEligibility(); // Call handleEligibility
+  };
   return (
     <>
       <div className={styles.body}>
         <div className={styles.container}>
           {loading ? ( // Show loading screen if loading is true
             <LoginDialog />
-          ) : !toggleConsent ? ( // Show main content if toggleConsent is false
+          ) :  ( 
             <div className={styles.main}>
               <div className={styles.Header}>
                 <button
@@ -455,7 +438,7 @@ const [loading, setLoading] = useState(false); // State for loading screen
               <br />
               <br />
               <br />
-              {!loading && !toggleConsent && ( // Render checkbox only when loading and toggleConsent are false
+              {!loading &&  ( // Render checkbox only when loading and toggleConsent are false
             <div
               style={{
                 display: "flex",
@@ -479,25 +462,13 @@ const [loading, setLoading] = useState(false); // State for loading screen
                 </p>
               ) : (
                 <Button
-                  onPress={getPanPro}
+                  onPress={handleContinue}
                   text={"Verify"}
                   imageRight={ArrowRight}
                   fullWidth
                   disabled={!isChecked || attempts >= 5 || dobError || panError}  // Disable button if attempts >= 5
                 />
               )}
-            </div>
-          ) : (
-            <div style={{display:"flex",flexDirection:"column",paddingTop:"1rem",paddingBottom:"1rem",justifyContent:"center",alignItems:"center",marginTop:"4rem"}}>
-              <div>
-                <div style={{display:"flex",flexDirection:"row",justifyContent:"space-between"}}>
-                  <p style={{paddingTop:"0.5rem",fontWeight:"bold",fontSize:"1.3rem"}}>Consent:</p>
-                  <img src={closee}style={{width:'2rem',cursor:'pointer',paddingBottom:"0.5rem"}} onClick={()=>setToggleConsent(!toggleConsent)}/>
-                </div>
-                <div>
-                  <iframe style={{top:'0'}} width="350" height="600" src={consentLink} onLoad={handleLoadSession} title="bureau"> </iframe> 
-                </div>
-              </div>
             </div>
           )}
           
