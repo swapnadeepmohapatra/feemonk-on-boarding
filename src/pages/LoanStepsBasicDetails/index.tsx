@@ -96,22 +96,37 @@ const [loading, setLoading] = useState(false); // State for loading screen
   };
   const [dobError, setDobError] = useState(false);
   const [panError, setPanError] = useState(false);
+  const [email, setEmail] = useState("");
+const [emailError, setEmailError] = useState(false);
+
   const [attempts, setAttempts] = useState(0);
   const [blockTimestamp, setBlockTimestamp] = useState<number | null>(null);
-  useEffect(() => {
-    const storedAttempts = parseInt(localStorage.getItem("verificationAttempts") || "0");
-    const storedBlockTimestamp = localStorage.getItem("blockTimestamp");
-
-    setAttempts(storedAttempts);
-    if (storedBlockTimestamp) {
-      setBlockTimestamp(parseInt(storedBlockTimestamp));
-    }
-  }, []);
-
   useEffect(() => {
     localStorage.setItem("verificationAttempts", attempts.toString());
     if (blockTimestamp !== null) {
       localStorage.setItem("blockTimestamp", blockTimestamp.toString());
+    } else {
+      localStorage.removeItem("blockTimestamp");
+    }
+  
+    // Check if 48 hours have passed since the block
+    if (blockTimestamp !== null) {
+      const elapsedTime = Date.now() - blockTimestamp;
+      if (elapsedTime >= 48 * 60 * 60 * 1000) {
+        setAttempts(0); // Reset attempts after 48 hours
+        setBlockTimestamp(null); // Reset block timestamp
+        localStorage.removeItem("blockTimestamp");
+        localStorage.setItem("verificationAttempts", "0");
+      }
+    }
+  }, [attempts, blockTimestamp]);
+  
+  useEffect(() => {
+    localStorage.setItem("verificationAttempts", attempts.toString());
+    if (blockTimestamp !== null) {
+      localStorage.setItem("blockTimestamp", blockTimestamp.toString());
+    } else {
+      localStorage.removeItem("blockTimestamp");
     }
   }, [attempts, blockTimestamp]);
 
@@ -136,6 +151,11 @@ const [loading, setLoading] = useState(false); // State for loading screen
     setPan(e.target.value);
     setPanError(e.target.value.trim() === "");
   };
+  const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setEmail(e.target.value);
+    setEmailError(e.target.value.trim() === "");
+  };
+  
 
   const handleCheckboxChange = () => {
     setIsChecked(!isChecked); // Toggle checkbox status
@@ -175,11 +195,22 @@ const [loading, setLoading] = useState(false); // State for loading screen
 
   const getPanPro=()=>{
     setLoading(true);
-    const panProUrl=`${API_URL}/pan-pro`
+    const panProUrl=`${API_URL}/pay-later-flow/create-from-pan`
     const panBody={
         
-      panNumber     :     pan    ,
-      dateOfBirth     :     moment(dob).format('DD/MM/YYYY')  
+      panId     :     pan    ,
+      dob     :     moment(dob).format('DD/MM/YYYY'),
+      email: email,
+      mobile: decode?.mobile, 
+      userId:decode?.userId
+    }
+    console.log(decode)
+    if (attempts >= 5) {
+      setBlockTimestamp(Date.now()); // Block the user
+      
+      window.alert(`You have reached the maximum number of verification attempts. You are blocked for 48 hours.`);
+      setLoading(false);
+      return;
     }
 
     if (dateOfBirth && getAge(dateOfBirth) <= 18) {
@@ -190,10 +221,10 @@ const [loading, setLoading] = useState(false); // State for loading screen
       axiosInstance.post(panProUrl,panBody)
       .then((res: any)=>{
         setLoading(false);
-        if(res?.data?.data?.user_address?.state?.length>0)
+        if(res?.data?.user_address?.state?.length>0)
         {
 
-          setpanProDetails(res?.data?.data)
+          setpanProDetails(res?.data)
           
         
         }
@@ -202,28 +233,31 @@ const [loading, setLoading] = useState(false); // State for loading screen
           fetchCKYCDetails();
           // window.alert("Invalid PAN Details or Date of Birth")
         }
-        // handleStartSession(res?.data?.data)
+
+        const firstName = res?.data?.user_full_name_split?.[0]?.trim() || ckycData?.fullName?.split(" ")?.[1] || '';
+      const lastName = res?.data?.user_full_name_split?.[2]?.trim() || ckycData?.fullName?.split(" ")?.[2] || '';
+        // handleStartSession(res?.data)
         const headers = {
           'Authorization': `Bearer ${user}`,
           'Content-Type': 'application/json',
       };
+        
         const data = {
           mobile: decode?.mobile,
-          firstName: res?.data?.data ? res?.data?.data?.user_full_name_split[0]?.trim() : ckycData?.fullName?.split(" ")[1],
-          lastName: res?.data?.data ? res?.data?.data?.user_full_name_split[2]?.trim() : ckycData?.fullName?.split(" ")[2],
+          
           instituteName: instituteName,
           studentName: studentName,
           dateOfBirth: dob,
           courseName: courseName,
           courseFees: courseFee,
-          gender: res?.data?.data ? (res?.data?.data?.user_gender === "M" ? "Male" : "Female") : (ckycData?.gender === "M" ? "Male" : "Female"),
-          panId: res?.data?.data ? res?.data?.data?.pan_number : ckycData?.panNumber,
-          aadhaarId: res?.data?.data ? res?.data?.data?.masked_aadhaar : ckycData?.indentityList?.find(item => item.name === "E-KYC Authentication")?.id,
-          email: res?.data?.data ? res?.data?.data?.user_email || applicantEmail : ckycData?.email,
-          currentAddress: res?.data?.data && res?.data?.data?.user_address?.full ? res?.data?.data?.user_address?.full : ckycData?.currentAddress,
-          currentCity: res?.data?.data && res?.data?.data?.user_address?.city ? res?.data?.data?.user_address?.city : ckycData?.currentCity,
-          currentState: res?.data?.data && res?.data?.data?.user_address?.state ? res?.data?.data?.user_address?.state : ckycData?.currentState,
-          currentPincode: res?.data?.data && res?.data?.data?.user_address?.zip ? res?.data?.data?.user_address?.zip : ckycData?.currentPincode,
+          gender: res?.data ? (res?.data?.user_gender === "M" ? "Male" : "Female") : (ckycData?.gender === "M" ? "Male" : "Female"),
+          panId: res?.data ? res?.data?.pan_number : ckycData?.panNumber,
+          aadhaarId: res?.data ? res?.data?.masked_aadhaar : ckycData?.indentityList?.find(item => item.name === "E-KYC Authentication")?.id,
+          email: email,
+          currentAddress: res?.data && res?.data?.user_address?.full ? res?.data?.user_address?.full : ckycData?.currentAddress,
+          currentCity: res?.data && res?.data?.user_address?.city ? res?.data?.user_address?.city : ckycData?.currentCity,
+          currentState: res?.data && res?.data?.user_address?.state ? res?.data?.user_address?.state : ckycData?.currentState,
+          currentPincode: res?.data && res?.data?.user_address?.zip ? res?.data?.user_address?.zip : ckycData?.currentPincode,
           panImage: " ",
           aadhaarFrontImage: " ",
           aadhaarBackImage: " ",
@@ -238,6 +272,7 @@ const [loading, setLoading] = useState(false); // State for loading screen
           loanTenure: " ",
           ocrId: "",
           channel: 4
+          
       };
 
       handleLocationClick();
@@ -259,13 +294,13 @@ const [loading, setLoading] = useState(false); // State for loading screen
                       applicationId: decode?.applicationId,
                       userId: decode?.userId,
                       instituteId: decode?.instituteId,
-                      studentName: data.firstName,
-                      applicantName: `${data.firstName} ${data.lastName}`,
+                      studentName: firstName,
+                      applicantName: `${firstName} ${lastName}`,
                       panId: data.panId,
                       dob: dob,
                       phone: mobileNumber,
                       status: "Created",
-                      eligibility: res?.data?.data?.status,
+                      eligibility: res?.data?.status,
                   };
                   console.log(qecBody)
 
@@ -293,15 +328,16 @@ const [loading, setLoading] = useState(false); // State for loading screen
     )
 
       .catch((err: any)=>{
-        setLoading(false);
+        console.log(err)
         window.alert("Invalid PAN Details or Date of Birth")
         setAttempts(prev => {
           const newAttempts = prev + 1;
           if (newAttempts >= 5) {
-            setBlockTimestamp(Date.now());
+            setBlockTimestamp(Date.now()); // Block the user if attempts exceed 5
           }
           return newAttempts;
         });
+        
       })
     }
   }
@@ -320,7 +356,7 @@ const [loading, setLoading] = useState(false); // State for loading screen
   }
     axiosInstance.post(ckycUrl,ckycBody)
     .then((res)=>{
-      setCkycData(res?.data?.data)
+      setCkycData(res?.data)
     }
   )
   .catch((err)=>{
@@ -378,28 +414,31 @@ const [loading, setLoading] = useState(false); // State for loading screen
     }
 };
 
-  const isBlocked = () => {
-    if (blockTimestamp === null) return false;
-    const elapsedTime = Date.now() - blockTimestamp;
-    return elapsedTime < 48 * 60 * 60 * 1000; // 48 hours in milliseconds
-  };
+const isBlocked = () => {
+  if (blockTimestamp === null) return false;
+  const elapsedTime = Date.now() - blockTimestamp;
+  return elapsedTime < 48 * 60 * 60 * 1000; // 48 hours in milliseconds
+};
 
-  // Calculate remaining time
-  const getRemainingTime = () => {
-    if (blockTimestamp === null) return null;
-    const elapsedTime = Date.now() - blockTimestamp;
-    const remainingTime = 48 * 60 * 60 * 1000 - elapsedTime;
-    return remainingTime > 0 ? remainingTime : null;
-  };
+console.log(attempts)
 
-  const renderRemainingTime = () => {
-    const remainingTime = getRemainingTime();
-    if (remainingTime === null) return null;
+// Calculate remaining time
+const getRemainingTime = () => {
+  if (blockTimestamp === null) return null;
+  const elapsedTime = Date.now() - blockTimestamp;
+  const remainingTime = 48 * 60 * 60 * 1000 - elapsedTime;
+  return remainingTime > 0 ? remainingTime : null;
+};
 
-    const hours = Math.floor(remainingTime / (60 * 60 * 1000));
-    const minutes = Math.floor((remainingTime % (60 * 60 * 1000)) / (60 * 1000));
-    return `${hours}h ${minutes}m`;
-  };
+const renderRemainingTime = () => {
+  const remainingTime = getRemainingTime();
+  if (remainingTime === null) return null;
+
+  const hours = Math.floor(remainingTime / (60 * 60 * 1000));
+  const minutes = Math.floor((remainingTime % (60 * 60 * 1000)) / (60 * 1000));
+  return `${hours}h ${minutes}m`;
+};
+
   
   return (
     <>
@@ -455,6 +494,17 @@ const [loading, setLoading] = useState(false); // State for loading screen
                 />
               </div>
               {panError && <p style={{ color: "#d32028", fontSize: "0.8rem", paddingLeft:"1rem"}}>PAN number is required.</p>}
+              <div className={styles.inputField}>
+                <Label text="Email" />
+                <InputText
+                  placeholder="Enter your email"
+                  type="email"
+                  value={email}
+                  changeHandler={handleEmailChange}
+                />
+              </div>
+              {emailError && <p style={{ color: "#d32028", fontSize: "0.8rem", paddingLeft:"1rem" }}>Email is required.</p>}
+
               <br />
               <br />
               <br />
@@ -478,18 +528,19 @@ const [loading, setLoading] = useState(false); // State for loading screen
             </div>
           )}
               {isBlocked() ? (
-                <p style={{ color: "red", marginTop: "1rem" ,textAlign:"center"}}>
-                  You have reached the maximum number of verification attempts. Please try again in <strong>{renderRemainingTime()}</strong>.
-                </p>
-              ) : (
-                <Button
-                  onPress={getPanPro}
-                  text={"Verify"}
-                  imageRight={ArrowRight}
-                  fullWidth
-                  disabled={!isChecked || attempts >= 5 || dobError || panError}  // Disable button if attempts >= 5
-                />
-              )}
+                  <p style={{ color: "red", marginTop: "1rem", textAlign:"center"}}>
+                    You have reached the maximum number of verification attempts. Please try again in <strong>{renderRemainingTime()}</strong>.
+                  </p>
+                ) : (
+                  <Button
+                    onPress={getPanPro}
+                    text={"Verify"}
+                    imageRight={ArrowRight}
+                    fullWidth
+                    disabled={!isChecked || dobError || panError}  // Disable button if attempts >= 5
+                  />
+                )}
+
             </div>
           )
           }
