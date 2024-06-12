@@ -48,6 +48,7 @@ function LoanStepsKYC() {
     const isValid = doorNo && street && city && state && pincode;
     setIsFormValid(isValid);
   };
+  
 
   const handleAddress = async () => {
     let isValid = true;
@@ -92,11 +93,12 @@ function LoanStepsKYC() {
     }
   
     const requestData = {
-      currentAddress: doorNo,
+      currentAddress: doorNo + street,
       currentCity: city,
       currentState: state,
-      currentPincode: pincode,
+      currentPincode: pincode
     };
+    console.log(requestData)
   
     try {
       const response = await fetch(`${API_URL}/users/profile-details/create`, {
@@ -124,21 +126,25 @@ function LoanStepsKYC() {
 
   useEffect(() => {
     if (data) {
-      // Set other state values from data
-      setDoorNo(data?.currentAddress?.doorNo || "");
-      setStreet(data?.currentAddress?.street || "");
+      // Log the incoming data for debugging
+      console.log("Received data:", data);
+  
+      // Set state values from data
+      const [doorNo, ...streetArray] = (data?.currentAddress || "").split(" ");
+      setDoorNo(doorNo || "");
+      setStreet(streetArray.join(" ") || "");
       setCity(data?.currentCity || "");
       setState(data?.currentState || "");
       setPincode(data?.currentPincode || "");
   
       // Prefill address if available
       if (data.currentAddress) {
-        setCurrentAddress("yes"); // Assuming the address is the current address
+        setCurrentAddress("yes");
       }
     }
   }, [data]);
-  console.log(data)
-
+  
+  
   useEffect(() => {
     validateForm();
   }, [doorNo, street, city, state, pincode]);
@@ -158,7 +164,7 @@ function LoanStepsKYC() {
                 <button
                   style={{ border: "none", background: "none" }}
                   onClick={() => {
-                    navigate("/loan-steps");
+                    navigate("/loan-steps-basic-details");
                   }}
                 >
                   <img
