@@ -1,4 +1,5 @@
 import React, { useState,useEffect } from "react";
+// import "semantic-ui-css/components/dropdown.min.css";
 import styles from "./index.module.css";
 import Progress from "../../images/static_assests/progress_90.svg";
 // import Progress from "../../images/static_assests/process.svg";
@@ -30,9 +31,8 @@ import { API_URL } from "../../utils";
 import closee from "../../images/static_assests/redClose.svg";
 
 import { Dropdown } from 'semantic-ui-react';
-// useEffect(() => {
-//   import('semantic-ui-css/semantic.min.css');
-// }, []);
+
+
 type SchoolOption = {
   key: string;
   value: string;
@@ -280,7 +280,7 @@ function err() {
   const handleContinueClick = () => {
     // Call createLoanApplication when Continue button is clicked
     createLoanApplication();
-    handleStartSession(data)
+    // handleStartSession(data)
   };
 
   // const [schoolName, setSchoolName] = useState<string>("");

@@ -23,19 +23,21 @@ import LoginDialog from "./components/LoginDialog";
 function LoanStepsBasicDetails() {
   const navigate = useNavigate();
   // Define types or interfaces if necessary
-interface PanProDetails {
-  user_full_name_split?: any;
-  user_gender?: string;
-  pan_number?: string;
-  masked_aadhaar?: string;
-  user_email?: string;
-  user_address?: {
-      full?: string;
-      city?: string;
-      state?: string;
-      zip?: string;
-  };
-}
+  interface PanProDetails {
+    aadhaarId?: string;
+    currentAddress?: string;
+    currentCity?: string;
+    currentPincode?: string;
+    currentState?: string;
+    // dob?: string;
+    email?: string;
+    firstName?: string;
+    gender?: string;
+    // id?: string;
+    lastName?: string;
+    // mobile?: string;
+    panId?: string;
+  }
 
 interface CkycData {
   fullName?: string;
@@ -221,10 +223,11 @@ const [emailError, setEmailError] = useState(false);
       axiosInstance.post(panProUrl,panBody)
       .then((res: any)=>{
         setLoading(false);
-        if(res?.data?.user_address?.state?.length>0)
+        console.log(res?.data?.data)
+        if(res?.data?.data?.currentState?.length>0)
         {
 
-          setpanProDetails(res?.data)
+          setpanProDetails(res?.data?.data)
           
         
         }
@@ -234,8 +237,7 @@ const [emailError, setEmailError] = useState(false);
           // window.alert("Invalid PAN Details or Date of Birth")
         }
 
-        const firstName = res?.data?.user_full_name_split?.[0]?.trim() || ckycData?.fullName?.split(" ")?.[1] || '';
-      const lastName = res?.data?.user_full_name_split?.[2]?.trim() || ckycData?.fullName?.split(" ")?.[2] || '';
+        
         // handleStartSession(res?.data)
         const headers = {
           'Authorization': `Bearer ${user}`,
@@ -244,32 +246,21 @@ const [emailError, setEmailError] = useState(false);
         
         const data = {
           mobile: decode?.mobile,
-          
+          firstName : res?.data?.data?.firstName || ckycData?.fullName?.split(" ")?.[1] || '',
+          lastName : res?.data?.data?.lastName || ckycData?.fullName?.split(" ")?.[2] || '',
           instituteName: instituteName,
           studentName: studentName,
           dateOfBirth: dob,
           courseName: courseName,
           courseFees: courseFee,
-          gender: res?.data ? (res?.data?.user_gender === "M" ? "Male" : "Female") : (ckycData?.gender === "M" ? "Male" : "Female"),
-          panId: res?.data ? res?.data?.pan_number : ckycData?.panNumber,
-          aadhaarId: res?.data ? res?.data?.masked_aadhaar : ckycData?.indentityList?.find(item => item.name === "E-KYC Authentication")?.id,
+          gender: res?.data?.data ? (res?.data?.data?.gender === "M" ? "Male" : "Female") : (ckycData?.gender === "M" ? "Male" : "Female"),
+          panId: res?.data?.data ? res?.data?.data?.panId : ckycData?.panNumber,
+          aadhaarId: res?.data?.data ? res?.data?.data?.aadharId : ckycData?.indentityList?.find(item => item.name === "E-KYC Authentication")?.id,
           email: email,
-          currentAddress: res?.data && res?.data?.user_address?.full ? res?.data?.user_address?.full : ckycData?.currentAddress,
-          currentCity: res?.data && res?.data?.user_address?.city ? res?.data?.user_address?.city : ckycData?.currentCity,
-          currentState: res?.data && res?.data?.user_address?.state ? res?.data?.user_address?.state : ckycData?.currentState,
-          currentPincode: res?.data && res?.data?.user_address?.zip ? res?.data?.user_address?.zip : ckycData?.currentPincode,
-          panImage: " ",
-          aadhaarFrontImage: " ",
-          aadhaarBackImage: " ",
-          isCoapplicant: false,
-          relatedTo: " ",
-          employmentType: " ",
-          employerName: " ",
-          salary: " ",
-          incomePerMonth: " ",
-          typeOfBusiness: " ",
-          salesperson: " ",
-          loanTenure: " ",
+          currentAddress: res?.data?.data && res?.data?.data?.currentAddress ? res?.data?.data?.currentAddress: ckycData?.currentAddress,
+          currentCity: res?.data?.data && res?.data?.data?.currentCity ? res?.data?.data?.currentCity : ckycData?.currentCity,
+          currentState: res?.data?.data && res?.data?.data?.currentState ? res?.data?.data?.currentState : ckycData?.currentState,
+          currentPincode: res?.data?.data && res?.data?.data?.currentPincode ? res?.data?.data?.currentPincode : ckycData?.currentPincode,
           ocrId: "",
           channel: 4
           
@@ -294,13 +285,13 @@ const [emailError, setEmailError] = useState(false);
                       applicationId: decode?.applicationId,
                       userId: decode?.userId,
                       instituteId: decode?.instituteId,
-                      studentName: firstName,
-                      applicantName: `${firstName} ${lastName}`,
+                      studentName: data.firstName,
+                      applicantName: `${data.firstName} ${data.lastName}`,
                       panId: data.panId,
                       dob: dob,
                       phone: mobileNumber,
                       status: "Created",
-                      eligibility: res?.data?.status,
+                      eligibility: res?.data?.data?.status,
                   };
                   console.log(qecBody)
 
@@ -356,7 +347,7 @@ const [emailError, setEmailError] = useState(false);
   }
     axiosInstance.post(ckycUrl,ckycBody)
     .then((res)=>{
-      setCkycData(res?.data)
+      setCkycData(res?.data?.data)
     }
   )
   .catch((err)=>{
@@ -384,35 +375,35 @@ const [emailError, setEmailError] = useState(false);
   //   )
   // }
 
-  const handleLoadSession = async () => {
-    const result = await (window as any).startBureauSession();
-    if (result) {
-        switch (result.status) {
-            case "SUCCESS":
-                const headers = {
-                    'Authorization': `Bearer ${user}`,
-                    'Content-Type': 'application/json',
-                };
+//   const handleLoadSession = async () => {
+//     const result = await (window as any).startBureauSession();
+//     if (result) {
+//         switch (result.status) {
+//             case "SUCCESS":
+//                 const headers = {
+//                     'Authorization': `Bearer ${user}`,
+//                     'Content-Type': 'application/json',
+//                 };
 
               
-                break;
+//                 break;
 
-            case "EXIT":
-                alert("Retry Submit");
-                toggle();
-                break;
+//             case "EXIT":
+//                 alert("Retry Submit");
+//                 toggle();
+//                 break;
 
-            case "ERROR":
-                alert("Error Please Try Later");
-                toggle();
-                break;
+//             case "ERROR":
+//                 alert("Error Please Try Later");
+//                 toggle();
+//                 break;
 
-            default:
-                alert("Contact our team for assistance");
-                break;
-        }
-    }
-};
+//             default:
+//                 alert("Contact our team for assistance");
+//                 break;
+//         }
+//     }
+// };
 
 const isBlocked = () => {
   if (blockTimestamp === null) return false;
