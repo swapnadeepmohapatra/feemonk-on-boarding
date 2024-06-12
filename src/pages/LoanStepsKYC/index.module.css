@@ -41,3 +41,17 @@
   border-radius: 12px;
   padding: 2rem 1rem;
 }
+
+.Header{
+  display: inline-flex;
+  justify-content: space-between;
+  margin-top: 2rem;
+}
+
+.error {
+  color: #d32028;
+  font-size: 0.8rem;
+  /* margin-top: 0.5rem; */
+  margin-right: 1rem;
+
+}

@@ -1,0 +1,121 @@
+.card {
+  background: #fff8f4;
+  border: 1px solid #f9d8d6;
+  box-shadow: 0px 3px 3px rgba(211, 32, 40, 0.1);
+  border-radius: 12px;
+  width: 100%;
+  margin: 1rem 0;
+  padding: 0.75rem 1rem;
+}
+
+.cardNumberText {
+  color: #d32028;
+  font-size: 1rem;
+  font-weight: 550;
+}
+
+.label {
+  color: #5f5f5f;
+  font-size: 0.875rem;
+}
+
+.cardDetails {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin-top: 1rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid #f9d8d6;
+}
+
+.cardDate {
+  font-weight: 500;
+}
+.paisa {
+  font-weight: 500;
+  margin-left :0.5rem;
+}
+
+.cardStatus {
+  font-weight: 500;
+  border-radius: 16px;
+  padding: 5px 10px;
+}
+
+.Approved {
+  color: #45b21e;
+  background: #ecfdf0;
+}
+
+.Rejected {
+  color: #d32028;
+  background: #ffeeef;
+}
+
+.InProgress {
+  color: #fa9b0c;
+  background: #fff6de;
+}
+
+.actionContainer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between; /* Add this to space the items evenly */
+  margin-bottom: 1rem; /* Adjust as needed */
+}
+
+.action {
+  margin-right: 0.5rem; /* Adjust as needed */
+}
+
+.action p {
+  margin-bottom: 0; /* Remove default bottom margin for paragraphs */
+}
+
+.arrowContainer {
+  display: flex;
+  align-items: center;
+}
+
+.offerContainer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-top: 1px solid #f9d8d6;
+  padding-top: 1rem;
+}
+
+.offerText {
+  color: #d32028;
+  text-decoration: underline;
+  display: flex;
+  align-items: center;
+  font-size: 0.8rem;
+}
+
+.offerText img {
+  margin-right: 0.3rem;
+  width: 1.2rem; /* Adjust the width to align properly */
+  height: 1.2rem; /* Adjust the height to align properly */
+  background-color: #f4e5dd;
+  padding: 10%;
+  border-radius: 50%;
+}
+
+
+.offerButton {
+  background-color: #d32028;
+  padding: 5px 10px;
+  border-radius: 32px;
+  border: none;
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+}
+
+.offerButton img {
+ 
+  margin-right: 0.3rem;
+  height: 10px;
+  color: #ffffff;
+}

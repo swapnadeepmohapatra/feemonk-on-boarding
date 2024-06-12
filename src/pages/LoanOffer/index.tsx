@@ -3,20 +3,29 @@ import { useNavigate } from "react-router-dom";
 import Button from "../../components/atoms/Button";
 import styles from "./index.module.css";
 import ArrowRight from "../../images/icons/arrow_right.svg";
-import Confeti from "../../images/static_assests/confeti.svg";
+import Confetti from "../../images/static_assests/confeti.svg";
+import closebtn from "../../images/icons/close-btn.svg";
 
 function LoanOffer() {
   const navigate = useNavigate();
+  const [showConfetti, setShowConfetti] = useState(false);
+
+  useEffect(() => {
+    // Show confetti after component mounts
+    setShowConfetti(true);
+  }, []);
 
   return (
     <div className={styles.body}>
-      <div className={styles.container}>
+      
+      <div className={styles.container} style={{marginBottom:"10rem"}}>
+        {/* Apply animation class if showConfetti is true */}
+        
         <img
-          src={Confeti}
+          src={Confetti}
           alt=""
-          style={{
-            position: "fixed",
-          }}
+          // style={{ marginBottom: "3rem",}}
+          className={`${styles.confetti} ${showConfetti ? styles.showConfetti : ''}`}
         />
         <div
           style={{
@@ -24,7 +33,7 @@ function LoanOffer() {
             flexDirection: "column",
             justifyContent: "center",
             alignItems: "center",
-            marginBottom: "4rem",
+            marginBottom: "14rem",
             marginTop: "6rem",
           }}
         >
@@ -46,9 +55,9 @@ function LoanOffer() {
             <path
               d="M40.2677 27.0434V28.1167C40.2662 30.6325 39.4516 33.0805 37.9452 35.0955C36.4389 37.1105 34.3215 38.5846 31.9089 39.2979C29.4963 40.0112 26.9178 39.9256 24.5579 39.0537C22.198 38.1819 20.1831 36.5705 18.8138 34.46C17.4445 32.3494 16.7941 29.8528 16.9596 27.3424C17.1251 24.832 18.0977 22.4424 19.7323 20.53C21.3669 18.6175 23.5759 17.2846 26.0299 16.7302C28.4839 16.1758 31.0513 16.4294 33.3493 17.4534M40.2677 18.7834L28.601 30.4617L25.101 26.9617"
               stroke="#039855"
-              stroke-width="2.33333"
-              stroke-linecap="round"
-              stroke-linejoin="round"
+              strokeWidth="2.33333"
+              strokeLinecap="round"
+              strokeLinejoin="round"
             />
           </svg>
 
@@ -63,16 +72,19 @@ function LoanOffer() {
           <p
             style={{
               textAlign: "center",
-              fontSize: "1.2rem",
+              fontSize: "1.5rem",
             }}
           >
-            you are eligible to avail loan amount upto
+            You are eligible to avail a loan
+            <p>amount upto</p> 
           </p>
+          <br />
+          <br />
           <br />
           <p
             style={{
               textAlign: "center",
-              fontSize: "2rem",
+              fontSize: "3rem",
               fontWeight: "bold",
             }}
           >
@@ -84,9 +96,9 @@ function LoanOffer() {
           <br />
           <br />
           <Button
-            text={"View Offer"}
+            text={"Get sanction letter"}
             onPress={() => {
-              navigate("/view-offer");
+              navigate("/sanction-letter");
             }}
             imageRight={ArrowRight}
             fullWidth
