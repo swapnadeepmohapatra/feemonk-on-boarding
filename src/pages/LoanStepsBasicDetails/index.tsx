@@ -215,7 +215,7 @@ const [emailError, setEmailError] = useState(false);
       return;
     }
 
-    if (dateOfBirth && getAge(dateOfBirth) <= 18) {
+    if (dateOfBirth && getAge(dateOfBirth) >= 18) {
        window.alert("Check borrower age ! must be above 18 years old")
       }
       else
