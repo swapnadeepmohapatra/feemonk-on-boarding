@@ -110,7 +110,7 @@ function LoanOffer() {
           <Button
             text={"Get sanction letter"}
             onPress={() => {
-              navigate("/sanction-letter");
+              navigate("/home");
             }}
             imageRight={ArrowRight}
             fullWidth
