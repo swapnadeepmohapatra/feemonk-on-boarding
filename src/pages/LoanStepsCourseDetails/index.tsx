@@ -1,5 +1,6 @@
 import React, { useState,useEffect } from "react";
 // import "semantic-ui-css/components/dropdown.min.css";
+// import Select from 'react-select';
 import styles from "./index.module.css";
 import Progress from "../../images/static_assests/progress_90.svg";
 // import Progress from "../../images/static_assests/process.svg";
@@ -31,6 +32,7 @@ import { API_URL } from "../../utils";
 import closee from "../../images/static_assests/redClose.svg";
 
 import { Dropdown } from 'semantic-ui-react';
+import { Autocomplete, TextField } from "@mui/material";
 
 
 type SchoolOption = {
@@ -56,11 +58,11 @@ function LoanStepsCourseDetails() {
   const  data  = stateData;
 
   const [studentName, setStudentName] = useState("");
-  const [schoolName, setSchoolName] = useState("");
+  const [schoolName, setSchoolName] = useState<string>("");
   const [className, setClassName] = useState("");
   const [annualFees, setAnnualFees] = useState("");
   const [dob, setDob] = useState("");
-
+  
   const handleDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setDob(e.target.value);
   };
@@ -80,6 +82,10 @@ function LoanStepsCourseDetails() {
 
     setIsChildDetailsFilled(isFormValid);
   }, [studentName, schoolName, className, annualFees]);
+
+  useEffect(() => {
+    handleLocationClick();
+  }, []);
   const [isStudentNameValid, setIsStudentNameValid] = useState(true);
   const [isSchoolNameValid, setIsSchoolNameValid] = useState(true);
   const [isClassNameValid, setIsClassNameValid] = useState(true);
@@ -200,6 +206,7 @@ function handleLocationClick() {
 }
 console.log(data)
 function success(position:any) {
+  console.log("got location")
   const latitude = position.coords.latitude;
   const longitude = position.coords.longitude;
   
@@ -214,7 +221,8 @@ function success(position:any) {
 
 function err() {
   console.log("Unable to retrieve your location");
-}
+}     
+
   const handleLoadSession = async () => {
     const result = await (window as any).startBureauSession();
     if (result) {
@@ -227,7 +235,8 @@ function err() {
 
                 const data1 = data
 
-                handleLocationClick();
+                // handleLocationClick();
+                
                 navigate("/bank-select", { state: { data1} });
                 
                 break;
@@ -268,6 +277,31 @@ function err() {
         .then((response) => {
             console.log("Application created successfully:", response.data);
             // Redirect the user to the next page, if needed
+            handleLocationClick()
+    const userId = decode?.userId; // Ensure userId is available
+    if (userId) {
+        const data2 = {
+            // userId,
+            latitude: location1.latitude,
+            longitude: location1.longitude,
+        };
+
+        // Make API call to submit data
+        axios.post(`${API_URL}/end-user/submit`, data2, {
+            headers: {
+                'Authorization': `Bearer ${headerVal}`,
+                'Content-Type': 'application/json',
+            },
+        })
+        .then((response) => {
+            // Handle success response if needed
+            console.log("Data submitted successfully:", response.data);
+        })
+        .catch((error) => {
+            // Handle error response if needed
+            console.error("Error submitting data:", error);
+        });
+    }
             handleStartSession(data)
         })
         .catch((error) => {
@@ -278,10 +312,12 @@ function err() {
 
 
   const handleContinueClick = () => {
+    
+
     // Call createLoanApplication when Continue button is clicked
     createLoanApplication();
-    // handleStartSession(data)
-  };
+    // handleStartSession(data);
+};
 
   // const [schoolName, setSchoolName] = useState<string>("");
   // const [schoolOptions, setSchoolOptions] = useState<SchoolOption[]>([]);
@@ -426,19 +462,28 @@ function err() {
                   changeHandler={handleSchoolNameChange}
                 />
                 {schoolOptions.length > 0 && (
-        <Dropdown
-        placeholder='Select School/Institute'
-        fluid
-        // search
-        selection
+        <Autocomplete
         options={schoolOptions}
-        value={schoolName}
-      onChange={(e, { value }) => {handleInputChange("schoolName", value); setDropdownOpen(false);}}
-        // loading={isLoading}
-        open={dropdownOpen} // Pass open state to the Dropdown component
-        onOpen={() => setDropdownOpen(true)} // Update open state when dropdown opens
-        onClose={() => setDropdownOpen(false)} // Update open state when dropdown closes
+        
+        getOptionLabel={(option) => option.value} // Ensure this returns a string
+        value={schoolOptions.find(option => option.value === schoolName) || null}
+        onChange={(e, newValue) => {
+          if (newValue) {
+            const selectedOption = newValue as SchoolOption;
+            handleInputChange("schoolName", selectedOption.value);
+            setDropdownOpen(false);
+          }
+        }}
+        renderInput={(params) => (
+          <TextField
+            {...params}
+            label="Select School/Institute"
+            variant="outlined"
+          />
+        )}
       />
+      
+      
       )}
                 {errors.schoolName && <span style={{ color: "red" }}>{errors.schoolName}</span>}
                 

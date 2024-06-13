@@ -153,10 +153,14 @@ const [emailError, setEmailError] = useState(false);
     setPan(e.target.value);
     setPanError(e.target.value.trim() === "");
   };
+  const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+  
   const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setEmail(e.target.value);
-    setEmailError(e.target.value.trim() === "");
-  };
+    setEmailError(!emailPattern.test(e.target.value));
+};
+
   
 
   const handleCheckboxChange = () => {
@@ -215,7 +219,7 @@ const [emailError, setEmailError] = useState(false);
       return;
     }
 
-    if (dateOfBirth && getAge(dateOfBirth) <= 18) {
+    if (dateOfBirth && getAge(dateOfBirth) >= 18) {
        window.alert("Check borrower age ! must be above 18 years old")
       }
       else
@@ -494,7 +498,7 @@ const renderRemainingTime = () => {
                   changeHandler={handleEmailChange}
                 />
               </div>
-              {emailError && <p style={{ color: "#d32028", fontSize: "0.8rem", paddingLeft:"1rem" }}>Email is required.</p>}
+              {emailError && <p style={{ color: "#d32028", fontSize: "0.8rem", paddingLeft:"1rem" }}>Invalid Email address</p>}
 
               <br />
               <br />
