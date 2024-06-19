@@ -25,6 +25,7 @@ import Support from "./pages/Support"
 import BankSelect from "./pages/Bank/BankSelect"
 import BankPdfUpload from "./pages/Bank/BankPdfUpload"
 import AccountAggregator from "./pages/Bank/AccountAggregator"
+import Mandate from "./pages/Mandates"
 
 const Router: React.FC = () => {
   return (
@@ -66,6 +67,7 @@ const Router: React.FC = () => {
         <Route path="/bank-select" element={<BankSelect/>}/>
         <Route path="/pdf-upload-bank" element={<BankPdfUpload/>}/>
         <Route path="/account-aggregator" element={<AccountAggregator/>}/>
+        <Route path="/mandate" element={<Mandate />} />
       </Routes>
     </BrowserRouter>
   );

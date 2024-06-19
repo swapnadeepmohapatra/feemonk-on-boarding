@@ -1,0 +1,104 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  justify-content: center;
+  align-items: center;
+  background-color: #fff8f4;
+  max-width: 450px;
+  padding: 1rem;
+  border-radius: 1rem;
+  min-height: 450px;
+  box-shadow: 0 1rem 1rem #00000040;
+  margin-left: 020vh;
+  margin-right: 020vh;
+  margin-top: 02vh;
+  margin-bottom: 02vh;
+  min-height: 100vh;
+}
+.backdrop {
+  background-color: rgba(255, 255, 255, 0.9);
+  width: 100%;
+  min-height: 100vh;
+}
+.main {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: url("../../images/background.png");
+  background-position: bottom;
+  background-repeat: no-repeat;
+  background-size: cover;
+  min-height: 100vh;
+}
+
+.container h1,
+.container p {
+  text-align: center;
+}
+
+.container button {
+  width: 80%;
+  margin: 0 10%;
+  margin-top: 50px;
+}
+
+.inputField {
+  width: 100%;
+  margin: 10px;
+}
+.inputField > div {
+  width: 80%;
+  margin: 0 10%;
+}
+.container label {
+  width: 80%;
+  margin: 0 10%;
+  margin-top: 10px;
+}
+.image {
+  height: 5rem;
+}
+
+.container button {
+  margin-top: 50px;
+}
+
+.footerText {
+  margin-top: 3rem;
+  display: flex;
+  align-items: center;
+}
+
+.footerImage {
+  height: 2rem;
+}
+
+@media only screen and (max-width: 700px) {
+  .container {
+    margin: 2rem;
+    min-height: 70vh;
+  }
+}
+
+.loadingBox {
+  position: fixed;
+  height: 100vh;
+  width: 100vw;
+  background-color: rgba(0, 0, 0, 0.4);
+  -webkit-backdrop-filter: blur(5px);
+  backdrop-filter: blur(5px);
+  z-index: 100;
+  margin: 0;
+  padding: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.loadingText {
+  background-color: #ffffff;
+  padding: 1rem 2rem;
+  border-radius: 0.2rem;
+}

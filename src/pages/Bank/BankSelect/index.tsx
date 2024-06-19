@@ -3,13 +3,19 @@ import styles from "./index.module.css";
 import Button from "../../../components/atoms/Button";
 import InputText from "../../../components/atoms/InputText";
 import { BANK_LIST } from "../../../helpers/banks_list";
-import { useNavigate } from "react-router-dom";
+import { useNavigate,useLocation } from "react-router-dom";
 import { API_URL } from "../../../utils";
 import { useLocalStorage } from "../../../hooks";
 
 function BankSelect() {
   const navigate = useNavigate();
   // const [authToken] = useLocalStorage("feemonk_data", "");
+  const location = useLocation();
+  const stateData = location.state || {};
+  console.log(stateData)
+
+  const  data  = stateData.data1;
+  
   const [selectedBank, setSelectedBank] = useState("");
   const [searchText, setSearchText] = useState("");
   const [fipList, setFipList] = useState<{ bank: String; health_up: Boolean }[]
@@ -108,9 +114,9 @@ function BankSelect() {
                       bank["Name"].toLocaleUpperCase()
                   )?.health_up
                 ) {
-                navigate(`/account-aggregator`, { state: { bank } });
+                navigate(`/account-aggregator`, { state: { bank, data,stateData } });
               } else {
-                navigate(`/pdf-upload-bank`);
+                navigate(`/pdf-upload-bank`,{ state: { data ,stateData} });
               }
             }}
             disabled={!selectedBank}

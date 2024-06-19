@@ -16,7 +16,11 @@ function AccountAggregator() {
   const decode=(JSON.parse(user).value)  as any
   console.log(decode)
   const { state } = useLocation();
+  const location = useLocation();
+  const stateData = location.state || {};
+  console.log(stateData)
 
+  const  data1  = stateData.data1;
   console.log(state);
   const getAARedirectLink = async () => {
     try {
@@ -35,6 +39,7 @@ function AccountAggregator() {
           redirect: "follow",
           body: JSON.stringify({
             bank: (state as any)?.bank?.Name,
+            redirectUrl:`http://localhost:3000/parking-page`
           }),
         }
       );
@@ -42,7 +47,7 @@ function AccountAggregator() {
       const result = await response.json();
 
       setRedirectLink(result.data.url);
-      window.open(result.data.url, "_blank", "noopener,noreferrer");
+      window.open(result.data.url, "_self", "noopener,noreferrer");
     } catch (error) {
       console.log("Error:", error);
     }
@@ -66,7 +71,7 @@ function AccountAggregator() {
           <Button
             text={"Upload Bank Statement"}
             onPress={() => {
-              navigate("/pdf-upload-bank");
+              navigate("/pdf-upload-bank",{ state: { data1,stateData } });
             }}
           />
           </div>

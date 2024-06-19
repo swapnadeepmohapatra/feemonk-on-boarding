@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import styles from "./index.module.css";
 import BackArrow from "../../images/icons/arrow-left-circle.svg";
@@ -12,11 +11,11 @@ import InputText from "../../components/atoms/InputText";
 import Label from "../../components/atoms/Label";
 import ArrowRight from "../../images/icons/arrow_right.svg";
 import { useNavigate, useParams } from "react-router-dom";
-import moment from 'moment'
-import axiosInstance from '../../helpers/axios';
+import moment from "moment";
+import axiosInstance from "../../helpers/axios";
 import { API_URL } from "../../utils";
-import {jwtDecode} from 'jwt-decode';
-import {  Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
+import { jwtDecode } from "jwt-decode";
+import { Modal, ModalHeader, ModalBody, ModalFooter } from "reactstrap";
 import { createApplication } from "../../services/application";
 import { Console } from "console";
 import LoginDialog from "./components/LoginDialog";
@@ -39,34 +38,34 @@ function LoanStepsBasicDetails() {
     panId?: string;
   }
 
-interface CkycData {
-  fullName?: string;
-  gender?: string;
-  panNumber?: string;
-  email?: string;
-  currentAddress?: string;
-  currentCity?: string;
-  currentState?: string;
-  currentPincode?: string;
-  indentityList?: {
+  interface CkycData {
+    fullName?: string;
+    gender?: string;
+    panNumber?: string;
+    email?: string;
+    currentAddress?: string;
+    currentCity?: string;
+    currentState?: string;
+    currentPincode?: string;
+    indentityList?: {
       name: string;
       id: string;
-  }[];
-}
-const [loading, setLoading] = useState(false); // State for loading screen
+    }[];
+  }
+  const [loading, setLoading] = useState(false); // State for loading screen
   // const [toggleConsent, setToggleConsent] = useState(false);
-// Assuming panProDetails and ckycData are objects of type PanProDetails and CkycData respectively
+  // Assuming panProDetails and ckycData are objects of type PanProDetails and CkycData respectively
 
   const [panProDetails, setpanProDetails] = useState<PanProDetails>();
-  
+
   const [ckycData, setCkycData] = useState<CkycData>();
   // const { data } = useParams();
-  
-  const [applicantEmail,setApplicantEmail] = useState("")
-  const [instituteName,setInstituteName] = useState("")
-  const [studentName,setStudentName] = useState("")
-  const [courseName,setCourseName] = useState("")
-  const [courseFee,setCourseFee] = useState("")
+
+  const [applicantEmail, setApplicantEmail] = useState("");
+  const [instituteName, setInstituteName] = useState("");
+  const [studentName, setStudentName] = useState("");
+  const [courseName, setCourseName] = useState("");
+  const [courseFee, setCourseFee] = useState("");
   const [userData, setUserData] = useState<{
     mobileNumber: string;
     course: string;
@@ -85,11 +84,11 @@ const [loading, setLoading] = useState(false); // State for loading screen
   const [isChecked, setIsChecked] = useState(false); // State to track checkbox status
   const [dateOfBirth, setDOB] = useState("");
   const [open, setOpen] = useState(false);
-  const user=sessionStorage.getItem('auth_token') || ""
+  const user = sessionStorage.getItem("auth_token") || "";
   // console.log(JSON.parse(user).value)
-  const decode=jwtDecode(JSON.parse(user).value)  as any
+  const decode = jwtDecode(JSON.parse(user).value) as any;
   // console.log(decode?.userId)
-  const toggle = ()  => {
+  const toggle = () => {
     if (!open) {
       setOpen(true);
     } else {
@@ -99,7 +98,7 @@ const [loading, setLoading] = useState(false); // State for loading screen
   const [dobError, setDobError] = useState(false);
   const [panError, setPanError] = useState(false);
   const [email, setEmail] = useState("");
-const [emailError, setEmailError] = useState(false);
+  const [emailError, setEmailError] = useState(false);
 
   const [attempts, setAttempts] = useState(0);
   const [blockTimestamp, setBlockTimestamp] = useState<number | null>(null);
@@ -110,7 +109,7 @@ const [emailError, setEmailError] = useState(false);
     } else {
       localStorage.removeItem("blockTimestamp");
     }
-  
+
     // Check if 48 hours have passed since the block
     if (blockTimestamp !== null) {
       const elapsedTime = Date.now() - blockTimestamp;
@@ -122,7 +121,7 @@ const [emailError, setEmailError] = useState(false);
       }
     }
   }, [attempts, blockTimestamp]);
-  
+
   useEffect(() => {
     localStorage.setItem("verificationAttempts", attempts.toString());
     if (blockTimestamp !== null) {
@@ -144,10 +143,10 @@ const [emailError, setEmailError] = useState(false);
     var age = today.getFullYear() - birthDate.getFullYear();
     var m = today.getMonth() - birthDate.getMonth();
     if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
-        age--;
+      age--;
     }
     return age;
-}
+  }
 
   const handlePanChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setPan(e.target.value);
@@ -155,222 +154,238 @@ const [emailError, setEmailError] = useState(false);
   };
   const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-  
   const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setEmail(e.target.value);
     setEmailError(!emailPattern.test(e.target.value));
-};
-
-  
+  };
 
   const handleCheckboxChange = () => {
     setIsChecked(!isChecked); // Toggle checkbox status
   };
 
   const [location, setLocation] = useState({
-    latitude:0,
-    longitude:0});
+    latitude: 0,
+    longitude: 0,
+  });
 
   function handleLocationClick() {
     if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(success,err);
+      navigator.geolocation.getCurrentPosition(success, err);
     } else {
       console.log("Geolocation not supported");
     }
   }
 
-  function success(position:any) {
+  function success(position: any) {
     const latitude = position.coords.latitude;
     const longitude = position.coords.longitude;
-    
+
     setLocation({
-        latitude,
-        longitude
+      latitude,
+      longitude,
     });
     console.log(`Latitude: ${latitude}, Longitude: ${longitude}`);
-
-    
   }
 
   function err() {
     console.log("Unable to retrieve your location");
   }
 
-  const [addFiles,setAddFiles]=useState(false)
+  const [addFiles, setAddFiles] = useState(false);
   const [errors, setErrors] = useState({});
 
-  const getPanPro=()=>{
+  const getPanPro = () => {
     setLoading(true);
-    const panProUrl=`${API_URL}/pay-later-flow/create-from-pan`
-    const panBody={
-        
-      panId     :     pan    ,
-      dob     :     moment(dob).format('DD/MM/YYYY'),
+    const panProUrl = `${API_URL}/pay-later-flow/create-from-pan`;
+    const panBody = {
+      panId: pan,
+      dob: moment(dob).format("DD/MM/YYYY"),
       email: email,
-      mobile: decode?.mobile, 
-      userId:decode?.userId
-    }
-    console.log(decode)
+      mobile: decode?.mobile,
+      userId: decode?.userId,
+    };
+    console.log(decode);
     if (attempts >= 5) {
       setBlockTimestamp(Date.now()); // Block the user
-      
-      window.alert(`You have reached the maximum number of verification attempts. You are blocked for 48 hours.`);
+
+      window.alert(
+        `You have reached the maximum number of verification attempts. You are blocked for 48 hours.`
+      );
       setLoading(false);
       return;
     }
 
     if (dateOfBirth && getAge(dateOfBirth) >= 18) {
-       window.alert("Check borrower age ! must be above 18 years old")
-      }
-      else
-      {
-      axiosInstance.post(panProUrl,panBody)
-      .then((res: any)=>{
-        setLoading(false);
-        console.log(res?.data?.data)
-        if(res?.data?.data?.currentState?.length>0)
-        {
+      window.alert("Check borrower age ! must be above 18 years old");
+    } else {
+      axiosInstance
+        .post(panProUrl, panBody)
+        .then((res: any) => {
+          setLoading(false);
+          console.log(res?.data?.data);
+          if (res?.data?.data?.currentState?.length > 0) {
+            setpanProDetails(res?.data?.data);
+          } else {
+            fetchCKYCDetails();
+            // window.alert("Invalid PAN Details or Date of Birth")
+          }
 
-          setpanProDetails(res?.data?.data)
-          
-        
-        }
-        else
-        {
-          fetchCKYCDetails();
-          // window.alert("Invalid PAN Details or Date of Birth")
-        }
+          // handleStartSession(res?.data)
+          const headers = {
+            Authorization: `Bearer ${user}`,
+            "Content-Type": "application/json",
+          };
 
-        
-        // handleStartSession(res?.data)
-        const headers = {
-          'Authorization': `Bearer ${user}`,
-          'Content-Type': 'application/json',
-      };
-        
-        const data = {
-          mobile: decode?.mobile,
-          firstName : res?.data?.data?.firstName || ckycData?.fullName?.split(" ")?.[1] || '',
-          lastName : res?.data?.data?.lastName || ckycData?.fullName?.split(" ")?.[2] || '',
-          instituteName: instituteName,
-          studentName: studentName,
-          dateOfBirth: dob,
-          courseName: courseName,
-          courseFees: courseFee,
-          gender: res?.data?.data ? (res?.data?.data?.gender === "M" ? "Male" : "Female") : (ckycData?.gender === "M" ? "Male" : "Female"),
-          panId: res?.data?.data ? res?.data?.data?.panId : ckycData?.panNumber,
-          aadhaarId: res?.data?.data ? res?.data?.data?.aadharId : ckycData?.indentityList?.find(item => item.name === "E-KYC Authentication")?.id,
-          email: email,
-          currentAddress: res?.data?.data && res?.data?.data?.currentAddress ? res?.data?.data?.currentAddress: ckycData?.currentAddress,
-          currentCity: res?.data?.data && res?.data?.data?.currentCity ? res?.data?.data?.currentCity : ckycData?.currentCity,
-          currentState: res?.data?.data && res?.data?.data?.currentState ? res?.data?.data?.currentState : ckycData?.currentState,
-          currentPincode: res?.data?.data && res?.data?.data?.currentPincode ? res?.data?.data?.currentPincode : ckycData?.currentPincode,
-          ocrId: "",
-          channel: 4
-          
-      };
+          const data = {
+            mobile: decode?.mobile,
+            firstName:
+              res?.data?.data?.firstName ||
+              ckycData?.fullName?.split(" ")?.[1] ||
+              "",
+            lastName:
+              res?.data?.data?.lastName ||
+              ckycData?.fullName?.split(" ")?.[2] ||
+              "",
+            instituteName: instituteName,
+            studentName: studentName,
+            dateOfBirth: dob,
+            courseName: courseName,
+            courseFees: courseFee,
+            gender: res?.data?.data
+              ? res?.data?.data?.gender === "M"
+                ? "Male"
+                : "Female"
+              : ckycData?.gender === "M"
+              ? "Male"
+              : "Female",
+            panId: res?.data?.data
+              ? res?.data?.data?.panId
+              : ckycData?.panNumber,
+            aadhaarId: res?.data?.data
+              ? res?.data?.data?.aadharId
+              : ckycData?.indentityList?.find(
+                  (item) => item.name === "E-KYC Authentication"
+                )?.id,
+            email: email,
+            currentAddress:
+              res?.data?.data && res?.data?.data?.currentAddress
+                ? res?.data?.data?.currentAddress
+                : ckycData?.currentAddress,
+            currentCity:
+              res?.data?.data && res?.data?.data?.currentCity
+                ? res?.data?.data?.currentCity
+                : ckycData?.currentCity,
+            currentState:
+              res?.data?.data && res?.data?.data?.currentState
+                ? res?.data?.data?.currentState
+                : ckycData?.currentState,
+            currentPincode:
+              res?.data?.data && res?.data?.data?.currentPincode
+                ? res?.data?.data?.currentPincode
+                : ckycData?.currentPincode,
+            ocrId: "",
+            channel: 4,
+          };
 
-      handleLocationClick();
+          handleLocationClick();
 
-      const userId = decode?.userId; // Ensure userId is available
-      if (userId) {
-          const data2 = {
+          const userId = decode?.userId; // Ensure userId is available
+          if (userId) {
+            const data2 = {
               userId,
               latitude: location.latitude,
               longitude: location.longitude,
-          };
+            };
 
-          // New logic integration
-          console.log(data)
-          const mobileNumber = decode?.mobile;
-          axiosInstance.get(`${API_URL}/rules/eligibility?phone=${mobileNumber}`)
+            // New logic integration
+            console.log(data);
+            const mobileNumber = decode?.mobile;
+            axiosInstance
+              .get(`${API_URL}/rules/eligibility?phone=${mobileNumber}`)
               .then((res) => {
-                  const qecBody = {
-                      applicationId: decode?.applicationId,
-                      userId: decode?.userId,
-                      instituteId: decode?.instituteId,
-                      studentName: data.firstName,
-                      applicantName: `${data.firstName} ${data.lastName}`,
-                      panId: data.panId,
-                      dob: dob,
-                      phone: mobileNumber,
-                      status: "Created",
-                      eligibility: res?.data?.data?.status,
-                  };
-                  console.log(qecBody)
+                const qecBody = {
+                  applicationId: decode?.applicationId,
+                  userId: decode?.userId,
+                  instituteId: decode?.instituteId,
+                  studentName: data.firstName,
+                  applicantName: `${data.firstName} ${data.lastName}`,
+                  panId: data.panId,
+                  dob: dob,
+                  phone: mobileNumber,
+                  status: "Created",
+                  eligibility: res?.data?.data?.status,
+                };
+                console.log(qecBody);
 
-                  axiosInstance.post(`${API_URL}/rules/create/eligibility`, qecBody)
-                      .then((result) => {
-                          console.log(result);
+                axiosInstance
+                  .post(`${API_URL}/rules/create/eligibility`, qecBody)
+                  .then((result) => {
+                    console.log(result);
 
-                          // Navigate to loan steps start after successful API calls
-                          // setToggleConsent(false);
-                          setTimeout(() => {
-                              navigate("/loan-steps-start", { state: { data, data2 } });
-                          }, 500);
-                      })
-                      .catch((err) => {
-                          console.log(err);
-                      });
+                    // Navigate to loan steps start after successful API calls
+                    // setToggleConsent(false);
+                    setTimeout(() => {
+                      navigate("/loan-steps-start", { state: { data, data2 } });
+                    }, 500);
+                  })
+                  .catch((err) => {
+                    console.log(err);
+                  });
               })
               .catch((err) => {
-                  console.log(err);
+                console.log(err);
               });
-      }
-
-      }
-      
-    )
-
-      .catch((err: any)=>{
-        console.log(err)
-        window.alert("Invalid PAN Details or Date of Birth")
-        setAttempts(prev => {
-          const newAttempts = prev + 1;
-          if (newAttempts >= 5) {
-            setBlockTimestamp(Date.now()); // Block the user if attempts exceed 5
           }
-          return newAttempts;
+        })
+
+        .catch((err: any) => {
+          console.log(err);
+          window.alert("Invalid PAN Details or Date of Birth");
+          setAttempts((prev) => {
+            const newAttempts = prev + 1;
+            if (newAttempts >= 5) {
+              setBlockTimestamp(Date.now()); // Block the user if attempts exceed 5
+            }
+            return newAttempts;
+          });
         });
-        
-      })
     }
-  }
+  };
 
   const fetchCKYCDetails = () => {
     const userId = decode.userId;
     const applicationId = decode.applicationId;
-  
+
     // Make sure userId and applicationId are available
-    
-    const ckycUrl=`${API_URL}/ckyc/create`
-    const ckycBody={
-    userId: decode?.userId,
-    panNumber: pan,
-    dateOfBirth: moment(dob,"YYYY-MM-DD").format("DD/MM/YYYY")
-  }
-    axiosInstance.post(ckycUrl,ckycBody)
-    .then((res)=>{
-      setCkycData(res?.data?.data)
-    }
-  )
-  .catch((err)=>{
-    alert("Error while fetching CKYC")
-    setAttempts(prev => {
-      const newAttempts = prev + 1;
-      if (newAttempts >= 5) {
-        setBlockTimestamp(Date.now());
-      }
-      return newAttempts;
-    });
-  })
+
+    const ckycUrl = `${API_URL}/ckyc/create`;
+    const ckycBody = {
+      userId: decode?.userId,
+      panNumber: pan,
+      dateOfBirth: moment(dob, "YYYY-MM-DD").format("DD/MM/YYYY"),
+    };
+    axiosInstance
+      .post(ckycUrl, ckycBody)
+      .then((res) => {
+        setCkycData(res?.data?.data);
+      })
+      .catch((err) => {
+        alert("Error while fetching CKYC");
+        setAttempts((prev) => {
+          const newAttempts = prev + 1;
+          if (newAttempts >= 5) {
+            setBlockTimestamp(Date.now());
+          }
+          return newAttempts;
+        });
+      });
   };
-  
+
   // const [toggleConsent,setToggleConsent]=useState(false)
 
   //  const handleStartSession=(item : any)=>{
   //   const randomGen= Date.now().toString(36) + Math.random().toString(36).substr(2);
-   
+
   //   (window as any). getBureauSession('708587bad0904485abe1127847dd62cd',randomGen,item.user_full_name_split[0].trim(),'',item.user_full_name_split[2].trim(),decode?.mobile).then((res :any)=>{
   //   console.log(res)
   //   setToggleConsent(true)
@@ -379,69 +394,70 @@ const [emailError, setEmailError] = useState(false);
   //   )
   // }
 
-//   const handleLoadSession = async () => {
-//     const result = await (window as any).startBureauSession();
-//     if (result) {
-//         switch (result.status) {
-//             case "SUCCESS":
-//                 const headers = {
-//                     'Authorization': `Bearer ${user}`,
-//                     'Content-Type': 'application/json',
-//                 };
+  //   const handleLoadSession = async () => {
+  //     const result = await (window as any).startBureauSession();
+  //     if (result) {
+  //         switch (result.status) {
+  //             case "SUCCESS":
+  //                 const headers = {
+  //                     'Authorization': `Bearer ${user}`,
+  //                     'Content-Type': 'application/json',
+  //                 };
 
-              
-//                 break;
+  //                 break;
 
-//             case "EXIT":
-//                 alert("Retry Submit");
-//                 toggle();
-//                 break;
+  //             case "EXIT":
+  //                 alert("Retry Submit");
+  //                 toggle();
+  //                 break;
 
-//             case "ERROR":
-//                 alert("Error Please Try Later");
-//                 toggle();
-//                 break;
+  //             case "ERROR":
+  //                 alert("Error Please Try Later");
+  //                 toggle();
+  //                 break;
 
-//             default:
-//                 alert("Contact our team for assistance");
-//                 break;
-//         }
-//     }
-// };
+  //             default:
+  //                 alert("Contact ouri co team for assistance");
+  //                 break;
+  //         }
+  //     }
+  // };
 
-const isBlocked = () => {
-  if (blockTimestamp === null) return false;
-  const elapsedTime = Date.now() - blockTimestamp;
-  return elapsedTime < 48 * 60 * 60 * 1000; // 48 hours in milliseconds
-};
+  const isBlocked = () => {
+    if (blockTimestamp === null) return false;
+    const elapsedTime = Date.now() - blockTimestamp;
+    return elapsedTime < 48 * 60 * 60 * 1000; // 48 hours in milliseconds
+  };
 
-console.log(attempts)
+  console.log(attempts);
 
-// Calculate remaining time
-const getRemainingTime = () => {
-  if (blockTimestamp === null) return null;
-  const elapsedTime = Date.now() - blockTimestamp;
-  const remainingTime = 48 * 60 * 60 * 1000 - elapsedTime;
-  return remainingTime > 0 ? remainingTime : null;
-};
+  // Calculate remaining time
+  const getRemainingTime = () => {
+    if (blockTimestamp === null) return null;
+    const elapsedTime = Date.now() - blockTimestamp;
+    const remainingTime = 48 * 60 * 60 * 1000 - elapsedTime;
+    return remainingTime > 0 ? remainingTime : null;
+  };
 
-const renderRemainingTime = () => {
-  const remainingTime = getRemainingTime();
-  if (remainingTime === null) return null;
+  const renderRemainingTime = () => {
+    const remainingTime = getRemainingTime();
+    if (remainingTime === null) return null;
 
-  const hours = Math.floor(remainingTime / (60 * 60 * 1000));
-  const minutes = Math.floor((remainingTime % (60 * 60 * 1000)) / (60 * 1000));
-  return `${hours}h ${minutes}m`;
-};
+    const hours = Math.floor(remainingTime / (60 * 60 * 1000));
+    const minutes = Math.floor(
+      (remainingTime % (60 * 60 * 1000)) / (60 * 1000)
+    );
+    return `${hours}h ${minutes}m`;
+  };
 
-  
   return (
     <>
       <div className={styles.body}>
         <div className={styles.container}>
           {loading ? ( // Show loading screen if loading is true
             <LoginDialog />
-          ) : ( // Show main content if toggleConsent is false
+          ) : (
+            // Show main content if toggleConsent is false
             <div className={styles.main}>
               <div className={styles.Header}>
                 <button
@@ -459,7 +475,11 @@ const renderRemainingTime = () => {
                 <p style={{ marginRight: "0.5rem", fontWeight: "bold" }}>T&C</p>
               </div>
               <br />
-              <img style={{ maxWidth: "90%", paddingLeft: "2rem" }} src={Progress} alt="" />
+              <img
+                style={{ maxWidth: "90%", paddingLeft: "2rem" }}
+                src={Progress}
+                alt=""
+              />
               <br />
               <LoanStepCard
                 title="Basic Details"
@@ -478,7 +498,17 @@ const renderRemainingTime = () => {
                   />
                 </div>
               </div>
-              {dobError && <p style={{ color: "#d32028", fontSize: "0.8rem", paddingLeft:"1rem" }}>Date of birth is required.</p>}
+              {dobError && (
+                <p
+                  style={{
+                    color: "#d32028",
+                    fontSize: "0.8rem",
+                    paddingLeft: "1rem",
+                  }}
+                >
+                  Date of birth is required.
+                </p>
+              )}
               <div className={styles.inputField}>
                 <Label text="PAN number" />
                 <InputText
@@ -488,7 +518,17 @@ const renderRemainingTime = () => {
                   changeHandler={handlePanChange}
                 />
               </div>
-              {panError && <p style={{ color: "#d32028", fontSize: "0.8rem", paddingLeft:"1rem"}}>PAN number is required.</p>}
+              {panError && (
+                <p
+                  style={{
+                    color: "#d32028",
+                    fontSize: "0.8rem",
+                    paddingLeft: "1rem",
+                  }}
+                >
+                  PAN number is required.
+                </p>
+              )}
               <div className={styles.inputField}>
                 <Label text="Email" />
                 <InputText
@@ -498,53 +538,79 @@ const renderRemainingTime = () => {
                   changeHandler={handleEmailChange}
                 />
               </div>
-              {emailError && <p style={{ color: "#d32028", fontSize: "0.8rem", paddingLeft:"1rem" }}>Invalid Email address</p>}
+              {emailError && (
+                <p
+                  style={{
+                    color: "#d32028",
+                    fontSize: "0.8rem",
+                    paddingLeft: "1rem",
+                  }}
+                >
+                  Invalid Email address
+                </p>
+              )}
 
               <br />
               <br />
               <br />
               <br />
-              {!loading&& ( // Render checkbox only when loading and toggleConsent are false
-            <div
-              style={{
-                display: "flex",
-                alignItems: "self-start",
-                gap: "8px",
-              }}
-            >
-              <label className={styles.checkboxContainer}>
-                <input type="checkbox" checked={isChecked} onChange={handleCheckboxChange} />
-                <span className={styles.checkmark}></span>
-              </label>
-              <p style={{ marginBottom: "1rem", paddingBottom: "1rem", color: "#667085", fontSize: "1.2rem" }}>
-                I consent and authorize <span style={{ color: "#d32028" }}>Fee</span><span style={{ color: "black" }}>monk</span> to get a background check and a
-                consumer credit report on me
-              </p>
+              {!loading && ( // Render checkbox only when loading and toggleConsent are false
+                <div
+                  style={{
+                    display: "flex",
+                    alignItems: "self-start",
+                    gap: "8px",
+                  }}
+                >
+                  <label className={styles.checkboxContainer}>
+                    <input
+                      type="checkbox"
+                      checked={isChecked}
+                      onChange={handleCheckboxChange}
+                    />
+                    <span className={styles.checkmark}></span>
+                  </label>
+                  <p
+                    style={{
+                      marginBottom: "1rem",
+                      paddingBottom: "1rem",
+                      color: "#667085",
+                      fontSize: "1.2rem",
+                    }}
+                  >
+                    I consent and authorize{" "}
+                    <span style={{ color: "#d32028" }}>Fee</span>
+                    <span style={{ color: "black" }}>monk</span> to get a
+                    background check and a consumer credit report on me
+                  </p>
+                </div>
+              )}
+              {isBlocked() ? (
+                <p
+                  style={{
+                    color: "red",
+                    marginTop: "1rem",
+                    textAlign: "center",
+                  }}
+                >
+                  You have reached the maximum number of verification attempts.
+                  Please try again in <strong>{renderRemainingTime()}</strong>.
+                </p>
+              ) : (
+                <Button
+                  onPress={getPanPro}
+                  text={"Verify"}
+                  imageRight={ArrowRight}
+                  fullWidth
+                  disabled={!isChecked || dobError || panError} // Disable button if attempts >= 5
+                />
+              )}
             </div>
           )}
-              {isBlocked() ? (
-                  <p style={{ color: "red", marginTop: "1rem", textAlign:"center"}}>
-                    You have reached the maximum number of verification attempts. Please try again in <strong>{renderRemainingTime()}</strong>.
-                  </p>
-                ) : (
-                  <Button
-                    onPress={getPanPro}
-                    text={"Verify"}
-                    imageRight={ArrowRight}
-                    fullWidth
-                    disabled={!isChecked || dobError || panError}  // Disable button if attempts >= 5
-                  />
-                )}
-
-            </div>
-          )
-          }
-          
         </div>
       </div>
     </>
   );
-  
 }
 
 export default LoanStepsBasicDetails;
