@@ -8,6 +8,8 @@ import InputText from "../../components/atoms/InputText";
 import BackArrow from "../../images/icons/close-btn.svg";
 import bigcalendar from "../../images/static_assests/bigcalendar.svg";
 import bigemi from "../../images/static_assests/bigemi.svg";
+
+import download from "../../images/icons/download.svg";
 import biginterest from "../../images/static_assests/biginterest.svg";
 import { API_URL } from "../../utils";
 import jwtDecode from "jwt-decode";
@@ -230,10 +232,9 @@ function ViewOffer() {
               </div>
             </div>
           </div>
-
           <br />
           <br />
-          <div
+          {/* <div
             style={{
               display: "flex",
               justifyContent: "center",
@@ -297,10 +298,27 @@ function ViewOffer() {
             type="date"
             value={selectedDate}
             changeHandler={handleDateChange}
-          />
+          /> */}
           <br />
           <br />
           <br />
+          <div style={{ display: "flex", justifyContent: "space-evenly" }}>
+            <p
+              style={{
+                textAlign: "left",
+                fontSize: "2rem",
+                fontWeight: "bold",
+              }}
+            >
+              Sanction Letter
+            </p>
+            <img
+              src={download}
+              style={{ width: "2rem", marginBottom: "1.5rem" }}
+            />
+          </div>
+          <div></div>
+          <p></p>
           <Button
             text={"Avail Loan Now"}
             onPress={handleButtonClick}
