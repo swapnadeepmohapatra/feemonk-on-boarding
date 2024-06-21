@@ -318,6 +318,7 @@ function ViewOffer() {
             />
           </div>
           <div></div>
+          <br />
           <p></p>
           <Button
             text={"Avail Loan Now"}
