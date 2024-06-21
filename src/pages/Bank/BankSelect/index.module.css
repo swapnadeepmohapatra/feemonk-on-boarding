@@ -10,7 +10,7 @@
   min-height: 600px;
   box-shadow: 0 0.5rem 1rem rgb(0 0 0 / 5%);
   /* margin: 1rem; */
-  
+
   height: calc(100vh - 0.00001rem);
   /* width: 100lvh; */
 }
@@ -29,8 +29,7 @@
   background-size: cover;
   justify-content: space-between;
   height: 100vh;
-  width:100vh;
-  
+  width: 100vh;
 }
 .container h1,
 .container p {

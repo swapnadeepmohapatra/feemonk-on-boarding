@@ -12,26 +12,22 @@ import { useNavigate } from "react-router-dom";
 import { API_URL } from "../../../../utils";
 import { useLocalStorage } from "../../../../hooks";
 
-function LoginDialog({ support}: any) {
- 
-
- 
-
- 
-
+function LoginDialog({ support }: any) {
   return (
-    <div className={styles.backdrop} >
-      <div className={styles.loginContainer} onClick={(e) => e.stopPropagation()}>
+    <div className={styles.backdrop}>
+      <div
+        className={styles.loginContainer}
+        onClick={(e) => e.stopPropagation()}
+      >
         {/* <img style={{marginLeft:"auto",width:"2rem"}}src = {close} onClick={onClose}/> */}
-        <img style={{justifyContent:"center"}} src ={monk}/>
+        <img style={{ justifyContent: "center" }} src={monk} />
         <p className={styles.textPreLogin}>Validating your PAN</p>
-        
+
         <div className={styles.loader}>
           <li className={styles.ball}></li>
           <li className={styles.ball}></li>
           <li className={styles.ball}></li>
         </div>
-        
       </div>
     </div>
   );

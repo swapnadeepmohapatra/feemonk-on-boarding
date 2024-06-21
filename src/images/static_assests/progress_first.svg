@@ -1,40 +1,40 @@
 <svg width="297" height="32" viewBox="0 0 297 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-<rect x="30.3232" y="15.0001" width="61.6499" height="2" fill="#D3D3D3"/>
-<rect x="30.3232" y="15.0001" width="46.1714" height="2" fill="#D32028"/>
-<rect x="117.521" y="15.0001" width="62.5342" height="2" fill="#D3D3D3"/>
-<rect x="181.465" y="15.0001" width="93.4697" height="2" fill="#D3D3D3"/>
-<g clip-path="url(#clip0_311_21901)">
-<rect x="176.667" y="6.10352e-05" width="32" height="32" rx="16" fill="white"/>
-<circle cx="192.667" cy="16.0001" r="5" fill="#D3D3D3"/>
-<rect x="177.667" y="1.00006" width="30" height="30" rx="15" stroke="#D3D3D3" stroke-width="2"/>
-</g>
-<g clip-path="url(#clip1_311_21901)">
-<rect x="87" y="6.10352e-05" width="32" height="32" rx="16" fill="white"/>
-<circle cx="103" cy="16.0001" r="5" fill="#D3D3D3"/>
-<rect x="88" y="1.00006" width="30" height="30" rx="15" stroke="#D3D3D3" stroke-width="2"/>
-</g>
-<g clip-path="url(#clip2_311_21901)">
-<rect x="265" y="6.10352e-05" width="32" height="32" rx="16" fill="white"/>
-<circle cx="281" cy="16.0001" r="5" fill="#D3D3D3"/>
-<rect x="266" y="1.00006" width="30" height="30" rx="15" stroke="#D3D3D3" stroke-width="2"/>
-</g>
-<g clip-path="url(#clip3_311_21901)">
-<rect width="32" height="32" rx="16" fill="#FFECED"/>
-</g>
-<rect x="1" y="1" width="30" height="30" rx="15" stroke="#D32028" stroke-width="2"/>
-<circle cx="16" cy="16" r="5" fill="#D32028"/>
-<defs>
-<clipPath id="clip0_311_21901">
-<rect x="176.667" y="6.10352e-05" width="32" height="32" rx="16" fill="white"/>
-</clipPath>
-<clipPath id="clip1_311_21901">
-<rect x="87" y="6.10352e-05" width="32" height="32" rx="16" fill="white"/>
-</clipPath>
-<clipPath id="clip2_311_21901">
-<rect x="265" y="6.10352e-05" width="32" height="32" rx="16" fill="white"/>
-</clipPath>
-<clipPath id="clip3_311_21901">
-<rect width="32" height="32" rx="16" fill="white"/>
-</clipPath>
-</defs>
+    <rect x="30.3232" y="15.0001" width="61.6499" height="2" fill="#D3D3D3" />
+    <rect x="30.3232" y="15.0001" width="46.1714" height="2" fill="#D32028" />
+    <rect x="117.521" y="15.0001" width="62.5342" height="2" fill="#D3D3D3" />
+    <rect x="181.465" y="15.0001" width="93.4697" height="2" fill="#D3D3D3" />
+    <g clip-path="url(#clip0_311_21901)">
+        <rect x="176.667" y="6.10352e-05" width="32" height="32" rx="16" fill="white" />
+        <circle cx="192.667" cy="16.0001" r="5" fill="#D3D3D3" />
+        <rect x="177.667" y="1.00006" width="30" height="30" rx="15" stroke="#D3D3D3" stroke-width="2" />
+    </g>
+    <g clip-path="url(#clip1_311_21901)">
+        <rect x="87" y="6.10352e-05" width="32" height="32" rx="16" fill="white" />
+        <circle cx="103" cy="16.0001" r="5" fill="#D3D3D3" />
+        <rect x="88" y="1.00006" width="30" height="30" rx="15" stroke="#D3D3D3" stroke-width="2" />
+    </g>
+    <g clip-path="url(#clip2_311_21901)">
+        <rect x="265" y="6.10352e-05" width="32" height="32" rx="16" fill="white" />
+        <circle cx="281" cy="16.0001" r="5" fill="#D3D3D3" />
+        <rect x="266" y="1.00006" width="30" height="30" rx="15" stroke="#D3D3D3" stroke-width="2" />
+    </g>
+    <g clip-path="url(#clip3_311_21901)">
+        <rect width="32" height="32" rx="16" fill="#FFECED" />
+    </g>
+    <rect x="1" y="1" width="30" height="30" rx="15" stroke="#D32028" stroke-width="2" />
+    <circle cx="16" cy="16" r="5" fill="#D32028" />
+    <defs>
+        <clipPath id="clip0_311_21901">
+            <rect x="176.667" y="6.10352e-05" width="32" height="32" rx="16" fill="white" />
+        </clipPath>
+        <clipPath id="clip1_311_21901">
+            <rect x="87" y="6.10352e-05" width="32" height="32" rx="16" fill="white" />
+        </clipPath>
+        <clipPath id="clip2_311_21901">
+            <rect x="265" y="6.10352e-05" width="32" height="32" rx="16" fill="white" />
+        </clipPath>
+        <clipPath id="clip3_311_21901">
+            <rect width="32" height="32" rx="16" fill="white" />
+        </clipPath>
+    </defs>
 </svg>

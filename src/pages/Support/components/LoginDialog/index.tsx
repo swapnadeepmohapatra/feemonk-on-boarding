@@ -13,21 +13,22 @@ import { API_URL } from "../../../../utils";
 import { useLocalStorage } from "../../../../hooks";
 
 function LoginDialog({ support, onClose }: any) {
- 
-
- 
-
- 
-
   return (
     <div className={styles.backdrop} onClick={onClose}>
-      <div className={styles.loginContainer} onClick={(e) => e.stopPropagation()}>
-        <img style={{marginLeft:"auto",width:"2rem"}}src = {close} onClick={onClose}/>
-        <img style={{justifyContent:"center"}} src ={monk}/>
+      <div
+        className={styles.loginContainer}
+        onClick={(e) => e.stopPropagation()}
+      >
+        <img
+          style={{ marginLeft: "auto", width: "2rem" }}
+          src={close}
+          onClick={onClose}
+        />
+        <img style={{ justifyContent: "center" }} src={monk} />
         <p className={styles.textPreLogin}>Thank you for reporting</p>
-        <p className={styles.textLogin}>Our team will contact you in 24 hours</p>
-        
-        
+        <p className={styles.textLogin}>
+          Our team will contact you in 24 hours
+        </p>
       </div>
     </div>
   );

@@ -38,7 +38,11 @@ function CoAppDetails() {
             <p style={{ marginRight: "0.5rem", fontWeight: "bold" }}>T&C</p>
           </div>
           <br />
-          <img style={{ maxWidth: "90%", paddingLeft: "2rem" }} src={Progress} alt="" />
+          <img
+            style={{ maxWidth: "90%", paddingLeft: "2rem" }}
+            src={Progress}
+            alt=""
+          />
           <br />
           <LoanStepCard
             title="Co-applicant Details"
@@ -54,25 +58,24 @@ function CoAppDetails() {
             />
           </div> */}
           <div className={styles.inputField}>
-  <Label text="Date of birth" />
-  <div className={styles.dateInputWrapper} onClick={() => document.getElementById('dob-input')?.click()}>
-    <InputText
-      id="dob-input"
-      placeholder="Date of birth"
-      type="date"
-      value={dob}
-      changeHandler={(e) => setDob(e.target.value)}
-    />
-  </div>
-</div>
-
+            <Label text="Date of birth" />
+            <div
+              className={styles.dateInputWrapper}
+              onClick={() => document.getElementById("dob-input")?.click()}
+            >
+              <InputText
+                id="dob-input"
+                placeholder="Date of birth"
+                type="date"
+                value={dob}
+                changeHandler={(e) => setDob(e.target.value)}
+              />
+            </div>
+          </div>
 
           <div className={styles.inputField}>
             <Label text="PAN number" />
-            <InputText
-              placeholder="EBP0000000XR"
-              type="text"
-            />
+            <InputText placeholder="EBP0000000XR" type="text" />
           </div>
           <br />
           <div
@@ -80,13 +83,24 @@ function CoAppDetails() {
               display: "flex",
               alignItems: "self-start",
               gap: "8px",
-              
             }}
           >
-            <input style={{marginTop:"0.3rem",width:"1rem"}}type="checkbox" />
-            <p style={{marginBottom:"1rem",paddingBottom:"1rem",color:"#667085",fontSize:"1.2rem"}}>
-              I consent and authorize <span style={{color:"#d32028"}}>Fee</span><span style={{color:"black"}}>monk</span> to get a background check and a
-              consumer credit report on me
+            <input
+              style={{ marginTop: "0.3rem", width: "1rem" }}
+              type="checkbox"
+            />
+            <p
+              style={{
+                marginBottom: "1rem",
+                paddingBottom: "1rem",
+                color: "#667085",
+                fontSize: "1.2rem",
+              }}
+            >
+              I consent and authorize{" "}
+              <span style={{ color: "#d32028" }}>Fee</span>
+              <span style={{ color: "black" }}>monk</span> to get a background
+              check and a consumer credit report on me
             </p>
           </div>
           <br />

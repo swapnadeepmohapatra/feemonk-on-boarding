@@ -16,9 +16,9 @@ const BankPdfUpload: React.FC = () => {
   const [password, setPassword] = useState("");
   const [authToken] = useLocalStorage("feemonk_data", "");
   const navigate = useNavigate();
-  const user=sessionStorage.getItem('auth_token') || ""
-  const decode=(JSON.parse(user).value)  as any
-  console.log(decode)
+  const user = sessionStorage.getItem("auth_token") || "";
+  const decode = JSON.parse(user).value as any;
+  console.log(decode);
 
   const uploadPdf = async () => {
     const response = await fetch(`${API_URL}/login/auth`, {
@@ -39,7 +39,7 @@ const BankPdfUpload: React.FC = () => {
     data.append("userId", result.data.userId);
 
     data.append("password", password);
-    
+
     const pdfResponse = await fetch(
       `${API_URL}/bank-statement-analysis/finbox/upload`,
       {
@@ -61,78 +61,76 @@ const BankPdfUpload: React.FC = () => {
   return (
     <div className={styles.body}>
       <div className={styles.container}>
-
-        <div className= {styles.box}>
-        <h1>Upload Bank Statement PDF</h1>
-        <Dropzone onDrop={(acceptedFiles) => setPdf(acceptedFiles[0])}>
-          {({ getRootProps, getInputProps }) => (
-            <DocumentCard>
-              <div
-                onClick={() => {
-                  // selfieClickHandler();
-                }}
-                {...getRootProps()}
-              >
-                <input {...getInputProps()} />
-                <p
-                  style={{
-                    textAlign: "center",
-                    color: "#D32028",
-                    fontWeight: "bold",
-                    fontSize: 18,
-                    marginBottom: 5,
-                  }}
-                >
-                  {pdf ? "Uploaded PDF" : "Upload PDF"}
-                </p>
-                <p
-                  style={{
-                    textAlign: "center",
-                    color: "#868FA3",
-                    marginBottom: 5,
-                  }}
-                >
-                  {pdf
-                    ? JSON.stringify(pdf.name)
-                    : "Please upload the pdf of your bank statement."}
-                </p>
+        <div className={styles.box}>
+          <h1>Upload Bank Statement PDF</h1>
+          <Dropzone onDrop={(acceptedFiles) => setPdf(acceptedFiles[0])}>
+            {({ getRootProps, getInputProps }) => (
+              <DocumentCard>
                 <div
-                  style={{
-                    display: "flex",
-                    alignItems: "center",
-                    margin: 16,
-                    flexDirection: "column",
+                  onClick={() => {
+                    // selfieClickHandler();
                   }}
+                  {...getRootProps()}
                 >
-                  {/* <SelfieImage /> */}
-                  <img
-                    src="bank-statement.svg"
-                    alt=""
+                  <input {...getInputProps()} />
+                  <p
                     style={{
-                      width: "50%",
+                      textAlign: "center",
+                      color: "#D32028",
+                      fontWeight: "bold",
+                      fontSize: 18,
+                      marginBottom: 5,
                     }}
-                  />
+                  >
+                    {pdf ? "Uploaded PDF" : "Upload PDF"}
+                  </p>
+                  <p
+                    style={{
+                      textAlign: "center",
+                      color: "#868FA3",
+                      marginBottom: 5,
+                    }}
+                  >
+                    {pdf
+                      ? JSON.stringify(pdf.name)
+                      : "Please upload the pdf of your bank statement."}
+                  </p>
+                  <div
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      margin: 16,
+                      flexDirection: "column",
+                    }}
+                  >
+                    {/* <SelfieImage /> */}
+                    <img
+                      src="bank-statement.svg"
+                      alt=""
+                      style={{
+                        width: "50%",
+                      }}
+                    />
+                  </div>
                 </div>
-              </div>
-                    <p style={{marginBottom:"1rem"}}>password is optional</p>
-              {pdf && (
-                
-                <InputText
-                  placeholder="PDF Password"
-                  value={password}
-                  changeHandler={(e) => setPassword(e.target.value)}
-                />
-              )}
-            </DocumentCard>
-          )}
-        </Dropzone>
-        <Button
-          onPress={() => {
-            uploadPdf();
-          }}
-          disabled={!pdf }
-          text="Proceed"
-        />
+                <p style={{ marginBottom: "1rem" }}>password is optional</p>
+                {pdf && (
+                  <InputText
+                    placeholder="PDF Password"
+                    value={password}
+                    changeHandler={(e) => setPassword(e.target.value)}
+                  />
+                )}
+              </DocumentCard>
+            )}
+          </Dropzone>
+          <Button
+            onPress={() => {
+              uploadPdf();
+            }}
+            disabled={!pdf}
+            text="Proceed"
+          />
         </div>
       </div>
     </div>

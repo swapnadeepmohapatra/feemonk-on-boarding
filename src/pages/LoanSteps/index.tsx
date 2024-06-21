@@ -17,12 +17,21 @@ function LoanSteps() {
     <div className={styles.body}>
       <div className={styles.container}>
         <div className={styles.main}>
-        <div className={styles.Header}>
-        <button style={{ border: "none", background: "none" }} onClick={() => {
-          navigate("/home");
-        }}><img style={{ marginLeft: "0.5rem", height: "1.5rem" }} src={BackArrow} alt="" /></button>
-          <p style={{marginRight:"0.5rem",fontWeight:"bold"}}>T&C</p>
-        </div>
+          <div className={styles.Header}>
+            <button
+              style={{ border: "none", background: "none" }}
+              onClick={() => {
+                navigate("/home");
+              }}
+            >
+              <img
+                style={{ marginLeft: "0.5rem", height: "1.5rem" }}
+                src={BackArrow}
+                alt=""
+              />
+            </button>
+            <p style={{ marginRight: "0.5rem", fontWeight: "bold" }}>T&C</p>
+          </div>
           <br />
           <br />
 
@@ -56,18 +65,25 @@ function LoanSteps() {
               image={CourseDetails}
               tiime="3 min"
             />
-            <span> <span style={{fontSize: "0.8rem",
-            color:'black',
-            backgroundColor:"#FFDFE1",
-            paddingTop:"0.2rem",
-            paddingBottom:"0.2rem",
-            paddingLeft:"0.4rem",
-            paddingRight:"0.4rem",
-            borderRadius:"1rem",
-            marginLeft:"4rem",
-            marginBottom:"2rem"
-           
-            }}>LOAN OFFER</span></span>
+            <span>
+              {" "}
+              <span
+                style={{
+                  fontSize: "0.8rem",
+                  color: "black",
+                  backgroundColor: "#FFDFE1",
+                  paddingTop: "0.2rem",
+                  paddingBottom: "0.2rem",
+                  paddingLeft: "0.4rem",
+                  paddingRight: "0.4rem",
+                  borderRadius: "1rem",
+                  marginLeft: "4rem",
+                  marginBottom: "2rem",
+                }}
+              >
+                LOAN OFFER
+              </span>
+            </span>
           </div>
           <br />
           <br />

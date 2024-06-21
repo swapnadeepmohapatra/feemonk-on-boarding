@@ -43,11 +43,19 @@
   color: #45b21e;
   background: #ecfdf0;
 }
+.InSanction {
+  color: #45b21e;
+  background: #ecfdf0;
+}
 .Rejected {
   color: #d32028;
   background: #ffeeef;
 }
-.InProgress {
+.InSubmission {
+  color: #fa9b0c;
+  background: #fff6de;
+}
+.InReview {
   color: #fa9b0c;
   background: #fff6de;
 }
@@ -58,7 +66,5 @@
 }
 
 .action {
-  margin-right: 0.75rem /* Adjust as needed */
+  margin-right: 0.75rem; /* Adjust as needed */
 }
-
-

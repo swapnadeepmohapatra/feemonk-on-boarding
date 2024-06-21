@@ -7,9 +7,6 @@ import ArrowRight from "../../images/icons/arrow_right.svg";
 import Confetti from "../../images/static_assests/confeti.svg";
 import closebtn from "../../images/icons/close-btn.svg";
 function AccountAggregatorThankYou() {
-
-
-
   const navigate = useNavigate();
   const [showConfetti, setShowConfetti] = useState(false);
 
@@ -20,15 +17,16 @@ function AccountAggregatorThankYou() {
 
   return (
     <div className={styles.body}>
-      
-      <div className={styles.container} style={{marginBottom:"10rem"}}>
+      <div className={styles.container} style={{ marginBottom: "10rem" }}>
         {/* Apply animation class if showConfetti is true */}
-        
+
         <img
           src={Confetti}
           alt=""
           // style={{ marginBottom: "3rem",}}
-          className={`${styles.confetti} ${showConfetti ? styles.showConfetti : ''}`}
+          className={`${styles.confetti} ${
+            showConfetti ? styles.showConfetti : ""
+          }`}
         />
         <div
           style={{
@@ -38,7 +36,7 @@ function AccountAggregatorThankYou() {
             alignItems: "center",
             marginBottom: "14rem",
             marginTop: "6rem",
-            padding:"2rem"
+            padding: "2rem",
           }}
         >
           <svg
@@ -78,13 +76,13 @@ function AccountAggregatorThankYou() {
             style={{
               textAlign: "center",
               fontSize: "1.4rem",
-              paddingTop:"1rem"
+              paddingTop: "1rem",
             }}
           >
             Your application is under review. We will update soon
           </p>
           <br />
-          
+
           <br />
           <br />
           <div>

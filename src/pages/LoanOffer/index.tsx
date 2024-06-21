@@ -17,15 +17,16 @@ function LoanOffer() {
 
   return (
     <div className={styles.body}>
-      
-      <div className={styles.container} style={{marginBottom:"10rem"}}>
+      <div className={styles.container} style={{ marginBottom: "10rem" }}>
         {/* Apply animation class if showConfetti is true */}
-        
+
         <img
           src={Confetti}
           alt=""
           // style={{ marginBottom: "3rem",}}
-          className={`${styles.confetti} ${showConfetti ? styles.showConfetti : ''}`}
+          className={`${styles.confetti} ${
+            showConfetti ? styles.showConfetti : ""
+          }`}
         />
         <div
           style={{
@@ -76,7 +77,7 @@ function LoanOffer() {
             }}
           >
             You are eligible to avail a loan
-            <p>amount upto</p> 
+            <p>amount upto</p>
           </p>
           <br />
           <br />
