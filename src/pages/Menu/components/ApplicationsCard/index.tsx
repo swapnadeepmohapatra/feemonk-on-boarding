@@ -17,7 +17,11 @@ function ApplicationsCard({ status }: ApplicationsCardProps) {
               <p className={styles.continue}>Continue</p>
             </div>
             <div className={styles.arrowContainer}>
-              <img src={rightArrow} alt="Right Arrow" className={styles.arrow} />
+              <img
+                src={rightArrow}
+                alt="Right Arrow"
+                className={styles.arrow}
+              />
             </div>
           </div>
         );
@@ -28,7 +32,11 @@ function ApplicationsCard({ status }: ApplicationsCardProps) {
               <p className={styles.seeMore}>See more</p>
             </div>
             <div className={styles.arrowContainer}>
-              <img src={rightArrow} alt="Right Arrow" className={styles.arrow} />
+              <img
+                src={rightArrow}
+                alt="Right Arrow"
+                className={styles.arrow}
+              />
             </div>
           </div>
         );
@@ -39,14 +47,35 @@ function ApplicationsCard({ status }: ApplicationsCardProps) {
 
   return (
     <div className={styles.card}>
-      <div style={{ display: "flex", flexDirection: "row", justifyContent: "space-between" }}>
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "row",
+          justifyContent: "space-between",
+        }}
+      >
         <div>
-          <p className={styles.label}><span><img style={{ marginRight: "0.2rem", marginTop: "0.2rem" }} src={calendar} alt="Calendar" /></span>Start Date</p>
+          <p className={styles.label}>
+            <span>
+              <img
+                style={{ marginRight: "0.2rem", marginTop: "0.2rem" }}
+                src={calendar}
+                alt="Calendar"
+              />
+            </span>
+            Start Date
+          </p>
           <p className={styles.cardDate}>20/03/2023</p>
         </div>
         <div>
           <p className={styles.label}>Status</p>
-          <p className={`${styles.cardStatus} ${styles[status.split(" ").join("")]}`}>{status}</p>
+          <p
+            className={`${styles.cardStatus} ${
+              styles[status.split(" ").join("")]
+            }`}
+          >
+            {status}
+          </p>
         </div>
       </div>
       <div className={styles.cardDetails}>

@@ -51,10 +51,10 @@
   margin: 10px 0px;
 }
 
-.Header{
+.Header {
   display: inline-flex;
   /* justify-content: space-between; */
-  gap:1rem;
+  gap: 1rem;
   margin-top: 2rem;
 }
 

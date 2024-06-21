@@ -21,7 +21,7 @@ function EVerify() {
             alt=""
             style={{
               width: "90%",
-              marginLeft:"1.3rem"
+              marginLeft: "1.3rem",
             }}
           />
           <br />
@@ -42,7 +42,7 @@ function EVerify() {
             }}
           >
             We are happy to be part of your/child's
-            <p>education journey.</p> 
+            <p>education journey.</p>
           </p>
           <br />
           <p
@@ -51,7 +51,7 @@ function EVerify() {
               color: "#D32028",
             }}
           >
-            As one final step, please finish the 
+            As one final step, please finish the
             <p>e-Mandate through Digital Sign</p>
           </p>
 
@@ -70,39 +70,44 @@ function EVerify() {
               padding: "1rem",
               boxShadow: "0px 3px 3px rgba(211, 32, 40, 0.1)",
               borderRadius: "12px",
-              marginBottom:"2rem"
+              marginBottom: "2rem",
             }}
           >
-            <img style={{width:"6rem",marginBottom:"2rem"}}src={EVerifyImg} alt="" />
+            <img
+              style={{ width: "6rem", marginBottom: "2rem" }}
+              src={EVerifyImg}
+              alt=""
+            />
             <Button
-            
-            text={"Proceed & digital sign"}
-            onPress={() => {
-              navigate("/sanction-letter");
-            }}
-            imageRight={ArrowRight}
-            fullWidth
-          />
-          <p
-            style={{
-              marginTop:"2rem",
-              
-              color:"#667085",
-              fontSize:"1.15rem"
-            }}
-          >
-            I authorize <span style={{color:"#D32028",fontWeight:"500"}}>Fee</span><span style={{color:"#000",fontWeight:"500"}}>monk</span> to utilize my digital sign at the authentic
-            areas for the purpose of loan
-          </p>
+              text={"Proceed & digital sign"}
+              onPress={() => {
+                navigate("/sanction-letter");
+              }}
+              imageRight={ArrowRight}
+              fullWidth
+            />
+            <p
+              style={{
+                marginTop: "2rem",
+
+                color: "#667085",
+                fontSize: "1.15rem",
+              }}
+            >
+              I authorize{" "}
+              <span style={{ color: "#D32028", fontWeight: "500" }}>Fee</span>
+              <span style={{ color: "#000", fontWeight: "500" }}>monk</span> to
+              utilize my digital sign at the authentic areas for the purpose of
+              loan
+            </p>
           </div>
           <br />
           <br />
           <br />
           <br />
           <br />
-          
+
           <br />
-          
         </div>
       </div>
     </div>

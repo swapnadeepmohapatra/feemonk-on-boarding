@@ -15,7 +15,7 @@ export const createDigilocker = async (
     }
   )
     .then((response) => {
-      console.log("response",response)
+      console.log("response", response);
       return response.json();
     })
     .catch((error) => {
@@ -74,7 +74,7 @@ export const createNach = async (data: any) => {
     body: JSON.stringify(data),
   })
     .then((response) => {
-      console.log("res",response)
+      console.log("res", response);
       return response.json();
     })
     .catch((error) => {

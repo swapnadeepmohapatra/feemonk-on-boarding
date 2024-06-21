@@ -9,10 +9,12 @@ import Button from "../../components/atoms/Button";
 import ApplicationsCard from "./components/ApplicationsCard";
 import LoansCard from "./components/LoansCard";
 import redProfile from "../../images/icons/redProfile.svg";
-import RepaymentsCard from "./components/RepaymentsCard"
-import FeepaymentsCard from "./components/FeepaymentsCard"
+import RepaymentsCard from "./components/RepaymentsCard";
+import FeepaymentsCard from "./components/FeepaymentsCard";
 
-function renderSections(page: "Applications" | "Loans" | "Repayment" | "Fee Payment") {
+function renderSections(
+  page: "Applications" | "Loans" | "Repayment" | "Fee Payment"
+) {
   switch (page) {
     case "Applications":
       return (
@@ -32,7 +34,7 @@ function renderSections(page: "Applications" | "Loans" | "Repayment" | "Fee Paym
           <LoansCard status="Active" />
           <h3 className={styles.heading}>Closed Loans</h3>
           <LoansCard status="Inactive" />
-          <LoansCard  status="Inactive"/>
+          <LoansCard status="Inactive" />
         </div>
       );
     case "Repayment":
@@ -41,7 +43,7 @@ function renderSections(page: "Applications" | "Loans" | "Repayment" | "Fee Paym
           <h3 className={styles.heading}>Active Repayments</h3>
           <RepaymentsCard status="Active" />
           <h3 className={styles.heading}>Previous Repayments</h3>
-          <RepaymentsCard  status="Inactive"/>
+          <RepaymentsCard status="Inactive" />
         </div>
       );
     case "Fee Payment":
@@ -52,9 +54,9 @@ function renderSections(page: "Applications" | "Loans" | "Repayment" | "Fee Paym
           <FeepaymentsCard status="Active" />
           <h3 className={styles.heading}>Previous Fee Payments</h3>
           <FeepaymentsCard status="Inactive" />
-          <FeepaymentsCard  status="Inactive"/>
+          <FeepaymentsCard status="Inactive" />
         </div>
-      );    
+      );
     default:
       return (
         <div className={styles.loanSectionBody}>

@@ -70,7 +70,11 @@ function IncomeDetails() {
             </button>
             <p style={{ marginRight: "0.5rem", fontWeight: "bold" }}>T&C</p>
           </div>
-          <img style={{ maxWidth: "90%", paddingLeft: "2rem" }} src={Progress} alt="" />
+          <img
+            style={{ maxWidth: "90%", paddingLeft: "2rem" }}
+            src={Progress}
+            alt=""
+          />
           <br />
           <LoanStepCard
             title="Income details"
@@ -88,11 +92,15 @@ function IncomeDetails() {
               padding: "1rem",
               background: "#FFF7F2",
               border: "1px solid #F9D8D6",
-              borderRadius: isBankDetailsMinimized ? "12px" : "12px 12px 0px 0px",
+              borderRadius: isBankDetailsMinimized
+                ? "12px"
+                : "12px 12px 0px 0px",
               transition: "border-radius 0.3s ease",
             }}
           >
-            <div style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
+            <div
+              style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}
+            >
               <img
                 style={{ height: "2.2rem", marginRight: "0.5rem" }}
                 src={bank}
@@ -144,48 +152,124 @@ function IncomeDetails() {
                 <InputText square placeholder="Enter IFSC code" />
                 <Label text="Bank name" />
                 <InputText square placeholder="Enter Bank name" />
-                <div style={{
-                  position: "relative",
-                  display: "flex",
-                  flexDirection: "column",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  gap: "0.5rem", // Adjust as needed
-                  padding: "0.25rem",
-                  background: "#FFFFFF",
-                  border: "1px solid #40B64B",
-                  borderRadius: "12px",
-                  transition: "border-radius 0.3s ease",
-                }}>
+                <div
+                  style={{
+                    position: "relative",
+                    display: "flex",
+                    flexDirection: "column",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    gap: "0.5rem", // Adjust as needed
+                    padding: "0.25rem",
+                    background: "#FFFFFF",
+                    border: "1px solid #40B64B",
+                    borderRadius: "12px",
+                    transition: "border-radius 0.3s ease",
+                  }}
+                >
                   {/* Loading Icon */}
                   <img
                     src={upload}
-                    style={{ position: "absolute", top: "0.5rem", left: "0.5rem", width: "2.5rem" }}
+                    style={{
+                      position: "absolute",
+                      top: "0.5rem",
+                      left: "0.5rem",
+                      width: "2.5rem",
+                    }}
                     alt="Loading"
                   />
                   {/* File Name */}
                   {file && (
                     <>
-                      <p style={{ color: "#333", fontSize: "1rem", fontWeight: "500", margin: 0 }}>File Name: {file.name}</p>
+                      <p
+                        style={{
+                          color: "#333",
+                          fontSize: "1rem",
+                          fontWeight: "500",
+                          margin: 0,
+                        }}
+                      >
+                        File Name: {file.name}
+                      </p>
                       {/* File Size */}
-                      <p style={{ color: "#333", fontSize: "1rem", fontWeight: "500", marginRight: "7.23rem" }}>{(file.size / 1024 / 1024).toFixed(0)} MB</p>
+                      <p
+                        style={{
+                          color: "#333",
+                          fontSize: "1rem",
+                          fontWeight: "500",
+                          marginRight: "7.23rem",
+                        }}
+                      >
+                        {(file.size / 1024 / 1024).toFixed(0)} MB
+                      </p>
                       {/* Loading Bar and Percentage */}
-                      <div style={{ display: "flex", alignItems: "center", width: "70%", marginLeft: "1.5rem" }}>
-                        <div style={{ flex: "1", height: "0.5rem", background: "#E0E0E0", borderRadius: "0.25rem", position: "relative" }}>
-                          <div style={{ width: `${progress}%`, height: "100%", background: "#40B64B", borderRadius: "0.25rem", position: "absolute", top: 0, left: 0 }}></div>
+                      <div
+                        style={{
+                          display: "flex",
+                          alignItems: "center",
+                          width: "70%",
+                          marginLeft: "1.5rem",
+                        }}
+                      >
+                        <div
+                          style={{
+                            flex: "1",
+                            height: "0.5rem",
+                            background: "#E0E0E0",
+                            borderRadius: "0.25rem",
+                            position: "relative",
+                          }}
+                        >
+                          <div
+                            style={{
+                              width: `${progress}%`,
+                              height: "100%",
+                              background: "#40B64B",
+                              borderRadius: "0.25rem",
+                              position: "absolute",
+                              top: 0,
+                              left: 0,
+                            }}
+                          ></div>
                         </div>
-                        <p style={{ color: "#333", fontSize: "0.8rem", fontWeight: "500", margin: "0.25rem 0", marginLeft: "0.5rem" }}>{progress.toFixed(0)}%</p>
+                        <p
+                          style={{
+                            color: "#333",
+                            fontSize: "0.8rem",
+                            fontWeight: "500",
+                            margin: "0.25rem 0",
+                            marginLeft: "0.5rem",
+                          }}
+                        >
+                          {progress.toFixed(0)}%
+                        </p>
                       </div>
                     </>
                   )}
                   {/* Delete Icon */}
                   <img
                     src={delete_icon}
-                    style={{ position: "absolute", top: "0.5rem", right: "0.5rem", width: "2rem" }}
+                    style={{
+                      position: "absolute",
+                      top: "0.5rem",
+                      right: "0.5rem",
+                      width: "2rem",
+                    }}
                     alt="Delete"
                   />
                   {/* File Input */}
-                  <input type="file" onChange={handleFileChange} style={{ opacity: 0, position: "absolute", top: 0, left: 0, width: "100%", height: "100%" }} />
+                  <input
+                    type="file"
+                    onChange={handleFileChange}
+                    style={{
+                      opacity: 0,
+                      position: "absolute",
+                      top: 0,
+                      left: 0,
+                      width: "100%",
+                      height: "100%",
+                    }}
+                  />
                 </div>
               </div>
             )}

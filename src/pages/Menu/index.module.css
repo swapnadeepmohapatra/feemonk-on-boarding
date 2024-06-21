@@ -31,7 +31,7 @@
   white-space: nowrap; /* Prevent menu items from wrapping */
   overflow-x: auto;
   border-bottom: 1px solid #bdbdbd;
-  gap:1.5rem;
+  gap: 1.5rem;
 }
 
 .navBarItem {
@@ -40,7 +40,7 @@
   align-items: center;
   /* background: #ffebec; */
   text-align: center;
-  
+
   padding: 0.2rem;
 }
 
@@ -69,7 +69,7 @@
   justify-content: flex-start;
   align-items: normal;
   padding: 1rem;
-  margin-top:3rem;
+  margin-top: 3rem;
 }
 
 .RepaymentSectionBody {
@@ -80,7 +80,7 @@
   justify-content: flex-start;
   align-items: normal;
   padding: 1rem;
-  margin-top:3rem;
+  margin-top: 3rem;
 }
 
 .FeepaymentSectionBody {
@@ -91,9 +91,8 @@
   justify-content: flex-start;
   align-items: normal;
   padding: 1rem;
-  margin-top:3rem;
+  margin-top: 3rem;
 }
-
 
 .homeHeader {
   display: flex;
@@ -120,7 +119,7 @@
   font-weight: bold;
   color: black;
   display: flex;
-  align-items: start
+  align-items: start;
 }
 
 .heading::before {
@@ -137,4 +136,3 @@
   border-left: 1px solid #bdbdbd; /* Grey line */
   margin-left: 0.5rem; /* Adjust the spacing between the text and the line */
 }
-
