@@ -15,6 +15,7 @@ import { API_URL } from "../../utils";
 import jwtDecode from "jwt-decode";
 import axios from "axios";
 import { formatToIndianRupees } from "../../utils/formatToIndianRpuees";
+import { getNextFifthDate } from "../../utils/getNextFifthDate";
 
 // Define the structure of summary data
 interface SummaryData {
@@ -273,11 +274,12 @@ function ViewOffer() {
                     color: "#d23028",
                     cursor: "pointer",
                   }}
-                  onClick={() =>
-                    document.getElementById("emiDateInput")?.focus()
-                  }
+                  // onClick={() =>
+                  //   document.getElementById("emiDateInput")?.focus()
+                  // }
                 >
-                  {selectedDate ? formatDate(selectedDate) : "Select Date"}
+                  {getNextFifthDate()}
+                  {/* {selectedDate ? formatDate(selectedDate) : "Select Date"} */}
                 </p>
               </div>
             </div>
