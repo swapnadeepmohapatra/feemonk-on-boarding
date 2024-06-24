@@ -14,6 +14,7 @@ import biginterest from "../../images/static_assests/biginterest.svg";
 import { API_URL } from "../../utils";
 import jwtDecode from "jwt-decode";
 import axios from "axios";
+import { formatToIndianRupees } from "../../utils/formatToIndianRpuees";
 
 // Define the structure of summary data
 interface SummaryData {
@@ -26,6 +27,12 @@ function ViewOffer() {
   const navigate = useNavigate();
   const [selectedDate, setSelectedDate] = useState("");
   const [summaryData, setSummaryData] = useState<SummaryData | null>(null);
+  const [products, setProducts] = useState([
+    {
+      tenure: 0,
+    },
+  ]);
+  const [activeEmiPlan, setActiveEmiPlan] = useState("");
 
   const handleDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const date = e.target.value;
@@ -59,6 +66,7 @@ function ViewOffer() {
 
     fetchSummaryData();
   }, [decode]);
+
   const approve = async (data: any) => {
     return fetch(`${API_URL}/application/approve`, {
       method: "POST",
@@ -111,6 +119,14 @@ function ViewOffer() {
       console.error("Error generating token:", error);
     }
   };
+
+  useEffect(() => {
+    fetch(`${API_URL}/products/instituteId?instituteId=B2C`)
+      .then((response) => response.json())
+      .then((data) => {
+        setProducts(data.data);
+      });
+  }, []);
 
   return (
     <div className={styles.body}>
@@ -176,6 +192,7 @@ function ViewOffer() {
                   display: "flex",
                   flexDirection: "column",
                   alignItems: "center",
+                  flex: 1,
                 }}
               >
                 <img
@@ -183,13 +200,38 @@ function ViewOffer() {
                   style={{ width: "4rem", marginBottom: "1.5rem" }}
                 />
                 <p style={{ color: "#737373", fontSize: "0.875rem" }}>EMI</p>
-                <p style={{ fontSize: "1.2rem", fontWeight: "bold" }}>20677</p>
+                <p style={{ fontSize: "1.2rem", fontWeight: "bold" }}>
+                  {activeEmiPlan
+                    ? `₹ ${formatToIndianRupees(
+                        Number(
+                          Number(
+                            600000 /
+                              Number(
+                                products
+                                  .sort((a, b) => a.tenure - b.tenure)
+                                  .find(
+                                    (product: any) =>
+                                      product.productId === activeEmiPlan
+                                  ) &&
+                                  products
+                                    .sort((a, b) => a.tenure - b.tenure)
+                                    .find(
+                                      (product: any) =>
+                                        product.productId === activeEmiPlan
+                                    )?.tenure
+                              )
+                          ).toFixed(2)
+                        )
+                      )}`
+                    : "₹ 0"}
+                </p>
               </div>
               <div
                 style={{
                   display: "flex",
                   flexDirection: "column",
                   alignItems: "center",
+                  flex: 1,
                 }}
               >
                 <img
@@ -198,7 +240,14 @@ function ViewOffer() {
                 />
                 <p style={{ color: "#737373", fontSize: "0.875rem" }}>TENURE</p>
                 <p style={{ fontSize: "1.2rem", fontWeight: "bold" }}>
-                  48 Months
+                  {activeEmiPlan
+                    ? products
+                        .sort((a, b) => a.tenure - b.tenure)
+                        .find(
+                          (product: any) => product.productId === activeEmiPlan
+                        )?.tenure
+                    : "0"}{" "}
+                  Months
                 </p>
               </div>
               <div
@@ -206,6 +255,7 @@ function ViewOffer() {
                   display: "flex",
                   flexDirection: "column",
                   alignItems: "center",
+                  flex: 1,
                 }}
               >
                 <img
@@ -254,7 +304,7 @@ function ViewOffer() {
                 src={bigemi}
                 style={{ width: "4rem", marginBottom: "1.5rem" }}
               />
-              <p style={{ color: "#737373", fontSize: "0.875rem" }}>
+                <p style={{ color: "#737373",
                 Processing Fee
               </p>
             </div>
@@ -299,14 +349,90 @@ function ViewOffer() {
             value={selectedDate}
             changeHandler={handleDateChange}
           /> */}
-          <br />
-          <br />
-          <br />
-          <div style={{ display: "flex", justifyContent: "space-evenly" }}>
+          <div></div>
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "space-between",
+              flexDirection: "column",
+            }}
+          >
             <p
               style={{
                 textAlign: "left",
-                fontSize: "2rem",
+                fontSize: "1.5rem",
+                fontWeight: "bold",
+              }}
+            >
+              Choose EMI plan
+            </p>
+            <br />
+            <div
+              style={{
+                display: "flex",
+                flexDirection: "row",
+                gap: "1rem",
+                textAlign: "center",
+                justifyContent: "space-between",
+              }}
+            >
+              {products
+                .sort((a, b) => a.tenure - b.tenure)
+                .map((product: any) => (
+                  <div
+                    style={{
+                      display: "flex",
+                      justifyContent: "center",
+                      alignItems: "center",
+                      padding: "2.4rem 1rem",
+                      border:
+                        activeEmiPlan === product.productId
+                          ? "1px solid #D32028"
+                          : "1px solid #F9D8D6",
+                      borderRadius: "12px",
+                      marginBottom: "1rem",
+                      flex: 1,
+                      background: "#FFF8F4",
+                      flexDirection: "column",
+                      gap: "0.3rem",
+                    }}
+                    key={product.productId}
+                    onClick={() => {
+                      setActiveEmiPlan(product.productId);
+                    }}
+                  >
+                    <p
+                      style={{
+                        textAlign: "left",
+                        fontSize: "1rem",
+                        fontWeight: "bold",
+                      }}
+                    >
+                      {formatToIndianRupees(
+                        Number(
+                          Number(600000 / Number(product.tenure)).toFixed(2)
+                        )
+                      )}
+                    </p>
+                    <p
+                      style={{
+                        textAlign: "center",
+                        fontSize: "1rem",
+                        // fontWeight: "bold",
+                      }}
+                    >
+                      {product.tenure} Months
+                    </p>
+                  </div>
+                ))}
+            </div>
+          </div>
+          <br />
+          <div style={{ display: "flex", justifyContent: "space-between" }}>
+            <p
+              style={{
+                textAlign: "left",
+                fontSize: "1.5rem",
                 fontWeight: "bold",
               }}
             >
@@ -317,8 +443,6 @@ function ViewOffer() {
               style={{ width: "2rem", marginBottom: "1.5rem" }}
             />
           </div>
-          <div></div>
-          <br />
           <p></p>
           <Button
             text={"Avail Loan Now"}
