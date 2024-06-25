@@ -1,11 +1,28 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
+import axios from "axios";
 import Button from "../../components/atoms/Button";
 import styles from "./index.module.css";
 import ArrowRight from "../../images/icons/arrow_right.svg";
 import Confetti from "../../images/static_assests/confeti.svg";
 import closebtn from "../../images/icons/close-btn.svg";
+import { API_URL } from "../../utils";
+import { jwtDecode } from "jwt-decode"; // Ensure you have the correct path to your config file
+const queryStringToObject = (queryString: string) => {
+  if (queryString.startsWith("?")) {
+    queryString = queryString.slice(1);
+  }
 
+  const pairs = queryString.split("&");
+  const result: { [key: string]: string } = {};
+
+  pairs.forEach((pair) => {
+    const [key, value] = pair.split("=");
+    result[decodeURIComponent(key)] = decodeURIComponent(value);
+  });
+
+  return result;
+};
 function LoanOffer() {
   const navigate = useNavigate();
   const [showConfetti, setShowConfetti] = useState(false);
@@ -14,18 +31,56 @@ function LoanOffer() {
     // Show confetti after component mounts
     setShowConfetti(true);
   }, []);
+  const user = sessionStorage.getItem("auth_token") || "";
+  console.log(user);
+  const decode = jwtDecode(JSON.parse(user).value) as any;
+  const headerVal = JSON.parse(user).value;
+  const handleButtonClick = async () => {
+    navigate("/view-offer");
+  };
+
+  const loc = useLocation();
+
+  useEffect(() => {
+    const setAAStatus = async (status: any) => {
+      try {
+        var myHeaders = new Headers();
+        myHeaders.append("Content-Type", "application/json");
+        myHeaders.append("Authorization", `Bearer ${user}`);
+
+        const response = await fetch(
+          `${API_URL}/account-aggregator/finbox/status`,
+          {
+            method: "POST",
+            headers: myHeaders,
+            redirect: "follow",
+            body: JSON.stringify({ ...status }),
+          }
+        );
+
+        const result = await response.json();
+
+        console.log(result);
+      } catch (error) {
+        console.log("Error:", error);
+      }
+    };
+
+    if (loc.search) {
+      console.log(queryStringToObject(loc.search));
+      setAAStatus(queryStringToObject(loc.search));
+    }
+  }, [loc, user]);
 
   return (
     <div className={styles.body}>
-      
-      <div className={styles.container} style={{marginBottom:"10rem"}}>
-        {/* Apply animation class if showConfetti is true */}
-        
+      <div className={styles.container} style={{ marginBottom: "10rem" }}>
         <img
           src={Confetti}
           alt=""
-          // style={{ marginBottom: "3rem",}}
-          className={`${styles.confetti} ${showConfetti ? styles.showConfetti : ''}`}
+          className={`${styles.confetti} ${
+            showConfetti ? styles.showConfetti : ""
+          }`}
         />
         <div
           style={{
@@ -35,7 +90,7 @@ function LoanOffer() {
             alignItems: "center",
             marginBottom: "14rem",
             marginTop: "6rem",
-            padding:"2rem"
+            padding: "2rem",
           }}
         >
           <svg
@@ -62,43 +117,25 @@ function LoanOffer() {
             />
           </svg>
 
-          <h1
-            style={{
-              color: "#D32028",
-            }}
-          >
-            Congratulations!
-          </h1>
+          <h1 style={{ color: "#D32028" }}>Congratulations!</h1>
           <br />
           <br />
           <p
             style={{
               textAlign: "center",
               fontSize: "1.4rem",
-              paddingTop:"1rem"
+              paddingTop: "1rem",
             }}
           >
             Your application is under review. We will update soon
           </p>
           <br />
-          
-          <br />
           <br />
           <div>
-            <p
-              style={{
-                textAlign: "center",
-                fontSize: "1.2rem",
-              }}
-            >
+            <p style={{ textAlign: "center", fontSize: "1.2rem" }}>
               If you have a problem, please contact us:
             </p>
-            <p
-              style={{
-                textAlign: "center",
-                fontSize: "1.2rem",
-              }}
-            >
+            <p style={{ textAlign: "center", fontSize: "1.2rem" }}>
               hello@feemonk.com
             </p>
           </div>
@@ -108,10 +145,8 @@ function LoanOffer() {
           <br />
           <br />
           <Button
-            text={"Get sanction letter"}
-            onPress={() => {
-              navigate("/home");
-            }}
+            text={"Get sanction & offer letter"}
+            onPress={handleButtonClick}
             imageRight={ArrowRight}
             fullWidth
           />

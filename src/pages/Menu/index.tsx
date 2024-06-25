@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styles from "./index.module.css";
 import ApplicationsIcon from "../../images/static_assests/applications_icon.svg";
 import LoansIcon from "../../images/static_assests/loans_icon.svg";
@@ -9,18 +9,32 @@ import Button from "../../components/atoms/Button";
 import ApplicationsCard from "./components/ApplicationsCard";
 import LoansCard from "./components/LoansCard";
 import redProfile from "../../images/icons/redProfile.svg";
-import RepaymentsCard from "./components/RepaymentsCard"
-import FeepaymentsCard from "./components/FeepaymentsCard"
+import RepaymentsCard from "./components/RepaymentsCard";
+import FeepaymentsCard from "./components/FeepaymentsCard";
+import axios from "axios";
 
-function renderSections(page: "Applications" | "Loans" | "Repayment" | "Fee Payment") {
+function renderSections(
+  page: "Applications" | "Loans" | "Repayment" | "Fee Payment",
+  applications: any[] = []
+) {
   switch (page) {
     case "Applications":
       return (
         <div className={styles.loanSectionBody}>
           <h3 className={styles.heading}>Active Applications</h3>
-          <ApplicationsCard status="In Progress" />
+          {applications.map((application) => (
+            <ApplicationsCard
+              // status="In Progress"
+              status={application?.obj?.applicationProfile?.status}
+              appliedOn={application.appliedOn}
+              applicationId={application?.obj?.data?.applicationId}
+              // status={application.status}
+              // key={application.applicationId}
+            />
+          ))}
+          {/* <ApplicationsCard status="In Progress" /> */}
           <h3 className={styles.heading}>Previous Applications</h3>
-          <ApplicationsCard status="Approved" />
+          <ApplicationsCard status="In Submission" />
           <ApplicationsCard status="Rejected" />
         </div>
       );
@@ -32,7 +46,7 @@ function renderSections(page: "Applications" | "Loans" | "Repayment" | "Fee Paym
           <LoansCard status="Active" />
           <h3 className={styles.heading}>Closed Loans</h3>
           <LoansCard status="Inactive" />
-          <LoansCard  status="Inactive"/>
+          <LoansCard status="Inactive" />
         </div>
       );
     case "Repayment":
@@ -41,7 +55,7 @@ function renderSections(page: "Applications" | "Loans" | "Repayment" | "Fee Paym
           <h3 className={styles.heading}>Active Repayments</h3>
           <RepaymentsCard status="Active" />
           <h3 className={styles.heading}>Previous Repayments</h3>
-          <RepaymentsCard  status="Inactive"/>
+          <RepaymentsCard status="Inactive" />
         </div>
       );
     case "Fee Payment":
@@ -52,9 +66,9 @@ function renderSections(page: "Applications" | "Loans" | "Repayment" | "Fee Paym
           <FeepaymentsCard status="Active" />
           <h3 className={styles.heading}>Previous Fee Payments</h3>
           <FeepaymentsCard status="Inactive" />
-          <FeepaymentsCard  status="Inactive"/>
+          <FeepaymentsCard status="Inactive" />
         </div>
-      );    
+      );
     default:
       return (
         <div className={styles.loanSectionBody}>
@@ -75,6 +89,30 @@ function Menu() {
   const [activePage, setActivePage] = useState<
     "Applications" | "Loans" | "Repayment" | "Fee Payment"
   >("Applications");
+  const [applications, setApplications] = useState<any[]>([]);
+
+  useEffect(() => {
+    const fetchApplications = async (userNumber: string) => {
+      try {
+        const response = await axios.get(
+          `https://customer-apis.feemonk.com/applications/getApplications/${userNumber}`
+        );
+        setApplications(response.data.res || []);
+      } catch (err) {
+        console.error("Failed to fetch applications", err);
+      }
+    };
+
+    const user = sessionStorage.getItem("auth_token") || "";
+    if (user) {
+      try {
+        const decoded = JSON.parse(user).mob as any;
+        fetchApplications(decoded);
+      } catch (error) {
+        console.error("Failed to parse user token", error);
+      }
+    }
+  }, []);
 
   return (
     <div className={styles.body}>
@@ -133,7 +171,7 @@ function Menu() {
             </div>
           </div>
 
-          {renderSections(activePage)}
+          {renderSections(activePage, applications)}
         </div>
         <BottomNavigationBar active="Menu" />
       </div>

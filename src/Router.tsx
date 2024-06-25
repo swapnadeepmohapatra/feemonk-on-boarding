@@ -16,15 +16,16 @@ import SanctionLetter from "./pages/SanctionLetter";
 import ParkingPage from "./pages/ParkingPage";
 import CibilLow from "./pages/CibilLow";
 import CoAppDetails from "./pages/CoAppDetails";
-import IncomeDetails from "./pages/IncomeDetails"
-import LoanDetails from "./pages/LoanDetails"
-import RepaymentDetails from "./pages/RepaymentDetails"
+import IncomeDetails from "./pages/IncomeDetails";
+import LoanDetails from "./pages/LoanDetails";
+import RepaymentDetails from "./pages/RepaymentDetails";
 import FeePayment from "./pages/FeePayment";
-import Profile from "./pages/Profile"
-import Support from "./pages/Support"
-import BankSelect from "./pages/Bank/BankSelect"
-import BankPdfUpload from "./pages/Bank/BankPdfUpload"
-import AccountAggregator from "./pages/Bank/AccountAggregator"
+import Profile from "./pages/Profile";
+import Support from "./pages/Support";
+import BankSelect from "./pages/Bank/BankSelect";
+import BankPdfUpload from "./pages/Bank/BankPdfUpload";
+import AccountAggregator from "./pages/Bank/AccountAggregator";
+import Mandate from "./pages/Mandates";
 
 const Router: React.FC = () => {
   return (
@@ -55,17 +56,18 @@ const Router: React.FC = () => {
         <Route path="/parking-page" element={<ParkingPage />} />
         <Route path="/cibil-low" element={<CibilLow />} />
         <Route path="/coapp-details" element={<CoAppDetails />} />
-        <Route path="/income-details" element={<IncomeDetails/>}/>
+        <Route path="/income-details" element={<IncomeDetails />} />
         <Route path="/loan-details" element={<LoanDetails />} />
-        <Route path="/repayment-details" element={<RepaymentDetails/>}/>
-        
-        <Route path="/feepayment" element={<FeePayment/>}/>
-        <Route path="/profile" element={<Profile/>}/>
-        
-        <Route path="/support" element={<Support/>}/>
-        <Route path="/bank-select" element={<BankSelect/>}/>
-        <Route path="/pdf-upload-bank" element={<BankPdfUpload/>}/>
-        <Route path="/account-aggregator" element={<AccountAggregator/>}/>
+        <Route path="/repayment-details" element={<RepaymentDetails />} />
+
+        <Route path="/feepayment" element={<FeePayment />} />
+        <Route path="/profile" element={<Profile />} />
+
+        <Route path="/support" element={<Support />} />
+        <Route path="/bank-select" element={<BankSelect />} />
+        <Route path="/pdf-upload-bank" element={<BankPdfUpload />} />
+        <Route path="/account-aggregator" element={<AccountAggregator />} />
+        <Route path="/mandate" element={<Mandate />} />
       </Routes>
     </BrowserRouter>
   );

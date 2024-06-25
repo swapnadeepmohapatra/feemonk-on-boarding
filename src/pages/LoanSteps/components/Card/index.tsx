@@ -1,14 +1,14 @@
 import React from "react";
-import clock from '../../../../images/icons/clock.svg'
+import clock from "../../../../images/icons/clock.svg";
 
 interface LoanStepCardProps {
   title?: string;
   description?: string;
   image?: string;
-  tiime?:string;
+  tiime?: string;
 }
 
-function LoanStepCard({ title, description, image,tiime }: LoanStepCardProps) {
+function LoanStepCard({ title, description, image, tiime }: LoanStepCardProps) {
   return (
     <div
       style={{
@@ -17,7 +17,7 @@ function LoanStepCard({ title, description, image,tiime }: LoanStepCardProps) {
         flexDirection: "row",
         gap: "1rem",
         alignItems: "center",
-        marginBottom:"2rem"
+        marginBottom: "2rem",
       }}
     >
       <img
@@ -29,31 +29,42 @@ function LoanStepCard({ title, description, image,tiime }: LoanStepCardProps) {
           borderRadius: "50%",
           backgroundColor: "#F4E5DD",
         }}
-        
       />
       <div style={{}}>
-        <div style={{display:'flex',alignItems:'center',flexDirection: 'row',}}>
-        <p
+        <div
           style={{
-            fontSize: "1.3rem",
-            fontWeight: "bold",
-            marginRight:'1rem'
+            display: "flex",
+            alignItems: "center",
+            flexDirection: "row",
           }}
         >
-          {title}
-         
-        
-        </p>
-        <div  style={{
-            display:'flex',justifyContent:'space-around',width:'4rem', padding:'4px',alignItems:'center',borderRadius:'1rem',backgroundColor:'#FFDFE1',
-          }}>
-         <img style={{width:'14px',}} src={clock}/> <span style={{fontSize: "0.9rem",
-            color:'#d32028',
-           
-            }}>{tiime}</span>
+          <p
+            style={{
+              fontSize: "1.3rem",
+              fontWeight: "bold",
+              marginRight: "1rem",
+            }}
+          >
+            {title}
+          </p>
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "space-around",
+              width: "4rem",
+              padding: "4px",
+              alignItems: "center",
+              borderRadius: "1rem",
+              backgroundColor: "#FFDFE1",
+            }}
+          >
+            <img style={{ width: "14px" }} src={clock} />{" "}
+            <span style={{ fontSize: "0.9rem", color: "#d32028" }}>
+              {tiime}
+            </span>
           </div>
         </div>
-      
+
         <p
           style={{
             fontSize: "0.8rem",

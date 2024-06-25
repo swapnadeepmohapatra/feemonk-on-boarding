@@ -42,21 +42,129 @@ function Support() {
                 alt=""
               />
             </button>
-            <p style={{ marginRight: "0.5rem", fontWeight: "bold",fontSize:"1.75rem"}}>Support</p>
+            <p
+              style={{
+                marginRight: "0.5rem",
+                fontWeight: "bold",
+                fontSize: "1.75rem",
+              }}
+            >
+              Support
+            </p>
           </div>
           <br />
-          
         </div>
-        <div style={{padding:"1rem 2rem"}}>
-              <p style={{ paddingBottom:"1rem",borderBottom:"1px solid rgba(172, 172, 172, 1)", fontSize:"1.2rem"}} onClick={() => handleSupportClick("Issue with EMI Repayment")} >Issue with EMI Repayment</p>
-              <p style={{ paddingTop:"1rem",paddingBottom:"1rem",borderBottom:"1px solid rgba(172, 172, 172, 1)", fontSize:"1.2rem"}} onClick={() => handleSupportClick("Need Assistance for Loan Application")} >Need Assistance for Loan Application</p>
-              <p style={{ paddingTop:"1rem",paddingBottom:"1rem",borderBottom:"1px solid rgba(172, 172, 172, 1)", fontSize:"1.2rem"}} onClick={() => handleSupportClick("App not working")} >App not working</p>
-              <p style={{ paddingTop:"1rem",paddingBottom:"1rem",borderBottom:"1px solid rgba(172, 172, 172, 1)", fontSize:"1.2rem"}} onClick={() => handleSupportClick("Unable to edit child information")} >Unable to edit child information</p>
-              <p style={{ paddingTop:"1rem",paddingBottom:"1rem",borderBottom:"1px solid rgba(172, 172, 172, 1)", fontSize:"1.2rem"}} onClick={() => handleSupportClick("Unable to edit address details")} >Unable to edit address details</p>
-              <p style={{ paddingTop:"1rem",paddingBottom:"1rem",borderBottom:"1px solid rgba(172, 172, 172, 1)", fontSize:"1.2rem"}} onClick={() => handleSupportClick("Unable to upload bank statement")} >Unable to upload bank statement</p>
-              <p style={{ paddingTop:"1rem",paddingBottom:"1rem",borderBottom:"1px solid rgba(172, 172, 172, 1)", fontSize:"1.2rem"}} onClick={() => handleSupportClick("Unable to add Co-applicant details")} >Unable to add Co-applicant details</p>
-              <p style={{ paddingTop:"1rem",paddingBottom:"1rem",borderBottom:"1px solid rgba(172, 172, 172, 1)", fontSize:"1.2rem"}} onClick={() => handleSupportClick("Unable to add/edit work & bank details")} >Unable to add/edit work & bank details</p>
-              <p style={{ paddingTop:"1rem",paddingBottom:"1rem",borderBottom:"1px solid rgba(172, 172, 172, 1)", fontSize:"1.2rem"}} onClick={() => handleSupportClick("Would like to change institute/school")} >Would like to change institute/school </p>
+        <div style={{ padding: "1rem 2rem" }}>
+          <p
+            style={{
+              paddingBottom: "1rem",
+              borderBottom: "1px solid rgba(172, 172, 172, 1)",
+              fontSize: "1.2rem",
+            }}
+            onClick={() => handleSupportClick("Issue with EMI Repayment")}
+          >
+            Issue with EMI Repayment
+          </p>
+          <p
+            style={{
+              paddingTop: "1rem",
+              paddingBottom: "1rem",
+              borderBottom: "1px solid rgba(172, 172, 172, 1)",
+              fontSize: "1.2rem",
+            }}
+            onClick={() =>
+              handleSupportClick("Need Assistance for Loan Application")
+            }
+          >
+            Need Assistance for Loan Application
+          </p>
+          <p
+            style={{
+              paddingTop: "1rem",
+              paddingBottom: "1rem",
+              borderBottom: "1px solid rgba(172, 172, 172, 1)",
+              fontSize: "1.2rem",
+            }}
+            onClick={() => handleSupportClick("App not working")}
+          >
+            App not working
+          </p>
+          <p
+            style={{
+              paddingTop: "1rem",
+              paddingBottom: "1rem",
+              borderBottom: "1px solid rgba(172, 172, 172, 1)",
+              fontSize: "1.2rem",
+            }}
+            onClick={() =>
+              handleSupportClick("Unable to edit child information")
+            }
+          >
+            Unable to edit child information
+          </p>
+          <p
+            style={{
+              paddingTop: "1rem",
+              paddingBottom: "1rem",
+              borderBottom: "1px solid rgba(172, 172, 172, 1)",
+              fontSize: "1.2rem",
+            }}
+            onClick={() => handleSupportClick("Unable to edit address details")}
+          >
+            Unable to edit address details
+          </p>
+          <p
+            style={{
+              paddingTop: "1rem",
+              paddingBottom: "1rem",
+              borderBottom: "1px solid rgba(172, 172, 172, 1)",
+              fontSize: "1.2rem",
+            }}
+            onClick={() =>
+              handleSupportClick("Unable to upload bank statement")
+            }
+          >
+            Unable to upload bank statement
+          </p>
+          <p
+            style={{
+              paddingTop: "1rem",
+              paddingBottom: "1rem",
+              borderBottom: "1px solid rgba(172, 172, 172, 1)",
+              fontSize: "1.2rem",
+            }}
+            onClick={() =>
+              handleSupportClick("Unable to add Co-applicant details")
+            }
+          >
+            Unable to add Co-applicant details
+          </p>
+          <p
+            style={{
+              paddingTop: "1rem",
+              paddingBottom: "1rem",
+              borderBottom: "1px solid rgba(172, 172, 172, 1)",
+              fontSize: "1.2rem",
+            }}
+            onClick={() =>
+              handleSupportClick("Unable to add/edit work & bank details")
+            }
+          >
+            Unable to add/edit work & bank details
+          </p>
+          <p
+            style={{
+              paddingTop: "1rem",
+              paddingBottom: "1rem",
+              borderBottom: "1px solid rgba(172, 172, 172, 1)",
+              fontSize: "1.2rem",
+            }}
+            onClick={() =>
+              handleSupportClick("Would like to change institute/school")
+            }
+          >
+            Would like to change institute/school{" "}
+          </p>
         </div>
       </div>
       {selectedSupport && (
@@ -66,7 +174,6 @@ function Support() {
         />
       )}
     </div>
-    
   );
 }
 

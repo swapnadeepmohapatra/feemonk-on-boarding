@@ -148,9 +148,9 @@
   animation: oppDisplay 1s;
 }
 
-.Header{
+.Header {
   display: flex;
   justify-content: space-between;
-  
+
   margin-bottom: 2rem;
 }

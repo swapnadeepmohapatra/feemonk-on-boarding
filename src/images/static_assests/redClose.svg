@@ -19,7 +19,7 @@
       }
     </style>
   </defs>
-  <circle class="cls-3" cx="13.5" cy="13.5" r="13.5"/>
-  <circle class="cls-2" cx="13.5" cy="13.5" r="10.47"/>
-  <path class="cls-1" d="m17.76,9.39l-8.03,8.03m0-8.03l8.03,8.03"/>
+  <circle class="cls-3" cx="13.5" cy="13.5" r="13.5" />
+  <circle class="cls-2" cx="13.5" cy="13.5" r="10.47" />
+  <path class="cls-1" d="m17.76,9.39l-8.03,8.03m0-8.03l8.03,8.03" />
 </svg>

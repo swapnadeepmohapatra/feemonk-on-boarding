@@ -19,9 +19,20 @@ function LoansCard({ status }: LoansCardProps) {
 
   const renderActiveCard = () => (
     <div className={styles.card}>
-      <div style={{ display: "flex", flexDirection: "row", justifyContent: "space-between" }}>
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "row",
+          justifyContent: "space-between",
+        }}
+      >
         <div className={styles.cardNumber}>
-          <p className={styles.cardDate}><span><img style={{ marginRight: "0.3rem" }} src={cashBag} /></span>Principal Amount</p>
+          <p className={styles.cardDate}>
+            <span>
+              <img style={{ marginRight: "0.3rem" }} src={cashBag} />
+            </span>
+            Principal Amount
+          </p>
           <p className={styles.cardNumberText}>₹ 10,00,000</p>
         </div>
         <div className={styles.actionContainer}>
@@ -35,23 +46,42 @@ function LoansCard({ status }: LoansCardProps) {
       </div>
       <div className={styles.cardDetails}>
         <div>
-          <p className={styles.label}><span><img style={{ marginRight: "0.3rem" }} src={calendar} /></span>Loan Start Date</p>
+          <p className={styles.label}>
+            <span>
+              <img style={{ marginRight: "0.3rem" }} src={calendar} />
+            </span>
+            Loan Start Date
+          </p>
           <p className={styles.cardDate}>20/03/2023</p>
         </div>
-        <div style={{marginRight:"1.2rem"}}>
-          <p className={styles.label}><span><img style={{ marginRight: "0.3rem" }} src={emi} /></span>EMI</p>
+        <div style={{ marginRight: "1.2rem" }}>
+          <p className={styles.label}>
+            <span>
+              <img style={{ marginRight: "0.3rem" }} src={emi} />
+            </span>
+            EMI
+          </p>
           <p className={styles.cardDate}>₹ 25,000</p>
         </div>
       </div>
       <div className={styles.offerContainer}>
         <div>
           <p className={styles.offerText}>
-            <span><img src={doc} alt="Document" /></span>Pre-closure offer
+            <span>
+              <img src={doc} alt="Document" />
+            </span>
+            Pre-closure offer
           </p>
         </div>
         <div>
-          <button className={styles.offerButton} onClick={() => navigate("/loan-steps")}>
-            <span><img src={wallet} alt="Cash Bag" /></span>Pay now
+          <button
+            className={styles.offerButton}
+            onClick={() => navigate("/loan-steps")}
+          >
+            <span>
+              <img src={wallet} alt="Cash Bag" />
+            </span>
+            Pay now
           </button>
         </div>
       </div>
@@ -60,9 +90,20 @@ function LoansCard({ status }: LoansCardProps) {
 
   const renderInactiveCard = () => (
     <div className={styles.card}>
-      <div style={{ display: "flex", flexDirection: "row", justifyContent: "space-between" }}>
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "row",
+          justifyContent: "space-between",
+        }}
+      >
         <div className={styles.cardNumber}>
-          <p className={styles.cardDate}><span><img style={{ marginRight: "0.3rem" }} src={cashBag} /></span>Principal Amount</p>
+          <p className={styles.cardDate}>
+            <span>
+              <img style={{ marginRight: "0.3rem" }} src={cashBag} />
+            </span>
+            Principal Amount
+          </p>
           <p className={styles.cardNumberText}>₹ 10,00,000</p>
         </div>
         <div className={styles.actionContainer}>
@@ -76,29 +117,45 @@ function LoansCard({ status }: LoansCardProps) {
       </div>
       <div className={styles.cardDetails}>
         <div>
-          <p className={styles.label}><span><img style={{ marginRight: "0.3rem" }} src={calendar} /></span>Loan Closure Date</p>
+          <p className={styles.label}>
+            <span>
+              <img style={{ marginRight: "0.3rem" }} src={calendar} />
+            </span>
+            Loan Closure Date
+          </p>
           <p className={styles.cardDate}>20/03/2023</p>
         </div>
-        <div style={{marginRight:"1.2rem"}}>
-          <p className={styles.label}><span><img style={{ marginRight: "0.3rem" }} src={emi} /></span>EMI</p>
+        <div style={{ marginRight: "1.2rem" }}>
+          <p className={styles.label}>
+            <span>
+              <img style={{ marginRight: "0.3rem" }} src={emi} />
+            </span>
+            EMI
+          </p>
           <p className={styles.cardDate}>₹ 25,000</p>
         </div>
-        
       </div>
       <div className={styles.offerContainer}>
         <div>
           <p className={styles.offerText}>
-            <span><img src={doc} alt="Document" /></span>No-due Certificate
+            <span>
+              <img src={doc} alt="Document" />
+            </span>
+            No-due Certificate
           </p>
         </div>
         <div>
-          <button className={styles.offerButton} onClick={() => navigate("/loan-steps")}>
-            <span><img src={eye} alt="EMI History" /></span>EMI History
+          <button
+            className={styles.offerButton}
+            onClick={() => navigate("/loan-steps")}
+          >
+            <span>
+              <img src={eye} alt="EMI History" />
+            </span>
+            EMI History
           </button>
         </div>
       </div>
-
-        
     </div>
   );
 

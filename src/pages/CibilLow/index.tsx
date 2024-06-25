@@ -17,25 +17,32 @@ function LoanOffer() {
 
   return (
     <div className={styles.body}>
-      
-      <div className={styles.container} style={{marginBottom:""}}>
+      <div className={styles.container} style={{ marginBottom: "" }}>
         {/* Apply animation class if showConfetti is true */}
-        
+
         <div className={styles.Header}>
-            <button
-              style={{ border: "none", background: "none",marginTop:"2rem" }}
-              onClick={() => {
-                navigate("/loan-steps");
-              }}
-            >
-              <img
-                style={{ marginLeft: "0.5rem", height: "1.5rem" }}
-                src={BackArrow}
-                alt=""
-              />
-            </button>
-            <p style={{ marginRight: "0.5rem", fontWeight: "bold",marginTop:"2rem" }}>T&C</p>
-          </div>
+          <button
+            style={{ border: "none", background: "none", marginTop: "2rem" }}
+            onClick={() => {
+              navigate("/loan-steps");
+            }}
+          >
+            <img
+              style={{ marginLeft: "0.5rem", height: "1.5rem" }}
+              src={BackArrow}
+              alt=""
+            />
+          </button>
+          <p
+            style={{
+              marginRight: "0.5rem",
+              fontWeight: "bold",
+              marginTop: "2rem",
+            }}
+          >
+            T&C
+          </p>
+        </div>
         <div
           style={{
             display: "flex",
@@ -46,35 +53,29 @@ function LoanOffer() {
             marginTop: "6rem",
           }}
         >
-          <img
-                style={{  height: "5rem" }}
-                src={warning}
-                alt=""
-              />
+          <img style={{ height: "5rem" }} src={warning} alt="" />
 
-          
           <br />
           <p
             style={{
               textAlign: "center",
               fontSize: "1.71rem",
-              justifyContent:"center",
-              margin:"1.5rem"
-
+              justifyContent: "center",
+              margin: "1.5rem",
             }}
           >
-            Your Cibil Score is not allowing us to offer you the loan, but we have 
-            solution for you
+            Your Cibil Score is not allowing us to offer you the loan, but we
+            have solution for you
           </p>
           <br />
-          
+
           <p
             style={{
               textAlign: "center",
               fontSize: "1.6rem",
               fontWeight: "bold",
-              padding:"1rem",
-              color:"#D32028"
+              padding: "1rem",
+              color: "#D32028",
             }}
           >
             You can add a Co-applicant & avail loan now
@@ -91,7 +92,6 @@ function LoanOffer() {
               navigate("/coapp-details");
             }}
             imageRight={ArrowRight}
-            
           />
         </div>
       </div>

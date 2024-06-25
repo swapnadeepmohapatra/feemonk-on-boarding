@@ -3,16 +3,23 @@ import styles from "./index.module.css";
 import Button from "../../../components/atoms/Button";
 import InputText from "../../../components/atoms/InputText";
 import { BANK_LIST } from "../../../helpers/banks_list";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { API_URL } from "../../../utils";
 import { useLocalStorage } from "../../../hooks";
 
 function BankSelect() {
   const navigate = useNavigate();
   // const [authToken] = useLocalStorage("feemonk_data", "");
+  const location = useLocation();
+  const stateData = location.state || {};
+  console.log(stateData);
+
+  const data = stateData.data1;
+
   const [selectedBank, setSelectedBank] = useState("");
   const [searchText, setSearchText] = useState("");
-  const [fipList, setFipList] = useState<{ bank: String; health_up: Boolean }[]
+  const [fipList, setFipList] = useState<
+    { bank: String; health_up: Boolean }[]
   >([]);
 
   const [authToken, setAuthToken] = useLocalStorage("auth_token", "");
@@ -30,10 +37,7 @@ function BankSelect() {
       };
 
       // `${"https://apply-backend.feemonk.com"}/account-aggregator/get-fips`
-      fetch(
-        `${API_URL}/account-aggregator/get-active-banks`,
-        requestOptions
-      )
+      fetch(`${API_URL}/account-aggregator/get-active-banks`, requestOptions)
         .then((response) => response.json())
         .then((result) => {
           if (result?.data) {
@@ -52,7 +56,7 @@ function BankSelect() {
     <div className={styles.main}>
       <div className={styles.body}>
         <div className={styles.container}>
-          <h3 style={{marginBottom:"0.5rem"}}>Select your bank</h3>
+          <h3 style={{ marginBottom: "0.5rem" }}>Select your bank</h3>
           <InputText
             placeholder="Search banks"
             type="text"
@@ -100,17 +104,19 @@ function BankSelect() {
                 (bank) => bank["Name"] === selectedBank
               );
               // if (bank && bank["AA Available"]) {
-                if (
-                  bank &&
-                  fipList.find(
-                    (a) =>
-                      a?.bank.toLocaleUpperCase() ===
-                      bank["Name"].toLocaleUpperCase()
-                  )?.health_up
-                ) {
-                navigate(`/account-aggregator`, { state: { bank } });
+              if (
+                bank &&
+                fipList.find(
+                  (a) =>
+                    a?.bank.toLocaleUpperCase() ===
+                    bank["Name"].toLocaleUpperCase()
+                )?.health_up
+              ) {
+                navigate(`/account-aggregator`, {
+                  state: { bank, data, stateData },
+                });
               } else {
-                navigate(`/pdf-upload-bank`);
+                navigate(`/pdf-upload-bank`, { state: { data, stateData } });
               }
             }}
             disabled={!selectedBank}

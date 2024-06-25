@@ -74,13 +74,13 @@
   justify-content: center;
   align-items: center;
   border-radius: 15px;
-  background-color: #FFF6F6;
+  background-color: #fff6f6;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
   padding: 1rem;
 }
 
 .loanSection::after {
-  content: '';
+  content: "";
   position: absolute;
   top: 0;
   right: 0;
@@ -127,7 +127,7 @@
 /* Loan Ad Container Styles */
 .loanAdContainer {
   border-radius: 15px;
-  background-color: #FFF6F6;
+  background-color: #fff6f6;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
   width: 90%;
   max-width: 400px;
@@ -141,10 +141,9 @@
 }
 
 .loanAdContainer p.amount {
-  color: #D32028 !important;
+  color: #d32028 !important;
   font-size: 25px;
   line-height: 30px;
-  
 }
 
 .loanAdContainer button {
@@ -170,7 +169,7 @@
 .benefits {
   display: flex;
   justify-content: space-evenly;
-  background-color:#D32028;
+  background-color: #d32028;
   color: white;
   padding: 1rem;
   font-size: 13px;
@@ -184,9 +183,8 @@
   text-align: right;
   margin-top: -2rem;
   margin-right: -4rem;
-  padding-left: 4,5rem;
-  
-  margin-left: 14rem;
-  right:2.5rem;
-}
+  padding-left: 4, 5rem;
 
+  margin-left: 14rem;
+  right: 2.5rem;
+}

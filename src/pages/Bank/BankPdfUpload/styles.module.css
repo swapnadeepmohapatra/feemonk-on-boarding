@@ -17,7 +17,6 @@
   justify-content: center;
   align-items: center;
   place-items: center;
-  
 }
 
 .main {
@@ -44,10 +43,9 @@
   max-height: 500px;
   box-shadow: 0 0.5rem 1rem rgb(0 0 0 / 5%);
   margin: 1rem;
-  background-color: #FFF6F6;
+  background-color: #fff6f6;
   border: 1px solid rgba(212, 33, 41, 0.15);
   border-radius: 12px;
   align-content: center;
   text-align: -webkit-center;
 }
-
