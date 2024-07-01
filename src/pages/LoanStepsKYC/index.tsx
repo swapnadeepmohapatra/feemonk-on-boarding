@@ -322,12 +322,6 @@ function LoanStepsKYC() {
                     <p className={styles.error}>{pincodeError}</p>
                   )}
 
-                  <Button
-                    onPress={handleAddress}
-                    text={"Save"}
-                    fullWidth={false}
-                    secondary
-                  />
                   <br />
                 </div>
               )}
@@ -467,6 +461,7 @@ function LoanStepsKYC() {
           <Button
             text="Save & Next"
             onPress={() => {
+              handleAddress();
               navigate("/loan-steps-income-details", { state: { data } });
             }}
             fullWidth
