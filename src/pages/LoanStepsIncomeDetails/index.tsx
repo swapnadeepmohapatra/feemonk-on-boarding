@@ -286,14 +286,6 @@ function IncomeDetails() {
                       />
                     </>
                   )}
-
-                  <Button
-                    onPress={handleSaveWorkDetails}
-                    text={"Save"}
-                    fullWidth
-                    secondary
-                    disabled={isSaveButtonDisabled}
-                  />
                 </div>
               }
             </div>
@@ -306,6 +298,7 @@ function IncomeDetails() {
           <br />
           <Button
             onPress={() => {
+              handleSaveWorkDetails();
               navigate("/loan-steps-course-details", { state: { data } });
             }}
             disabled={isSaveButtonDisabled}

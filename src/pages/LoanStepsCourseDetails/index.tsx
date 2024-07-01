@@ -606,12 +606,12 @@ function LoanStepsCourseDetails() {
                             {errors.annualFees}
                           </span>
                         )}
-                        <Button
+                        {/* <Button
                           onPress={handleSaveChildDetails}
                           text={"Save"}
                           fullWidth
                           secondary
-                        />
+                        /> */}
                       </div>
                     }
                   </div>
@@ -628,6 +628,7 @@ function LoanStepsCourseDetails() {
               <Button
                 onPress={() => {
                   // navigate("/bank-select"); // Navigate to "/bank-select" page
+
                   handleContinueClick(); // Call handleContinueClick function
                 }}
                 text={"Continue"}

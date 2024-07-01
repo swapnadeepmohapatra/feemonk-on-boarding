@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Button from "../../../../components/atoms/Button";
 import InputText from "../../../../components/atoms/InputText";
 import styles from "./index.module.css";
@@ -16,6 +16,40 @@ function LoginDialog({ reload }: any) {
   const [state, setState] = useState<"PHONE" | "OTP">("PHONE");
   const navigate = useNavigate();
   const [authToken, setAuthToken] = useLocalStorage("auth_token", "");
+
+  useEffect(() => {
+    if ("OTPCredential" in window) {
+      window.addEventListener("DOMContentLoaded", () => {
+        const input = document.querySelector(
+          'input[autocomplete="one-time-code"]'
+        ) as HTMLInputElement | null;
+        if (!input) return;
+        const ac = new AbortController();
+        const form = input.closest("form");
+        if (form) {
+          form.addEventListener("submit", () => {
+            ac.abort();
+          });
+        }
+        (
+          navigator.credentials.get({
+            // @ts-ignore
+            otp: { transport: ["sms"] },
+            signal: ac.signal,
+          }) as Promise<any>
+        )
+          .then((otp) => {
+            if (otp && input) {
+              input.value = otp.code;
+              if (form) form.submit();
+            }
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      });
+    }
+  }, []);
 
   const sendOtp = () => {
     var myHeaders = new Headers();
@@ -40,7 +74,6 @@ function LoginDialog({ reload }: any) {
         } else if (result.message === "Successful") {
           setState("OTP");
         }
-        // console.log(result);
       })
       .catch((error) => console.log("error", error));
   };
@@ -64,20 +97,9 @@ function LoginDialog({ reload }: any) {
     fetch(`${API_URL}/login/verify-otp`, requestOptions)
       .then((response) => response.json())
       .then(async (result) => {
-        // console.log(result);
-        // console.log(result.message);
-
         if (result.message === "Invalid OTP") {
           alert("Invalid OTP");
         } else if (result.message === "Successful") {
-          // await localStorage.setItem(
-          //   "feemonk_data",
-          //   JSON.stringify({
-          //     auth_token: result.data,
-          //     mobile_number: number,
-          //   })
-          // );
-
           setAuthToken({
             value: result.data,
             mob: number,
@@ -125,10 +147,6 @@ function LoginDialog({ reload }: any) {
             sent to <strong>+91 {number}</strong>
           </p>
           <br />
-          {/* <Label text="Mobile Number" /> */}
-          <br />
-          <br />
-          {/* <h1>LoginDialog</h1> */}
           <OtpText otp={otp} setOtp={setOtp} />
           <br />
           <div
@@ -181,7 +199,6 @@ function LoginDialog({ reload }: any) {
         <Label text="Mobile Number" />
         <br />
         <br />
-        {/* <h1>LoginDialog</h1> */}
         <InputText
           placeholder="Mobile Number"
           changeHandler={(e) => setNumber(e.target.value)}
