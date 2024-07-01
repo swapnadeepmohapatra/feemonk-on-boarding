@@ -147,7 +147,13 @@ function LoginDialog({ reload }: any) {
             sent to <strong>+91 {number}</strong>
           </p>
           <br />
-          <OtpText otp={otp} setOtp={setOtp} />
+          {/* <OtpText otp={otp} setOtp={setOtp} /> */}
+          <input
+            autoComplete="one-time-code"
+            required
+            value={otp}
+            onChange={(e) => setOtp(e.target.value)}
+          />
           <br />
           <div
             style={{
