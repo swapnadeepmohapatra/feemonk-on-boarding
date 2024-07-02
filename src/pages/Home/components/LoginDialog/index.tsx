@@ -10,6 +10,14 @@ import { useNavigate } from "react-router-dom";
 import { API_URL } from "../../../../utils";
 import { useLocalStorage } from "../../../../hooks";
 
+interface OTPCredential extends Credential {
+  code: string;
+}
+
+interface OTPCredentialRequestOptions extends CredentialRequestOptions {
+  otp?: { transport: string[] };
+}
+
 function LoginDialog({ reload }: any) {
   const [otp, setOtp] = useState("");
   const [number, setNumber] = useState("");
@@ -18,38 +26,10 @@ function LoginDialog({ reload }: any) {
   const [authToken, setAuthToken] = useLocalStorage("auth_token", "");
 
   useEffect(() => {
-    if ("OTPCredential" in window) {
-      window.addEventListener("DOMContentLoaded", () => {
-        const input = document.querySelector(
-          'input[autocomplete="one-time-code"]'
-        ) as HTMLInputElement | null;
-        if (!input) return;
-        const ac = new AbortController();
-        const form = input.closest("form");
-        if (form) {
-          form.addEventListener("submit", () => {
-            ac.abort();
-          });
-        }
-        (
-          navigator.credentials.get({
-            // @ts-ignore
-            otp: { transport: ["sms"] },
-            signal: ac.signal,
-          }) as Promise<any>
-        )
-          .then((otp) => {
-            if (otp && input) {
-              input.value = otp.code;
-              if (form) form.submit();
-            }
-          })
-          .catch((err) => {
-            console.log(err);
-          });
-      });
+    if (state === "OTP") {
+      receiveOTP();
     }
-  }, []);
+  }, [state]);
 
   const sendOtp = () => {
     var myHeaders = new Headers();
@@ -138,6 +118,39 @@ function LoginDialog({ reload }: any) {
       .catch((error) => console.log("error", error));
   };
 
+  const receiveOTP = async () => {
+    // Suppress TypeScript error for WebOTP API
+    // @ts-ignore
+    if (!navigator.credentials || !navigator.credentials.get) {
+      console.error("WebOTP API not supported in this browser.");
+      return;
+    }
+
+    try {
+      // Suppress TypeScript error for unsupported `otp` property
+      const options: OTPCredentialRequestOptions = {
+        otp: { transport: ["sms"] },
+        signal: new AbortController().signal,
+      };
+
+      // Suppress TypeScript error for `credentials.get`
+      // @ts-ignore
+      const content = (await navigator.credentials.get(
+        options
+      )) as OTPCredential;
+
+      if (content && content.code) {
+        setOtp(content.code);
+        alert("OTP received automatically!");
+        verifyOtp();
+      } else {
+        console.error("No OTP received.");
+      }
+    } catch (err) {
+      console.error("Error receiving OTP:", err);
+    }
+  };
+
   if (state === "OTP") {
     return (
       <div className={styles.backdrop}>
@@ -147,13 +160,8 @@ function LoginDialog({ reload }: any) {
             sent to <strong>+91 {number}</strong>
           </p>
           <br />
-          {/* <OtpText otp={otp} setOtp={setOtp} /> */}
-          <input
-            autoComplete="one-time-code"
-            required
-            value={otp}
-            onChange={(e) => setOtp(e.target.value)}
-          />
+          <br />
+          <OtpText otp={otp} setOtp={setOtp} />
           <br />
           <div
             style={{
