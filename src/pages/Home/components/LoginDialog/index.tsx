@@ -164,6 +164,9 @@ function LoginDialog({ reload }: any) {
       if (document.hasFocus()) {
         // Truecaller app not present on the device, handle fallback
         console.log("Truecaller app not present");
+        window.open(
+          "https://play.google.com/store/apps/details?id=com.truecaller&pcampaignid=web_share"
+        );
         // Implement your fallback logic here (e.g., show an error message)
       } else {
         // Truecaller app present, handle the app opening
