@@ -9,6 +9,7 @@ import OtpText from "../../../../components/atoms/OtpText";
 import { useNavigate } from "react-router-dom";
 import { API_URL } from "../../../../utils";
 import { useLocalStorage } from "../../../../hooks";
+import truecaller from "../../../../images/static_assests/truecaller.svg";
 
 interface OTPCredential extends Credential {
   code: string;
@@ -151,6 +152,27 @@ function LoginDialog({ reload }: any) {
     }
   };
 
+  const launchTruecaller = () => {
+    const iframe = document.createElement("iframe");
+    iframe.style.display = "none";
+    iframe.src = `truecallersdk://truesdk/web_verify?type=btmsheet&requestNonce=UNIQUE_REQUEST_ID&partnerKey=bicXuac7c6d070212436d80177b56a0f9c688&partnerName=feemonk&lang=EN&privacyUrl=https://www.feemonk.com/&termsUrl=https://www.feemonk.com/&loginPrefix=continue&loginSuffix=login&ctaPrefix=use&ctaColor=%23d32028&ctaTextColor=%23ffffff&btnShape=round&skipOption=useanothernum&ttl=8000`;
+    document.body.appendChild(iframe);
+
+    setTimeout(() => {
+      document.body.removeChild(iframe);
+
+      if (document.hasFocus()) {
+        // Truecaller app not present on the device, handle fallback
+        console.log("Truecaller app not present");
+        // Implement your fallback logic here (e.g., show an error message)
+      } else {
+        // Truecaller app present, handle the app opening
+        console.log("Truecaller app opened");
+        // Implement your Truecaller app handling logic here
+      }
+    }, 600);
+  };
+
   if (state === "OTP") {
     return (
       <div className={styles.backdrop}>
@@ -209,6 +231,25 @@ function LoginDialog({ reload }: any) {
       <div className={styles.loginContainer}>
         <p className={styles.textPreLogin}>To get started</p>
         <p className={styles.textLogin}>Login with</p>
+        <br />
+        <div style={{ textAlign: "center" }}>
+          <img
+            src={truecaller}
+            style={{
+              // marginLeft: "10rem",
+              height: "3.5rem",
+              alignContent: "center",
+            }}
+            onClick={launchTruecaller}
+          />
+          <br />
+          <div className={styles.lineContainer}>
+            <div className={styles.line}></div>
+            <p className={styles.orText}>OR</p>
+            <div className={styles.line}></div>
+          </div>
+        </div>
+
         <br />
         <Label text="Mobile Number" />
         <br />
