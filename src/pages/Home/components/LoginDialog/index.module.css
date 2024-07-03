@@ -26,3 +26,21 @@
   font-size: 1.8rem;
   font-weight: bold;
 }
+
+.lineContainer {
+  display: flex;
+  align-items: center;
+  text-align: center;
+  margin: 20px 0;
+}
+
+.line {
+  flex: 1;
+  height: 1px;
+  background-color: #939393;
+}
+
+.orText {
+  margin: 0 10px;
+  color: #939393;
+}
