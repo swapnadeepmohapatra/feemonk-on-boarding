@@ -3,9 +3,16 @@ import { useNavigate } from "react-router-dom";
 import Button from "../../components/atoms/Button";
 import styles from "./index.module.css";
 import ArrowRight from "../../images/icons/arrow_right.svg";
+import { notifyUrlChange } from "../../utils/notifyUrlChange";
 
 function LandingPage() {
   const navigate = useNavigate();
+
+  // Function to handle navigation
+  function navigateTo(route: string) {
+    navigate(route);
+    notifyUrlChange(window.location.href);
+  }
 
   const [annimationClassName, setAnnimationClassName] = useState({
     circle: styles.circle,
@@ -80,7 +87,7 @@ function LandingPage() {
             <Button
               text={"Get started"}
               onPress={() => {
-                navigate("/home");
+                navigateTo("/home");
               }}
               imageRight={ArrowRight}
             />
