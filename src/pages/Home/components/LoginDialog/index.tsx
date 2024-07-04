@@ -6,10 +6,11 @@ import ArrowRight from "../../../../images/icons/arrow_right.svg";
 import Label from "../../../../components/atoms/Label";
 import FooterText from "../../../../components/atoms/FooterText";
 import OtpText from "../../../../components/atoms/OtpText";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
 import { API_URL } from "../../../../utils";
 import { useLocalStorage } from "../../../../hooks";
 import truecaller from "../../../../images/static_assests/truecaller.svg";
+import { notifyUrlChange } from "../../../../utils/notifyUrlChange";
 
 interface OTPCredential extends Credential {
   code: string;
@@ -26,11 +27,18 @@ function LoginDialog({ reload }: any) {
   const navigate = useNavigate();
   const [authToken, setAuthToken] = useLocalStorage("auth_token", "");
 
+  let [searchParams, setSearchParams] = useSearchParams();
+
   useEffect(() => {
     if (state === "OTP") {
       receiveOTP();
     }
   }, [state]);
+
+  const updateSearchParams = (key: string, value: string) => {
+    setSearchParams({ ...searchParams, [key]: value });
+    notifyUrlChange(window.location.href);
+  };
 
   const sendOtp = () => {
     var myHeaders = new Headers();
@@ -39,6 +47,8 @@ function LoginDialog({ reload }: any) {
     var raw = JSON.stringify({
       mobile: number,
     });
+
+    updateSearchParams("mobile", number);
 
     var requestOptions: RequestInit = {
       method: "POST",
