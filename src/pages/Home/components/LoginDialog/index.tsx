@@ -36,16 +36,18 @@ function LoginDialog({ reload }: any) {
   }, [state]);
 
   const updateSearchParams = (key: string, value: string) => {
-    setSearchParams({ ...searchParams, [key]: value });
+    searchParams.set(key, value);
+    setSearchParams(searchParams);
+
     notifyUrlChange(window.location.href);
   };
 
-  const sendOtp = () => {
+  const sendOtp = (mob?: string) => {
     var myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/json");
 
     var raw = JSON.stringify({
-      mobile: number,
+      mobile: mob || number,
     });
 
     updateSearchParams("mobile", number);
@@ -69,13 +71,26 @@ function LoginDialog({ reload }: any) {
       .catch((error) => console.log("error", error));
   };
 
-  const verifyOtp = () => {
+  useEffect(() => {
+    if (searchParams.get("mobile")) {
+      setNumber(searchParams.get("mobile") as string);
+      sendOtp(searchParams.get("mobile") as string);
+      setState("OTP");
+
+      if (searchParams.get("otp")) {
+        setOtp(searchParams.get("otp") as string);
+        verifyOtp(searchParams.get("otp") as string);
+      }
+    }
+  }, [searchParams]);
+
+  const verifyOtp = (_otp?: string) => {
     var myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/json");
 
     var raw = JSON.stringify({
       mobile: number,
-      otp: otp,
+      otp: _otp || otp,
     });
 
     var requestOptions: RequestInit = {
@@ -275,7 +290,7 @@ function LoginDialog({ reload }: any) {
         <br />
         <Button
           text={"Get OTP"}
-          onPress={sendOtp}
+          onPress={() => sendOtp(number)}
           imageRight={ArrowRight}
           fullWidth
         />
