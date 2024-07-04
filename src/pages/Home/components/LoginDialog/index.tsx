@@ -168,7 +168,7 @@ function LoginDialog({ reload }: any) {
       if (content && content.code) {
         setOtp(content.code);
         alert("OTP received automatically!");
-        verifyOtp();
+        verifyOtp(content.code);
       } else {
         console.error("No OTP received.");
       }
@@ -239,7 +239,7 @@ function LoginDialog({ reload }: any) {
           <br />
           <Button
             text={"Verify"}
-            onPress={verifyOtp}
+            onPress={() => verifyOtp(otp)}
             imageRight={ArrowRight}
             fullWidth
           />
