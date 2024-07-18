@@ -6,10 +6,11 @@ import ArrowRight from "../../../../images/icons/arrow_right.svg";
 import Label from "../../../../components/atoms/Label";
 import FooterText from "../../../../components/atoms/FooterText";
 import OtpText from "../../../../components/atoms/OtpText";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
 import { API_URL } from "../../../../utils";
 import { useLocalStorage } from "../../../../hooks";
 import truecaller from "../../../../images/static_assests/truecaller.svg";
+import { notifyUrlChange } from "../../../../utils/notifyUrlChange";
 
 interface OTPCredential extends Credential {
   code: string;
@@ -26,19 +27,30 @@ function LoginDialog({ reload }: any) {
   const navigate = useNavigate();
   const [authToken, setAuthToken] = useLocalStorage("auth_token", "");
 
+  let [searchParams, setSearchParams] = useSearchParams();
+
   useEffect(() => {
     if (state === "OTP") {
       receiveOTP();
     }
   }, [state]);
 
-  const sendOtp = () => {
+  const updateSearchParams = (key: string, value: string) => {
+    searchParams.set(key, value);
+    setSearchParams(searchParams);
+
+    notifyUrlChange(window.location.href);
+  };
+
+  const sendOtp = (mob?: string) => {
     var myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/json");
 
     var raw = JSON.stringify({
-      mobile: number,
+      mobile: mob || number,
     });
+
+    updateSearchParams("mobile", number);
 
     var requestOptions: RequestInit = {
       method: "POST",
@@ -59,13 +71,26 @@ function LoginDialog({ reload }: any) {
       .catch((error) => console.log("error", error));
   };
 
-  const verifyOtp = () => {
+  useEffect(() => {
+    if (searchParams.get("mobile")) {
+      setNumber(searchParams.get("mobile") as string);
+      sendOtp(searchParams.get("mobile") as string);
+      setState("OTP");
+
+      if (searchParams.get("otp")) {
+        setOtp(searchParams.get("otp") as string);
+        verifyOtp(searchParams.get("otp") as string);
+      }
+    }
+  }, [searchParams]);
+
+  const verifyOtp = (_otp?: string) => {
     var myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/json");
 
     var raw = JSON.stringify({
       mobile: number,
-      otp: otp,
+      otp: _otp || otp,
     });
 
     var requestOptions: RequestInit = {
@@ -143,7 +168,7 @@ function LoginDialog({ reload }: any) {
       if (content && content.code) {
         setOtp(content.code);
         alert("OTP received automatically!");
-        verifyOtp();
+        verifyOtp(content.code);
       } else {
         console.error("No OTP received.");
       }
@@ -214,7 +239,7 @@ function LoginDialog({ reload }: any) {
           <br />
           <Button
             text={"Verify"}
-            onPress={verifyOtp}
+            onPress={() => verifyOtp(otp)}
             imageRight={ArrowRight}
             fullWidth
           />
@@ -265,7 +290,7 @@ function LoginDialog({ reload }: any) {
         <br />
         <Button
           text={"Get OTP"}
-          onPress={sendOtp}
+          onPress={() => sendOtp(number)}
           imageRight={ArrowRight}
           fullWidth
         />
