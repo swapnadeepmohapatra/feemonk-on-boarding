@@ -6,10 +6,11 @@ import ArrowRight from "../../../../images/icons/arrow_right.svg";
 import Label from "../../../../components/atoms/Label";
 import FooterText from "../../../../components/atoms/FooterText";
 import OtpText from "../../../../components/atoms/OtpText";
-import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { API_URL } from "../../../../utils";
 import { useLocalStorage } from "../../../../hooks";
 import truecaller from "../../../../images/static_assests/truecaller.svg";
+import whatsapp from "../../../../images/static_assests/whatsapp-filled.svg";
 import { notifyUrlChange } from "../../../../utils/notifyUrlChange";
 
 interface OTPCredential extends Credential {
@@ -20,6 +21,11 @@ interface OTPCredentialRequestOptions extends CredentialRequestOptions {
   otp?: { transport: string[] };
 }
 
+declare global {
+  interface Window {
+    OTPlessSignin?: any;
+  }
+}
 function LoginDialog({ reload }: any) {
   const [otp, setOtp] = useState("");
   const [number, setNumber] = useState("");
@@ -35,10 +41,46 @@ function LoginDialog({ reload }: any) {
     }
   }, [state]);
 
+  useEffect(() => {
+    const callback = (otplessUser: any) => {
+      const emailMap = otplessUser.identities.find(
+        (item: any) => item.identityType === "EMAIL"
+      );
+      const mobileMap = otplessUser.identities.find(
+        (item: any) => item.identityType === "MOBILE"
+      )?.identityValue;
+      const token = otplessUser.token;
+      const email = emailMap?.identityValue;
+      const mobile = mobileMap?.identityValue;
+      const name = emailMap?.name || mobileMap?.name;
+
+      console.log("User Info:", otplessUser);
+
+      if (token) {
+        setAuthToken({ value: token, mob: mobile });
+        authenticate(token);
+      }
+    };
+
+    // Load OTPLESS SDK if not already present
+    if (!window.OTPlessSignin) {
+      const script = document.createElement("script");
+      script.id = "otpless-sdk";
+      script.src = "https://otpless.com/v2/headless.js";
+      script.dataset.appid = "77L4509B8ZHAQ7YUECPV";
+      document.head.appendChild(script);
+
+      script.onload = () => {
+        (window as any).OTPlessSignin = new (window as any).OTPless(callback);
+      };
+    } else {
+      (window as any).OTPlessSignin = new (window as any).OTPless(callback);
+    }
+  }, []);
+
   const updateSearchParams = (key: string, value: string) => {
     searchParams.set(key, value);
     setSearchParams(searchParams);
-
     notifyUrlChange(window.location.href);
   };
 
@@ -46,9 +88,7 @@ function LoginDialog({ reload }: any) {
     var myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/json");
 
-    var raw = JSON.stringify({
-      mobile: mob || number,
-    });
+    var raw = JSON.stringify({ mobile: mob || number });
 
     updateSearchParams("mobile", number);
 
@@ -112,9 +152,7 @@ function LoginDialog({ reload }: any) {
           });
 
           authenticate(result.data);
-
           reload();
-
           window.location.reload();
         }
       })
@@ -123,7 +161,6 @@ function LoginDialog({ reload }: any) {
 
   const authenticate = (auth_token: string) => {
     var myHeaders = new Headers();
-
     myHeaders.append("Authorization", `Bearer ${authToken && authToken.value}`);
 
     var requestOptions: RequestInit = {
@@ -137,7 +174,6 @@ function LoginDialog({ reload }: any) {
       .then((result) => {
         if (result.message === "Successful") {
           navigate("/home");
-
           setTimeout(() => {}, 500);
         }
       })
@@ -192,13 +228,18 @@ function LoginDialog({ reload }: any) {
         window.open(
           "https://play.google.com/store/apps/details?id=com.truecaller"
         );
-        // Implement your fallback logic here (e.g., show an error message)
       } else {
         // Truecaller app present, handle the app opening
         console.log("Truecaller app opened");
-        // Implement your Truecaller app handling logic here
       }
     }, 600);
+  };
+
+  const handleWhatsAppLogin = () => {
+    (window as any).OTPlessSignin.initiate({
+      channel: "OAUTH",
+      channelType: "WHATSAPP",
+    });
   };
 
   if (state === "OTP") {
@@ -245,10 +286,7 @@ function LoginDialog({ reload }: any) {
           />
           <br />
           <br />
-          <FooterText
-            text="By logging in you consent to share your mobile number and name with
-            Feemonk"
-          />
+          <FooterText text="By logging in you consent to share your mobile number and name with Feemonk" />
         </div>
       </div>
     );
@@ -261,21 +299,33 @@ function LoginDialog({ reload }: any) {
         <p className={styles.textLogin}>Login with</p>
         <br />
         <div style={{ textAlign: "center" }}>
-          <img
-            src={truecaller}
-            style={{
-              // marginLeft: "10rem",
-              height: "3.5rem",
-              alignContent: "center",
-            }}
-            onClick={launchTruecaller}
-          />
+          <div style={{ display: "flex", justifyContent: "space-around" }}>
+            <img
+              src={truecaller}
+              style={{
+                height: "3.5rem",
+                cursor: "pointer",
+              }}
+              onClick={launchTruecaller}
+              alt="Login with Truecaller"
+            />
+            <img
+              src={whatsapp}
+              style={{
+                height: "3.5rem",
+                cursor: "pointer",
+              }}
+              onClick={handleWhatsAppLogin}
+              alt="Login with whatsapp"
+            />
+          </div>
           <br />
           <div className={styles.lineContainer}>
             <div className={styles.line}></div>
             <p className={styles.orText}>OR</p>
             <div className={styles.line}></div>
           </div>
+          <br />
         </div>
 
         <br />
@@ -296,10 +346,7 @@ function LoginDialog({ reload }: any) {
         />
         <br />
         <br />
-        <FooterText
-          text="By logging in you consent to share your mobile number and name with
-          Feemonk"
-        />
+        <FooterText text="By logging in you consent to share your mobile number and name with Feemonk" />
       </div>
     </div>
   );
