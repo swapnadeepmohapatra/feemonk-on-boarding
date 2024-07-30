@@ -238,6 +238,14 @@ function LoginDialog({ reload }: any) {
       channel: "OAUTH",
       channelType: "WHATSAPP",
       phoneNumber: number,
+      callback: (response: any) => {
+        console.log("WhatsApp login response:", response); // Added this line for debugging
+        if (response.success) {
+          authenticate(response.token);
+        } else {
+          console.error("WhatsApp login failed:", response);
+        }
+      },
     });
   };
 

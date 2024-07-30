@@ -44,3 +44,8 @@
   margin: 0 10px;
   color: #939393;
 }
+
+.warning {
+  color: red;
+  margin-bottom: 10px;
+}
