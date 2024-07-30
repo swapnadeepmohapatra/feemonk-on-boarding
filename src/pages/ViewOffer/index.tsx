@@ -115,7 +115,7 @@ function ViewOffer() {
         "authToken",
         "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiIyMzdmMTQ3ZC01NjE1LTQ4ODAtYWZhNi0yZWEzMzgzNTRkYmMiLCJhcHBsaWNhdGlvbklkIjoiRk0yNDAwMDUzMyIsIm1vYmlsZSI6IjgxMDYwODcwOTkiLCJ2YWxpZEJhbmtEZXRhaWxzIjozLCJlbmFjaFN0YXR1cyI6MSwiYWdyZWVtZW50U3RhdHVzIjoxLCJkaWdpbG9ja2VyU3RhdHVzIjozLCJreWNEb25lIjpmYWxzZSwic2VsZmllRGV0YWlscyI6MywiaXNDb3BwbGljYW50IjpmYWxzZSwiaWF0IjoxNzE4NzgwMzQ0LCJleHAiOjE3MTkzODUxNDR9.heC_f8QXmU6uEC5nAyCourmCvIuAAy5nFnhPMsJBpKs"
       );
-      navigate("/mandate", { state: { data: summaryData } });
+      navigate("/PFcollection", { state: { data: summaryData } });
     } catch (error) {
       console.error("Error generating token:", error);
     }

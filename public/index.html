@@ -8,31 +8,9 @@
     <script
     id="otpless-sdk"
     src="https://otpless.com/v2/headless.js"
-    data-appid="YOUR_APP_ID"
+    data-appid="77L4509B8ZHAQ7YUECPV"
   ></script>
-  <script>
-    const callback = (userinfo) => {
-      const emailMap = userinfo.identities.find(
-        (item) => item.identityType === "EMAIL"
-      );
-
-      const mobileMap = userinfo.identities.find(
-        (item) => item.identityType === "MOBILE"
-      )?.identityValue;
-
-      const token = userinfo.token;
-
-      const email = emailMap?.identityValue;
-      const mobile = mobileMap?.identityValue;
-      const name = emailMap?.name || mobileMap?.name;
-
-      console.log(userinfo);
-
-      // Implement your custom logic here.
-    };
-    // Initialize OTPless SDK with the defined callback.
-    const OTPlessSignin = new OTPless(callback);
-  </script>
+  
     <script
       async
       src="https://bureauconnectweb.finbox.in/bureau-connect-initiate.js"
@@ -75,6 +53,28 @@
       To begin the development, run `npm start` or `yarn start`.
       To create a production bundle, use `npm run build` or `yarn build`.
     -->
-      
+    <script>
+      const callback = (userinfo) => {
+        const emailMap = userinfo.identities.find(
+          (item) => item.identityType === "EMAIL"
+        );
+  
+        const mobileMap = userinfo.identities.find(
+          (item) => item.identityType === "MOBILE"
+        )?.identityValue;
+  
+        const token = userinfo.token;
+  
+        const email = emailMap?.identityValue;
+        const mobile = mobileMap?.identityValue;
+        const name = emailMap?.name || mobileMap?.name;
+  
+        console.log(userinfo);
+  
+        // Implement your custom logic here.
+      };
+      // Initialize OTPless SDK with the defined callback.
+      const OTPlessSignin = new OTPless(callback);
+    </script>
   </body>
 </html>
