@@ -106,7 +106,7 @@ function LoginDialog({ reload }: any) {
       redirect: "follow",
     };
 
-    fetch(`${API_URL}/login/otp`, requestOptions)
+    fetch(`${API_URL}/login/send-otp`, requestOptions)
       .then((response) => response.json())
       .then((result) => {
         if (result.error) {

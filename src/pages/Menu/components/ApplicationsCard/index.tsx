@@ -4,7 +4,7 @@ import calendar from "../../../../images/static_assests/calendar.svg";
 import rightArrow from "../../../../images/icons/RedArrow.svg";
 
 interface ApplicationsCardProps {
-  status: "In Review" | "In Submission" | "Rejected";
+  status: "In Review" | "In Submission" | "Rejected" | "Disbursed";
   appliedOn?: string;
   applicationId?: string;
 }
@@ -14,6 +14,8 @@ function ApplicationsCard({
   appliedOn,
   applicationId,
 }: ApplicationsCardProps) {
+  console.log(status);
+
   const renderAction = () => {
     switch (status) {
       case "In Review":
@@ -32,6 +34,21 @@ function ApplicationsCard({
           </div>
         );
       case "In Submission":
+        return (
+          <div className={styles.actionContainer}>
+            <div className={styles.action}>
+              <p className={styles.seeMore}>See more</p>
+            </div>
+            <div className={styles.arrowContainer}>
+              <img
+                src={rightArrow}
+                alt="Right Arrow"
+                className={styles.arrow}
+              />
+            </div>
+          </div>
+        );
+      case "Disbursed":
         return (
           <div className={styles.actionContainer}>
             <div className={styles.action}>
