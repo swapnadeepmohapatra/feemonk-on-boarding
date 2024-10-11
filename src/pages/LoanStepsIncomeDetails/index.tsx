@@ -18,7 +18,7 @@ import InputText from "../../components/atoms/InputText";
 import Label from "../../components/atoms/Label";
 import { useNavigate, useLocation } from "react-router-dom";
 import { relative } from "path";
-import { API_URL } from "../../utils";
+// import { process.env.REACT_APP_DASHBOARD_URL } from "../../utils";
 
 import { jwtDecode } from "jwt-decode";
 import { data } from "../../helpers/ckyc_sample_data";
@@ -37,6 +37,7 @@ function IncomeDetails() {
   const [progress, setProgress] = useState<number>(0);
   console.log(data);
   const user = sessionStorage.getItem("auth_token") || "";
+  const decode = jwtDecode(JSON.parse(user).value) as any;
   const headerVal = JSON.parse(user).value;
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const selectedFile = event.target.files?.[0];
@@ -80,11 +81,12 @@ function IncomeDetails() {
       incomePerMonth:
         active === "SELF_EMPLOYEE" ? parseFloat(monthlyIncome) : 0,
       typeOfBusiness: active === "SELF_EMPLOYEE" ? profession : "",
+      applicationId: decode.applicationId,
     };
-
+  
     try {
       const response = await fetch(
-        `${API_URL}/users/employment-details/create`,
+        `${process.env.REACT_APP_DASHBOARD_URL}/users/employment-details/create`,
         {
           method: "POST",
           headers: {
@@ -94,19 +96,20 @@ function IncomeDetails() {
           body: JSON.stringify(employmentDetails),
         }
       );
-
+  
       if (response.ok) {
         setIsWorkDetailsFilled(true);
-        // setIsWorkDetailsMinimized(true);
-        // Optionally handle successful response here
+        return true;
       } else {
-        // Optionally handle errors here
         console.error("Failed to save work details");
+        return false; 
       }
     } catch (error) {
       console.error("Error:", error);
+      return false;
     }
   };
+  
   const handleSaveBankDetails = () => {
     setIsBankDetailsFilled(true);
     setIsBankDetailsMinimized(true);
@@ -228,7 +231,7 @@ function IncomeDetails() {
                         backgroundColor: active === "SALARIED" ? "#FFFFFF" : "",
                         justifyContent: "center",
                         flex: "1",
-                        cursor: "pointer",
+                        cursor: "pointer",boxShadow: active === "SALARIED"?"0px 1px 2px 0px rgba(16, 24, 40, 0.06)":'',border:active === "SALARIED"?"1px solid #F9D8D6":""
                       }}
                       onClick={() => setActive("SALARIED")}
                     >
@@ -241,7 +244,8 @@ function IncomeDetails() {
                         backgroundColor:
                           active === "SELF_EMPLOYEE" ? "#FFFFFF" : "",
                         cursor: "pointer",
-                        flex: "1",
+                        flex: "1",whiteSpace:'nowrap',boxShadow:active === "SELF_EMPLOYEE"? "0px 1px 2px 0px rgba(16, 24, 40, 0.06)":"",border:active === "SELF_EMPLOYEE"?"1px solid #F9D8D6":""
+
                       }}
                       onClick={() => setActive("SELF_EMPLOYEE")}
                     >
@@ -258,7 +262,7 @@ function IncomeDetails() {
                         value={companyName}
                         changeHandler={(e) => setCompanyName(e.target.value)}
                       />
-                      <Label text="Net annual Salary" />
+                      <Label text="Salary" />
                       <InputText
                         square
                         placeholder="₹"
@@ -297,15 +301,17 @@ function IncomeDetails() {
           <></>
           <br />
           <Button
-            onPress={() => {
-              handleSaveWorkDetails();
-              navigate("/loan-steps-course-details", { state: { data } });
-            }}
-            disabled={isSaveButtonDisabled}
-            text={"Continue"}
-            imageRight={ArrowRight}
-            fullWidth
-          />
+          onPress={async () => {
+            const isSuccess = await handleSaveWorkDetails();
+            if (isSuccess) {
+              navigate("/identify-yourself", { state: { data } });
+            }
+          }}
+          disabled={isSaveButtonDisabled}
+          text={"Continue"}
+          imageRight={ArrowRight}
+          fullWidth
+        />
         </div>
       </div>
     </div>

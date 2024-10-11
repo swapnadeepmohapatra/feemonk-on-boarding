@@ -23,7 +23,7 @@ import InputText from "../../components/atoms/InputText";
 import Button from "../../components/atoms/Button";
 import CircularProgress from "@mui/material/CircularProgress";
 import Box from "@mui/material/Box";
-import { API_URL } from "../../utils";
+// import { process.env.REACT_APP_DASHBOARD_URL } from "../../utils";
 
 let Digio: any;
 
@@ -83,7 +83,7 @@ function Mandate() {
 
   const callAuthApiDelayed = () => {
     setInterval(() => {
-      fetch(`${API_URL}/integrations-login/auth`, {
+      fetch(`${process.env.REACT_APP_DASHBOARD_URL}/integrations-login/auth`, {
         headers: {
           Authorization: `Bearer ${intAuthUser}`,
           "Content-Type": "application/x-www-form-urlencoded",
@@ -112,7 +112,7 @@ function Mandate() {
       };
 
       fetch(
-        `${API_URL}/digilocker/updateDetails?entityId=${kid}&transactionId=${id}`,
+        `${process.env.REACT_APP_DASHBOARD_URL}/digilocker/updateDetails?entityId=${kid}&transactionId=${id}`,
         requestOptions
       )
         .then((response) => response.text())
@@ -249,7 +249,7 @@ function Mandate() {
           redirect: "follow",
         };
 
-        fetch(`${API_URL}/digilocker/create`, requestOptions)
+        fetch(`${process.env.REACT_APP_DASHBOARD_URL}/digilocker/create`, requestOptions)
           .then((response) => response.json())
           .then((result) => {
             // console.log(result);
@@ -314,7 +314,7 @@ function Mandate() {
         };
 
         fetch(
-          `${API_URL}/agreement/${
+          `${process.env.REACT_APP_DASHBOARD_URL}/agreement/${
             mandateStatus.isCoapplicant ? "coapplicant-generate" : "generate"
           }`,
           requestOptions
@@ -374,7 +374,7 @@ function Mandate() {
 
   function getOneWayKycUrl() {
     console.log("authotoken", decode);
-    fetch(`${API_URL}/one-way-kyc/create`, {
+    fetch(`${process.env.REACT_APP_DASHBOARD_URL}/one-way-kyc/create`, {
       method: "POST",
       headers: {
         // Authorization: `Bearer ${decode.value}`,
@@ -420,7 +420,7 @@ function Mandate() {
       });
   }
   const slefieClick = () => {
-    fetch(`${API_URL}/integrations-login/auth`, {
+    fetch(`${process.env.REACT_APP_DASHBOARD_URL}/integrations-login/auth`, {
       headers: {
         Authorization: `Bearer ${intAuthUser}`,
         "Content-Type": "application/x-www-form-urlencoded",
@@ -439,7 +439,7 @@ function Mandate() {
   const toggleMandates = () => setMandateModals(!mandateModals);
 
   function submitMandate() {
-    fetch(`${API_URL}/nach/register`, {
+    fetch(`${process.env.REACT_APP_DASHBOARD_URL}/nach/register`, {
       method: "POST",
       headers: {
         // Authorization: `Bearer ${decode.value}`,

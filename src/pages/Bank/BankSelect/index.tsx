@@ -4,7 +4,7 @@ import Button from "../../../components/atoms/Button";
 import InputText from "../../../components/atoms/InputText";
 import { BANK_LIST } from "../../../helpers/banks_list";
 import { useNavigate, useLocation } from "react-router-dom";
-import { API_URL } from "../../../utils";
+// import { process.env.REACT_APP_DASHBOARD_URL } from "../../../utils";
 import { useLocalStorage } from "../../../hooks";
 
 function BankSelect() {
@@ -37,7 +37,7 @@ function BankSelect() {
       };
 
       // `${"https://apply-backend.feemonk.com"}/account-aggregator/get-fips`
-      fetch(`${API_URL}/account-aggregator/get-active-banks`, requestOptions)
+      fetch(`${process.env.REACT_APP_DASHBOARD_URL}/account-aggregator/get-active-banks`, requestOptions)
         .then((response) => response.json())
         .then((result) => {
           if (result?.data) {

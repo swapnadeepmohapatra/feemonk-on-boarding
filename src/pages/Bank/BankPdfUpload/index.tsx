@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import Button from "../../../components/atoms/Button";
 import { useLocalStorage } from "../../../hooks/useLocalStorage";
 // import { UserInitialState } from "../../redux/slice/userData";
-import { API_URL } from "../../../utils";
+// import { process.env.REACT_APP_DASHBOARD_URL } from "../../../utils";
 import DocumentCard from "./DocCard";
 import styles from "./styles.module.css";
 import Dropzone from "react-dropzone";
@@ -21,7 +21,7 @@ const BankPdfUpload: React.FC = () => {
   console.log(decode);
 
   const uploadPdf = async () => {
-    const response = await fetch(`${API_URL}/login/auth`, {
+    const response = await fetch(`${process.env.REACT_APP_DASHBOARD_URL}/login/auth`, {
       headers: {
         Authorization: `Bearer ${decode}`,
         "Content-Type": "application/x-www-form-urlencoded",
@@ -41,7 +41,7 @@ const BankPdfUpload: React.FC = () => {
     data.append("password", password);
 
     const pdfResponse = await fetch(
-      `${API_URL}/bank-statement-analysis/finbox/upload`,
+      `${process.env.REACT_APP_DASHBOARD_URL}/bank-statement-analysis/finbox/upload`,
       {
         body: data,
         headers: {
@@ -55,7 +55,7 @@ const BankPdfUpload: React.FC = () => {
 
     // console.log(pdfResult);
 
-    navigate("/parking-page");
+    navigate("/view-offer");
   };
 
   return (

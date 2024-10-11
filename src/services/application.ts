@@ -1,7 +1,7 @@
-import { PAYLATER_BACKEND } from "../utils/keys";
+// import { PAYLATER_BACKEND } from "../utils/keys";
 
 export const createApplication = async (data: any) => {
-  return fetch(`${PAYLATER_BACKEND}/application/create`, {
+  return fetch(`${process.env.REACT_APP_PAYLATER_BACKEND}/application/create`, {
     method: "POST",
     headers: {
       Accept: "application/JSON",
@@ -18,7 +18,7 @@ export const createApplication = async (data: any) => {
 };
 
 export const updateAddress = async (data: any) => {
-  return fetch(`${PAYLATER_BACKEND}/application/address/create`, {
+  return fetch(`${process.env.REACT_APP_PAYLATER_BACKEND}/application/address/create`, {
     method: "POST",
     headers: {
       Accept: "application/JSON",
@@ -35,7 +35,7 @@ export const updateAddress = async (data: any) => {
 };
 
 export const updateEmployment = async (data: any) => {
-  return fetch(`${PAYLATER_BACKEND}/application/employment/create`, {
+  return fetch(`${process.env.REACT_APP_PAYLATER_BACKEND}/application/employment/create`, {
     method: "POST",
     headers: {
       Accept: "application/JSON",
@@ -53,7 +53,7 @@ export const updateEmployment = async (data: any) => {
 
 export const getApproval = async (data: any) => {
   return fetch(
-    `${PAYLATER_BACKEND}/application/get-approval?userId=${data.userId}&applicationId=${data.applicationId}`
+    `${process.env.REACT_APP_PAYLATER_BACKEND}/application/get-approval?userId=${data.userId}&applicationId=${data.applicationId}`
   )
     .then((response) => {
       return response.json();
@@ -65,7 +65,7 @@ export const getApproval = async (data: any) => {
 
 export const getProducts = async (data: any) => {
   return fetch(
-    `${PAYLATER_BACKEND}/application/get-products?userId=${data.userId}&applicationId=${data.applicationId}`
+    `${process.env.REACT_APP_PAYLATER_BACKEND}/application/get-products?userId=${data.userId}&applicationId=${data.applicationId}`
   )
     .then((response) => {
       return response.json();
@@ -76,7 +76,7 @@ export const getProducts = async (data: any) => {
 };
 
 export const approve = async (data: any) => {
-  return fetch(`${PAYLATER_BACKEND}/application/approve`, {
+  return fetch(`${process.env.REACT_APP_PAYLATER_BACKEND}/application/approve`, {
     method: "POST",
     headers: {
       Accept: "application/JSON",

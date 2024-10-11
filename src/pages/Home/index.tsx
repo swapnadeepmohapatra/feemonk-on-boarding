@@ -5,6 +5,8 @@ import LoanAdpng from "../../images/LoanAd.png";
 import MyApplicationsImage from "../../images/static_assests/my_applications_icon.svg";
 import MyLoansImage from "../../images/static_assests/my_loans_icon.svg";
 import MyRepaymentsImage from "../../images/static_assests/my_repayments_icon.svg";
+import MyFeepaymentImage from "../../images/static_assests/feepayment_icon.svg";
+import MonkHeroImage from "../../images/static_assests/monk_with_bg.svg";
 import ArrowRight from "../../images/icons/RedArrow.svg";
 import BottomNavigationBar from "../../components/molecules/BottomNavBar";
 import LoginDialog from "./components/LoginDialog";
@@ -13,6 +15,9 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { CircularProgressbar, buildStyles } from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";
+import RightArrow from "../../images/icons/RedArrow.svg"
+import monkImage from "../../images/monk_illustration.png"
+import wallet from "../../images/static_assests/wallet.svg";
 
 const loanAd = {
   title: "Avail up to",
@@ -32,10 +37,10 @@ const loanAd = {
 };
 
 const loanSections = [
-  { text: "My Applications", image: MyApplicationsImage },
+  // { text: "My Applications", image: MyApplicationsImage },
   { text: "My Loans", image: MyLoansImage },
-  { text: "My Repayments", image: MyRepaymentsImage },
-  { text: "My Fee Payments", image: MyRepaymentsImage },
+  // { text: "My Repayments", image: MyRepaymentsImage },
+  // { text: "My Fee Payments", image: MyFeepaymentImage },
 ];
 
 function Home() {
@@ -247,51 +252,31 @@ function Home() {
                 display: "flex",
                 justifyContent: "space-around",
                 width: "100%",
-                paddingTop: "1rem",
+                paddingTop: "1rem"
               }}
             >
-              <div style={{ padding: "1rem" }}>
-                <p style={{ fontStyle: "normal", fontSize: "24px" }}>
+              <div style={{ padding: "0.5rem" }}>
+                <p style={{ fontStyle: "normal", fontSize: "1.2rem" }}>
                   {loanAd.title}
                 </p>
                 <p className={styles.amount}>
-                  <strong>₹ 2 crores</strong> of loan
+                  <strong>₹10 Lakhs</strong> of loan
                 </p>
               </div>
               <img
                 src={LoanAdpng}
                 alt="Loan Image"
-                style={{ maxWidth: "180px", height: "120px" }}
+                style={{ maxWidth: "7rem", height: "5rem" }}
               />
             </div>
-            <div
-              style={{
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "space-around",
-                marginRight: "6rem",
-              }}
-            >
-              <button
-                style={{
-                  backgroundColor: "#D32028",
-                  padding: "5px 26px",
-                  alignItems: "center",
-                  flexDirection: "row",
-                  justifyContent: "center",
-                  borderRadius: 32,
-                  border: "none",
-                  marginRight: "-8rem",
-                  marginBottom: "1.85rem",
-                }}
+            <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',paddingLeft:'1rem',paddingRight:'1rem',marginBottom:'0.5rem'}}>
+              <button style={{height:'25px',width:'110px',display:'flex',justifyContent:'center',alignItems:'center',whiteSpace:'nowrap',fontSize:'1rem',backgroundColor: "rgba(211, 32, 40, 1)",borderRadius:'12px',margin:'0.5rem'}}
                 onClick={() => {
-                  navigate("/loan-steps");
+                  navigate("/loan-steps-basic-details");
                 }}
-              >
-                {" "}
-                Apply Now
+              > Apply Now
               </button>
-              <p className={styles.finePrint}>
+              <p>
                 {" "}
                 {loanAd.finePrint.text}{" "}
                 <img
@@ -308,22 +293,75 @@ function Home() {
                 {benefit.text}
               </div>
             ))} */}
-              <p style={{ fontFamily: "Outfit" }}> No processing fee |</p>
+            <div style={{whiteSpace:"nowrap",fontSize:'12px'}}>Low processing fee</div>
+              <div style={{height:'18px',width:'2px',border: "1px solid rgba(254, 152, 157, 1)"}}></div>
+              <div style={{whiteSpace:"nowrap",fontSize:'12px'}}>Paperless process</div>
+              <div style={{height:'18px',width:'2px',border: "1px solid rgba(254, 152, 157, 1)"}}></div>
+              <div style={{whiteSpace:"nowrap",fontSize:'12px'}}>Best EMI options</div>
+              {/* <p style={{ fontFamily: "Outfit" }}> No processing fee |</p>
               <p> Paperless process</p>
-              <p>| Best EMI options</p>
+              <p>| Best EMI options</p> */}
             </div>
           </div>
         )}
 
-        <div className={styles.loanSectionContainer}>
+        {/* <div className={styles.loanSectionContainer}>
           {loanSections.map((item, index) => (
-            <div key={index} className={styles.loanSection}>
-              <img src={item.image} alt="" />
-              <p>{item.text}</p>
+            <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',backgroundColor:'#fff6f6',boxShadow: "0px 3px 4px 0px rgba(0, 0, 0, 0.25)",borderRadius:'10px',padding:'0.7em',marginBottom:'0.5em'}}>
+            <div key={index} style={{display:'flex',alignItems:'center'}}>
+              <img src={item.image} alt="" style={{height:'2em'}}/>
+              <p style={{whiteSpace:"nowrap",fontSize:'1.2em',marginLeft:'15px'}}>{item.text}</p>
+            </div>
+            <div style={{ display: 'flex', alignItems: 'center' ,justifyContent:'center'}}>
+              <img style={{width:'1em'}} src={RightArrow}/>
+            </div>
             </div>
           ))}
-        </div>
+        </div> */}
+        <>
+        <img src={MonkHeroImage} alt="" style={{padding: '1rem 5rem'}} />
+        <br />
+          <h3 style={{display:'flex',textAlign:'center',justifyContent:'center'}}>No active Loans</h3>
+          <br />
+          <br />
         <div style={{ flex: 1 }}></div>
+        </>
+       
+        {/* <>
+        <div style={{display:'flex',alignItems:'center',flexDirection:'column'}}>
+        <p style={{color: "rgba(95, 95, 95, 1)",fontSize:'1.5rem'}}>Outstanding amount</p>
+        <p style={{color: "black",fontFamily:'outfit',fontSize:'1.5rem',fontWeight:'bold',whiteSpace:'nowrap',paddingTop:'0.5rem',marginBottom:'-1rem'}}>₹ 4,00,000</p>
+        </div>
+    <div className={styles.container1}>
+    <div className={styles.subcontainer1}>
+      <div style={{display:'flex',flexDirection:'column'}}>
+      <p style={{color: "black",fontFamily:'outfit',fontSize:'1rem',fontWeight:'bold',whiteSpace:'nowrap'}}> ₹ 10,00,000</p>
+      <p style={{color: "rgba(95, 95, 95, 1)",fontFamily:'outfit',fontSize:'1rem',whiteSpace:'nowrap'}}>Principal amount</p>
+      </div>
+    </div>
+    <div className={styles.subcontainer2}>
+    <div style={{display:'flex',flexDirection:'column'}}>
+      <p style={{color: "black",fontFamily:'outfit',fontSize:'1rem',fontWeight:'bold'}}> ₹ 15,000</p>
+      <p style={{color: "rgba(95, 95, 95, 1)",fontFamily:'outfit',fontSize:'1rem'}}>EMI amount</p>
+      </div>
+    </div>
+    <div className={styles.subcontainer3}>
+    <div style={{display:'flex',flexDirection:'column'}}>
+      <p style={{color: "black",fontFamily:'outfit',fontSize:'1rem',fontWeight:'bold',whiteSpace:'nowrap'}}> 20 Jun, 21</p>
+      <p style={{color: "rgba(95, 95, 95, 1)",fontFamily:'outfit',fontSize:'1rem',whiteSpace:'nowrap'}}>EMI start date</p>
+      </div>
+    </div>
+    <div className={styles.subcontainer4}>
+    <div style={{display:'flex',flexDirection:'row',backgroundColor:'#d32028',padding:'8px',borderRadius:'12px',alignItems:'center'}}>
+      <img src={wallet} style={{height:'1rem',}}/>
+      <p style={{color: "white",fontFamily:'outfit',fontSize:'1rem',marginLeft:'5px'}} onClick={() => navigate("/emis")}>Pay Now</p>
+      </div>
+    </div>
+    <div className={styles.dot}></div>
+  </div>
+        </> */}
+        
+
         <BottomNavigationBar active="Home" />
         {!authToken && <LoginDialog reload={() => setReload(!reload)} />}
       </div>

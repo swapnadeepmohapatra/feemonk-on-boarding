@@ -35,7 +35,7 @@ function LoansCard({ status }: LoansCardProps) {
           </p>
           <p className={styles.cardNumberText}>₹ 10,00,000</p>
         </div>
-        <div className={styles.actionContainer}>
+        <div className={styles.actionContainer} onClick={() => navigate("/emis")}>
           <div className={styles.action}>
             <p className={styles.seeMore}>see more</p>
           </div>
@@ -147,7 +147,7 @@ function LoansCard({ status }: LoansCardProps) {
         <div>
           <button
             className={styles.offerButton}
-            onClick={() => navigate("/loan-steps")}
+            onClick={() => navigate("/emis")}
           >
             <span>
               <img src={eye} alt="EMI History" />

@@ -6,7 +6,7 @@ import styles from "./index.module.css";
 import ArrowRight from "../../images/icons/arrow_right.svg";
 import Confetti from "../../images/static_assests/confeti.svg";
 import closebtn from "../../images/icons/close-btn.svg";
-import { API_URL } from "../../utils";
+// import { process.env.REACT_APP_DASHBOARD_URL } from "../../utils";
 import { jwtDecode } from "jwt-decode"; // Ensure you have the correct path to your config file
 const queryStringToObject = (queryString: string) => {
   if (queryString.startsWith("?")) {
@@ -49,7 +49,7 @@ function LoanOffer() {
         myHeaders.append("Authorization", `Bearer ${user}`);
 
         const response = await fetch(
-          `${API_URL}/account-aggregator/finbox/status`,
+          `${process.env.REACT_APP_DASHBOARD_URL}/account-aggregator/finbox/status`,
           {
             method: "POST",
             headers: myHeaders,

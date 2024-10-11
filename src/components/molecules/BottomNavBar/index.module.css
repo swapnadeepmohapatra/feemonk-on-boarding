@@ -7,6 +7,11 @@
   width: 100%;
   padding: 0rem 5rem;
   align-self: flex-end;
+  position: fixed; 
+  bottom: 0; 
+  width: 100%; 
+  background-color: white; 
+
 }
 
 .bottomNav {
@@ -15,7 +20,7 @@
   justify-content: space-between;
   align-items: center;
   background-color: #d32028;
-  padding: 1.5rem 1rem;
+  padding: 1rem 1rem;
   border-radius: 50% 50% 0% 0%;
 }
 

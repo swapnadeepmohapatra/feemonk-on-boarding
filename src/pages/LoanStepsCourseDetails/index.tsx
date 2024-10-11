@@ -28,7 +28,7 @@ import { useNavigate, useLocation } from "react-router-dom";
 import { relative } from "path";
 import axiosInstance from "../../helpers/axios";
 import { jwtDecode } from "jwt-decode";
-import { API_URL } from "../../utils";
+// import { process.env.REACT_APP_DASHBOARD_URL } from "../../utils";
 
 import closee from "../../images/static_assests/redClose.svg";
 
@@ -54,7 +54,7 @@ function LoanStepsCourseDetails() {
   const [dropdownOpen, setDropdownOpen] = useState<boolean>(true);
   const location = useLocation();
   const stateData = location.state.data || {};
-  console.log(stateData);
+  console.log("stateData",stateData);
 
   const data = stateData;
 
@@ -137,7 +137,7 @@ function LoanStepsCourseDetails() {
         // if (value.length > 4) {
         //   setIsLoading(true);
         //   try {
-        //     const response = await axiosInstance.get(`${API_URL}/institute/info/name`, { params: { name: value } });
+        //     const response = await axiosInstance.get(`${process.env.REACT_APP_DASHBOARD_URL}/institute/info/name`, { params: { name: value } });
         //     if (response.data.message === "Successful") {
         //       const options: SchoolOption[] = response.data.data.map((school: any) => ({
         //         key: school.id,
@@ -190,7 +190,7 @@ function LoanStepsCourseDetails() {
     }
   };
   const handleStartSession = (item: any) => {
-    console.log(item);
+    console.log("item--->",item);
     const randomGen =
       Date.now().toString(36) + Math.random().toString(36).substr(2);
 
@@ -277,64 +277,68 @@ function LoanStepsCourseDetails() {
   console.log(data3);
   const createLoanApplication = () => {
     // const headerVal = sessionStorage.getItem('auth_token') || "";
-    const requestBody = {
-      userId: decode?.userId,
-      courseFees: parseInt(annualFees),
+    handleLocationClick();
+    const userId = decode?.userId; // Ensure userId is available
+    if (userId) {
+      const data2 = {
+        // userId,
+        latitude: location1.latitude,
+        longitude: location1.longitude,
+      };
+
+      // Make API call to submit data
+      axios
+        .post(`${process.env.REACT_APP_DASHBOARD_URL}/end-user/submit`, data2, {
+          headers: {
+            Authorization: `Bearer ${headerVal}`,
+            "Content-Type": "application/json",
+          },
+        })
+        .then((response) => {
+          // Handle success response if needed
+          console.log("Data submitted successfully:", response.data);
+        })
+        .catch((error) => {
+          // Handle error response if needed
+          console.error("Error submitting data:", error);
+        });
+    }
+    handleStartSession(data);
+  };
+
+  const handleContinueClick = async () => {
+    // createLoanApplication();
+    const data = {
+      applicationId: decode.applicationId,
+      courseFees: annualFees,
       instituteName: schoolName,
       courseName: className,
       isCoapplicant: false,
-    };
-
-    axiosInstance
-      .post(`${API_URL}/application/create`, requestBody, {
+      loanAmount: annualFees,
+      studentName:studentName
+    }
+    try {
+      const response = await fetch(`${process.env.REACT_APP_DASHBOARD_URL}/admin/application/update`, {
+        method: "POST",
         headers: {
           Authorization: `Bearer ${headerVal}`,
           "Content-Type": "application/json",
         },
-      })
-      .then((response) => {
-        setData3(response.data.data);
-        console.log(data3);
-        console.log("Application created successfully:", response.data);
-        // Redirect the user to the next page, if needed
-        handleLocationClick();
-        const userId = decode?.userId; // Ensure userId is available
-        if (userId) {
-          const data2 = {
-            // userId,
-            latitude: location1.latitude,
-            longitude: location1.longitude,
-          };
-
-          // Make API call to submit data
-          axios
-            .post(`${API_URL}/end-user/submit`, data2, {
-              headers: {
-                Authorization: `Bearer ${headerVal}`,
-                "Content-Type": "application/json",
-              },
-            })
-            .then((response) => {
-              // Handle success response if needed
-              console.log("Data submitted successfully:", response.data);
-            })
-            .catch((error) => {
-              // Handle error response if needed
-              console.error("Error submitting data:", error);
-            });
-        }
-        handleStartSession(data);
-      })
-      .catch((error) => {
-        console.error("Error creating application:", error);
-        // Optionally, display an error message to the user
+        body: JSON.stringify(data),
       });
-  };
+  
+      // Handle non-200 response
+      if (!response.ok) {
+        console.log(response)
+      }
+  
+      const result = await response.json();
+      console.log("Profile details updated:", result);
+      return true;
+    } catch (error) {
+      return false;
+    }
 
-  const handleContinueClick = () => {
-    // Call createLoanApplication when Continue button is clicked
-    createLoanApplication();
-    // handleStartSession(data);
   };
 
   // const [schoolName, setSchoolName] = useState<string>("");
@@ -348,7 +352,7 @@ function LoanStepsCourseDetails() {
     if (value.length >= 5) {
       try {
         const response = await axiosInstance.get(
-          `${API_URL}/institute/info/name`,
+          `${process.env.REACT_APP_DASHBOARD_URL}/institute/info/name`,
           { params: { name: value } }
         );
         if (response.data.message === "Successful") {
@@ -450,16 +454,16 @@ function LoanStepsCourseDetails() {
                 src={Progress}
                 alt=""
               />
-              <br />
+              {/* <br /> */}
               <LoanStepCard
                 // description="Permanent Address & Current Location"
                 title="Course details"
                 image={CourseDetails}
                 tiime="3 min"
               />
-              <br />
+              {/* <br />
 
-              <br />
+              <br /> */}
               {
                 <>
                   {/* My Child Details Section */}
@@ -626,10 +630,11 @@ function LoanStepsCourseDetails() {
               <></>
               <br />
               <Button
-                onPress={() => {
-                  // navigate("/bank-select"); // Navigate to "/bank-select" page
-
-                  handleContinueClick(); // Call handleContinueClick function
+                onPress={async () => {
+                  const isSuccess = await handleContinueClick();
+                  if (isSuccess) {
+                    navigate("/bank-select", { state: { data, data3 } });
+                  }
                 }}
                 text={"Continue"}
                 imageRight={ArrowRight}

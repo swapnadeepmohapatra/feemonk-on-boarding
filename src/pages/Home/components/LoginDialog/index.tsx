@@ -7,7 +7,7 @@ import Label from "../../../../components/atoms/Label";
 import FooterText from "../../../../components/atoms/FooterText";
 import OtpText from "../../../../components/atoms/OtpText";
 import { useNavigate, useSearchParams } from "react-router-dom";
-import { API_URL } from "../../../../utils";
+// import { process.env.REACT_APP_DASHBOARD_URL } from "../../../../utils";
 import { useLocalStorage } from "../../../../hooks";
 import truecaller from "../../../../images/static_assests/truecaller.svg";
 import whatsapp from "../../../../images/static_assests/whatsapp-filled.svg";
@@ -106,7 +106,7 @@ function LoginDialog({ reload }: any) {
       redirect: "follow",
     };
 
-    fetch(`${API_URL}/login/send-otp`, requestOptions)
+    fetch(`${process.env.REACT_APP_DASHBOARD_URL}/login/send-otp`, requestOptions)
       .then((response) => response.json())
       .then((result) => {
         if (result.error) {
@@ -121,7 +121,7 @@ function LoginDialog({ reload }: any) {
   useEffect(() => {
     if (searchParams.get("mobile")) {
       setNumber(searchParams.get("mobile") as string);
-      sendOtp(searchParams.get("mobile") as string);
+      // sendOtp(searchParams.get("mobile") as string);
       setState("OTP");
 
       if (searchParams.get("otp")) {
@@ -161,7 +161,7 @@ function LoginDialog({ reload }: any) {
       redirect: "follow",
     };
 
-    fetch(`${API_URL}/login/verify-otp`, requestOptions)
+    fetch(`${process.env.REACT_APP_DASHBOARD_URL}/login/verify-otp`, requestOptions)
       .then((response) => response.json())
       .then(async (result) => {
         if (result.message === "Invalid OTP") {
@@ -182,7 +182,7 @@ function LoginDialog({ reload }: any) {
 
   const authenticate = (auth_token: string) => {
     var myHeaders = new Headers();
-    myHeaders.append("Authorization", `Bearer ${authToken && authToken.value}`);
+    myHeaders.append("Authorization", `Bearer ${auth_token}`);
 
     var requestOptions: RequestInit = {
       method: "GET",
@@ -190,7 +190,7 @@ function LoginDialog({ reload }: any) {
       redirect: "follow",
     };
 
-    fetch(`${API_URL}/login/auth`, requestOptions)
+    fetch(`${process.env.REACT_APP_DASHBOARD_URL}/login/auth`, requestOptions)
       .then((response) => response.json())
       .then((result) => {
         if (result.message === "Successful") {

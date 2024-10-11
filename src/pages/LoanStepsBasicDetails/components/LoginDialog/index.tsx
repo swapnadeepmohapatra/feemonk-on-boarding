@@ -9,7 +9,7 @@ import Label from "../../../../components/atoms/Label";
 import FooterText from "../../../../components/atoms/FooterText";
 import OtpText from "../../../../components/atoms/OtpText";
 import { useNavigate } from "react-router-dom";
-import { API_URL } from "../../../../utils";
+// import { process.env.REACT_APP_DASHBOARD_URL } from "../../../../utils";
 import { useLocalStorage } from "../../../../hooks";
 
 function LoginDialog({ support }: any) {

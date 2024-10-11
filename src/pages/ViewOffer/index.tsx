@@ -8,15 +8,15 @@ import InputText from "../../components/atoms/InputText";
 import BackArrow from "../../images/icons/close-btn.svg";
 import bigcalendar from "../../images/static_assests/bigcalendar.svg";
 import bigemi from "../../images/static_assests/bigemi.svg";
-
+import emi from "../../images/static_assests/emi.png"
 import download from "../../images/icons/download.svg";
 import biginterest from "../../images/static_assests/biginterest.svg";
-import { API_URL } from "../../utils";
-import jwtDecode from "jwt-decode";
+// import { process.env.REACT_APP_DASHBOARD_URL } from "../../utils";
+import {jwtDecode} from "jwt-decode";
 import axios from "axios";
 import { formatToIndianRupees } from "../../utils/formatToIndianRpuees";
 import { getNextFifthDate } from "../../utils/getNextFifthDate";
-
+import selected from "../../images/static_assests/selected.png"
 // Define the structure of summary data
 interface SummaryData {
   mobile: string;
@@ -34,7 +34,6 @@ function ViewOffer() {
     },
   ]);
   const [activeEmiPlan, setActiveEmiPlan] = useState("");
-
   const handleDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const date = e.target.value;
     setSelectedDate(date);
@@ -48,12 +47,13 @@ function ViewOffer() {
   const user = sessionStorage.getItem("auth_token") || "";
   const decode = JSON.parse(user).value as any;
   console.log(decode);
+  const token = jwtDecode(JSON.parse(user).value) as any;
 
   useEffect(() => {
     // Fetch summary data when the component mounts
     const fetchSummaryData = async () => {
       try {
-        const response = await axios.get(`${API_URL}/summary`, {
+        const response = await axios.get(`${process.env.REACT_APP_DASHBOARD_URL}/summary`, {
           headers: {
             Authorization: `Bearer ${decode}`,
           },
@@ -69,7 +69,7 @@ function ViewOffer() {
   }, [decode]);
 
   const approve = async (data: any) => {
-    return fetch(`${API_URL}/application/approve`, {
+    return fetch(`${process.env.REACT_APP_DASHBOARD_URL}/application/approve`, {
       method: "POST",
       headers: {
         Authorization: `Bearer ${decode}`,
@@ -85,44 +85,112 @@ function ViewOffer() {
   };
 
   const handleButtonClick = async () => {
-    const url = `${API_URL}/integrations-login/generate-token`;
+    const updateStatusUrl = `${process.env.REACT_APP_DASHBOARD_URL}/admin/application/assign-fund-source`;
 
-    // Ensure summaryData is available before making the request
-    if (!summaryData) {
-      console.error("Summary data is not available.");
-      return;
+    let emidate=new Date()
+          let current=null
+          if (emidate.getMonth() == 11) {
+            current = `${emidate.getFullYear() + 1}/01/05`
+         } else {
+            current = `${emidate.getFullYear()}/${emidate.getMonth() + 2}/05`
+         }
+    const statusData = {
+      applicationId:token.applicationId,
+      fundCode: "GBP",
+      productId: activeEmiPlan,
+      loanAmount: "100000",
+      emi: "10000",
+      emiFirstDate:current,
+      dayOfEmi: 5,
+      rulesStatus:1
+    };
+    axios
+            .post(`${updateStatusUrl}`, statusData, {
+              headers: {
+                Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJhcHBsaWNhdGlvbnMtYmFja2VuZCIsInVzZXJfaWQiOjUsImVtYWlsIjoic2FpcmFta0BmZWVtb25rLmNvbSIsImlhdCI6MTcxNjg3Mzc4NjY5Nywicm9sZSI6ImNybSIsImRpc3BsYXlfbmFtZSI6IlNhaSBSYW0gUmVkZHkiLCJtb2JpbGUiOiI2MzA5MTQ4MzMzIiwiZXhwIjoxNzE2ODc0MzkxNDk3fQ.lPHnxTija-VpfqMzFWfJJ5fkHDkWJYM-kt2ybO7AgA8`,
+                'Content-type': 'application/json',
+              },
+            })
+            .then(
+              (res) => {
+                if (res.data.message === 'Successful') {
+                  // window.location.reload();
+               
+                }
+              },
+              (error) => {
+                // setLoading(false)
+              
+             
+              },
+            );
+    const evaluateUrl = `${process.env.REACT_APP_DASHBOARD_URL}/application/evaluate`;
+
+    const evaluateData = {
+      userId: token.userId,
+      applicationId: token.applicationId,
     }
 
+    axios.post(`${evaluateUrl}`,evaluateData, {
+      headers: {
+        Authorization: `Bearer ${decode}`,
+        'Content-type': 'application/json',
+      },
+    })
+    .then((res)=>{
+      console.log("ressss----->",res)
+      if (res.data.data === "green") {
+        navigate("/Sanctions");
+      } else if (res.data.data === "red") {
+        navigate("/parking-page");
+      } else if (res.data.data === "orange") {
+        navigate("/parking-page");
+      }
+    })
+
+    const url = `${process.env.REACT_APP_DASHBOARD_URL}/integrations-login/generate-token`;
+
+    // Ensure summaryData is available before making the request
+    // if (!summaryData) {
+    //   console.error("Summary data is not available.");
+    //   return;
+    // }
+
     const requestData = {
-      mobile: summaryData.mobile,
-      userId: summaryData.userId,
-      applicationId: summaryData.applicationId,
+      mobile: "9052978077",
+      userId: token.userId,
+      applicationId: token.applicationId,
     };
+    // const requestData = {
+    //   mobile: "9052978077",
+    //   userId: "5ea8ca9f-f95a-4d61-b18c-fe0cc7a4a042",
+    //   applicationId: "FM24000924",
+    // };
 
     try {
-      // const response = await axios.post(url, requestData, {
-      //   headers: {
-      //     Authorization: `Bearer ${user}`,
-      //   },
-      // });
-      // console.log("token", response?.data?.data);
-      // sessionStorage.setItem("authToken", response?.data?.data);
-      console.log(
-        "token",
-        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiIyMzdmMTQ3ZC01NjE1LTQ4ODAtYWZhNi0yZWEzMzgzNTRkYmMiLCJhcHBsaWNhdGlvbklkIjoiRk0yNDAwMDUzMyIsIm1vYmlsZSI6IjgxMDYwODcwOTkiLCJ2YWxpZEJhbmtEZXRhaWxzIjozLCJlbmFjaFN0YXR1cyI6MSwiYWdyZWVtZW50U3RhdHVzIjoxLCJkaWdpbG9ja2VyU3RhdHVzIjozLCJreWNEb25lIjpmYWxzZSwic2VsZmllRGV0YWlscyI6MywiaXNDb3BwbGljYW50IjpmYWxzZSwiaWF0IjoxNzE4NzgwMzQ0LCJleHAiOjE3MTkzODUxNDR9.heC_f8QXmU6uEC5nAyCourmCvIuAAy5nFnhPMsJBpKs"
-      );
-      sessionStorage.setItem(
-        "authToken",
-        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiIyMzdmMTQ3ZC01NjE1LTQ4ODAtYWZhNi0yZWEzMzgzNTRkYmMiLCJhcHBsaWNhdGlvbklkIjoiRk0yNDAwMDUzMyIsIm1vYmlsZSI6IjgxMDYwODcwOTkiLCJ2YWxpZEJhbmtEZXRhaWxzIjozLCJlbmFjaFN0YXR1cyI6MSwiYWdyZWVtZW50U3RhdHVzIjoxLCJkaWdpbG9ja2VyU3RhdHVzIjozLCJreWNEb25lIjpmYWxzZSwic2VsZmllRGV0YWlscyI6MywiaXNDb3BwbGljYW50IjpmYWxzZSwiaWF0IjoxNzE4NzgwMzQ0LCJleHAiOjE3MTkzODUxNDR9.heC_f8QXmU6uEC5nAyCourmCvIuAAy5nFnhPMsJBpKs"
-      );
-      navigate("/PFcollection", { state: { data: summaryData } });
+      const response = await axios.post(url, requestData, {
+        headers: {
+          Authorization: `Bearer ${user}`,
+        },
+      });
+      console.log("token", response?.data?.data);
+      sessionStorage.setItem("authToken", response?.data?.data);
+      // console.log(
+      //   "token",
+      //   "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiIyMzdmMTQ3ZC01NjE1LTQ4ODAtYWZhNi0yZWEzMzgzNTRkYmMiLCJhcHBsaWNhdGlvbklkIjoiRk0yNDAwMDUzMyIsIm1vYmlsZSI6IjgxMDYwODcwOTkiLCJ2YWxpZEJhbmtEZXRhaWxzIjozLCJlbmFjaFN0YXR1cyI6MSwiYWdyZWVtZW50U3RhdHVzIjoxLCJkaWdpbG9ja2VyU3RhdHVzIjozLCJreWNEb25lIjpmYWxzZSwic2VsZmllRGV0YWlscyI6MywiaXNDb3BwbGljYW50IjpmYWxzZSwiaWF0IjoxNzE4NzgwMzQ0LCJleHAiOjE3MTkzODUxNDR9.heC_f8QXmU6uEC5nAyCourmCvIuAAy5nFnhPMsJBpKs"
+      // );
+      // sessionStorage.setItem(
+      //   "authToken",
+      //   "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiIyMzdmMTQ3ZC01NjE1LTQ4ODAtYWZhNi0yZWEzMzgzNTRkYmMiLCJhcHBsaWNhdGlvbklkIjoiRk0yNDAwMDUzMyIsIm1vYmlsZSI6IjgxMDYwODcwOTkiLCJ2YWxpZEJhbmtEZXRhaWxzIjozLCJlbmFjaFN0YXR1cyI6MSwiYWdyZWVtZW50U3RhdHVzIjoxLCJkaWdpbG9ja2VyU3RhdHVzIjozLCJreWNEb25lIjpmYWxzZSwic2VsZmllRGV0YWlscyI6MywiaXNDb3BwbGljYW50IjpmYWxzZSwiaWF0IjoxNzE4NzgwMzQ0LCJleHAiOjE3MTkzODUxNDR9.heC_f8QXmU6uEC5nAyCourmCvIuAAy5nFnhPMsJBpKs"
+      // );
+      // navigate("/parking-page", { state: { data: summaryData } });
     } catch (error) {
       console.error("Error generating token:", error);
     }
   };
 
   useEffect(() => {
-    fetch(`${API_URL}/products/instituteId?instituteId=B2C`)
+    fetch(`${process.env.REACT_APP_DASHBOARD_URL}/products/instituteId?instituteId=B2C`)
       .then((response) => response.json())
       .then((data) => {
         setProducts(data.data);
@@ -136,9 +204,9 @@ function ViewOffer() {
           <div className={styles.Header}>
             <button
               style={{ border: "none", background: "none" }}
-              onClick={() => {
-                navigate("/loan-steps");
-              }}
+              // onClick={() => {
+              //   navigate("/loan-steps");
+              // }}
             >
               <img
                 style={{ marginLeft: "0.5rem", height: "1.5rem" }}
@@ -198,10 +266,10 @@ function ViewOffer() {
               >
                 <img
                   src={bigemi}
-                  style={{ width: "4rem", marginBottom: "1.5rem" }}
+                  style={{ width: "47px",height:'45px', marginBottom: "1.5rem" }}
                 />
                 <p style={{ color: "#737373", fontSize: "0.875rem" }}>EMI</p>
-                <p style={{ fontSize: "1.2rem", fontWeight: "bold" }}>
+                <p style={{ fontSize: "0.875rem", fontWeight: "bold" }}>
                   {activeEmiPlan
                     ? `₹ ${formatToIndianRupees(
                         Number(
@@ -237,10 +305,10 @@ function ViewOffer() {
               >
                 <img
                   src={bigcalendar}
-                  style={{ width: "4rem", marginBottom: "1.5rem" }}
+                  style={{ width: "47px",height:'45px', marginBottom: "1.5rem" }}
                 />
                 <p style={{ color: "#737373", fontSize: "0.875rem" }}>TENURE</p>
-                <p style={{ fontSize: "1.2rem", fontWeight: "bold" }}>
+                <p style={{ fontSize: "0.875rem", fontWeight: "bold" }}>
                   {activeEmiPlan
                     ? products
                         .sort((a, b) => a.tenure - b.tenure)
@@ -261,14 +329,14 @@ function ViewOffer() {
               >
                 <img
                   src={biginterest}
-                  style={{ width: "4rem", marginBottom: "1.5rem" }}
+                  style={{ width: "47px",height:'45px',marginBottom: "1.5rem" }}
                 />
                 <p style={{ color: "#737373", fontSize: "0.875rem" }}>
                   Starts On
                 </p>
                 <p
                   style={{
-                    fontSize: "1.2rem",
+                    fontSize: "0.875rem",
                     fontWeight: "bold",
                     textDecoration: "underline",
                     color: "#d23028",
@@ -363,20 +431,14 @@ function ViewOffer() {
               style={{
                 textAlign: "left",
                 fontSize: "1.5rem",
-                fontWeight: "bold",
+                fontWeight: "bold",marginTop:'-1rem'
               }}
             >
               Choose EMI plan
             </p>
             <br />
             <div
-              style={{
-                display: "flex",
-                flexDirection: "row",
-                gap: "1rem",
-                textAlign: "center",
-                justifyContent: "space-between",
-              }}
+              
             >
               {products
                 .sort((a, b) => a.tenure - b.tenure)
@@ -384,9 +446,9 @@ function ViewOffer() {
                   <div
                     style={{
                       display: "flex",
-                      justifyContent: "center",
+                      justifyContent: "space-between",
                       alignItems: "center",
-                      padding: "2.4rem 1rem",
+                      padding: "1rem 1rem",
                       border:
                         activeEmiPlan === product.productId
                           ? "1px solid #D32028"
@@ -395,7 +457,7 @@ function ViewOffer() {
                       marginBottom: "1rem",
                       flex: 1,
                       background: "#FFF8F4",
-                      flexDirection: "column",
+                      flexDirection: "row",
                       gap: "0.3rem",
                     }}
                     key={product.productId}
@@ -403,6 +465,7 @@ function ViewOffer() {
                       setActiveEmiPlan(product.productId);
                     }}
                   >
+                    <p><img src={emi} style={{width:'3rem'}}/></p>
                     <p
                       style={{
                         textAlign: "left",
@@ -425,17 +488,18 @@ function ViewOffer() {
                     >
                       {product.tenure} Months
                     </p>
+                    {activeEmiPlan === product.productId ? <p><img src={selected}/></p>:null}
                   </div>
                 ))}
             </div>
           </div>
           <br />
-          <div style={{ display: "flex", justifyContent: "space-between" }}>
+          <div style={{ display: "flex", justifyContent: "space-between" ,marginTop:'-1rem'}}>
             <p
               style={{
                 textAlign: "left",
                 fontSize: "1.5rem",
-                fontWeight: "bold",
+                fontWeight: "bold"
               }}
             >
               Sanction Letter
@@ -446,12 +510,13 @@ function ViewOffer() {
             />
           </div>
           <p></p>
-          <Button
-            text={"Avail Loan Now"}
+          <div style={{marginTop:'1rem'}}> <Button
+            text={"Continue"}
             onPress={handleButtonClick}
             imageRight={ArrowRight}
             fullWidth
-          />
+          /></div>
+         
         </div>
       </div>
     </div>

@@ -65,7 +65,7 @@ function LoanSteps() {
               image={CourseDetails}
               tiime="3 min"
             />
-            <span>
+            {/* <span>
               {" "}
               <span
                 style={{
@@ -83,7 +83,7 @@ function LoanSteps() {
               >
                 LOAN OFFER
               </span>
-            </span>
+            </span> */}
           </div>
           <br />
           <br />
