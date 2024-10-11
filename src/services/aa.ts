@@ -1,7 +1,7 @@
-import { API_URL } from "../utils/keys";
+// import { process.env.REACT_APP_DASHBOARD_URL } from "../utils/keys";
 
 export const bankStatementPdfUpload = async (data: any) => {
-  return fetch(`${API_URL}/bank-statement-analysis/finbox/upload`, {
+  return fetch(`${process.env.REACT_APP_DASHBOARD_URL}/bank-statement-analysis/finbox/upload`, {
     method: "POST",
     headers: {
       Accept: "application/JSON",

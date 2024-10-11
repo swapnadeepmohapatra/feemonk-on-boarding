@@ -12,7 +12,7 @@ import maximize from "../../images/icons/maximize.svg";
 import minimize from "../../images/icons/minimize.svg";
 import BackArrow from "../../images/icons/arrow-left-circle.svg";
 import tick_mark from "../../images/static_assests/tick_mark.svg";
-import { API_URL } from "../../utils";
+// import { process.env.REACT_APP_DASHBOARD_URL } from "../../utils";
 import { jwtDecode } from "jwt-decode";
 
 function LoanStepsKYC() {
@@ -20,8 +20,21 @@ function LoanStepsKYC() {
   const location = useLocation();
   const stateData = location.state || {};
   const { data } = stateData;
+
+  console.log("data--->",data)
   const user = sessionStorage.getItem("auth_token") || "";
-  const headerVal = JSON.parse(user).value;
+  let headerVal = "";
+
+  if (user) {
+    try {
+      const parsedUser = JSON.parse(user); 
+      headerVal = parsedUser.value; 
+    } catch (error) {
+      console.log(error);
+    }
+  }
+  const decode = jwtDecode(JSON.parse(user).value) as any;
+  console.log("decodedToken--->",decode)
   const [currentAddress, setCurrentAddress] = useState("yes");
 
   const [doorNo, setDoorNo] = useState(data?.currentAddress?.doorNo || "");
@@ -49,56 +62,58 @@ function LoanStepsKYC() {
 
   const handleAddress = async () => {
     let isValid = true;
-
+  
+    // Validation checks for each field
     if (!doorNo) {
       setDoorNoError("Door No. is required");
       isValid = false;
     } else {
       setDoorNoError("");
     }
-
+  
     if (!street) {
       setStreetError("Street / Landmark is required");
       isValid = false;
     } else {
       setStreetError("");
     }
-
+  
     if (!city) {
       setCityError("City is required");
       isValid = false;
     } else {
       setCityError("");
     }
-
+  
     if (!state) {
       setStateError("State is required");
       isValid = false;
     } else {
       setStateError("");
     }
-
+  
     if (!pincode) {
       setPincodeError("Pincode is required");
       isValid = false;
     } else {
       setPincodeError("");
     }
-
+  
+    // If validation fails, exit early
     if (!isValid) {
-      return;
+      return false; // Explicitly return false to indicate failure
     }
-
+  
     const requestData = {
       currentAddress: doorNo + street,
       currentCity: city,
       currentState: state,
       currentPincode: pincode,
+      applicationId: decode.applicationId,
     };
-    console.log(requestData);
-
+  
     try {
-      const response = await fetch(`${API_URL}/users/profile-details/create`, {
+      const response = await fetch(`${process.env.REACT_APP_DASHBOARD_URL}/users/profile-details/create`, {
         method: "POST",
         headers: {
           Authorization: `Bearer ${headerVal}`,
@@ -106,19 +121,25 @@ function LoanStepsKYC() {
         },
         body: JSON.stringify(requestData),
       });
-
+  
+      // Handle non-200 response
       if (!response.ok) {
-        throw new Error("Network response was not ok");
+        const errorData = await response.json(); alert(response?.statusText)
+        throw new Error(errorData.message || "Failed to update profile details");
       }
-
+  
       const result = await response.json();
-      // console.log("Profile details updated:", result);
+      console.log("Profile details updated:", result);
+  
       setIsAddressFilled(true);
       setIsAddressMinimized(true);
+  
+      return true; // Return true to indicate success
     } catch (error) {
-      // console.error("Failed to update profile details:", error);
+      return false;
     }
   };
+  
 
   useEffect(() => {
     if (data) {
@@ -459,17 +480,19 @@ function LoanStepsKYC() {
           <br />
           <br />
           <Button
-            text="Save & Next"
-            onPress={() => {
-              handleAddress();
-              navigate("/loan-steps-income-details", { state: { data } });
-            }}
-            fullWidth
-            imageRight={ArrowRight}
-            disabled={!isFormValid} // Disable the button if the form is invalid
-          />
+          text="Save & Next"
+          onPress={async () => {
+            const isSuccess = await handleAddress(); // Call handleAddress and wait for result
+            if (isSuccess) {
+              navigate("/loan-steps-income-details", { state: { data } }); // Navigate only if successful
+            }
+          }}
+          fullWidth
+          imageRight={ArrowRight}
+          disabled={!isFormValid} // Disable the button if the form is invalid
+        />
         </div>
-        )
+        
       </div>
     </div>
   );

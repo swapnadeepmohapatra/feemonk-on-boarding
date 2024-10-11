@@ -13,12 +13,13 @@ import ArrowRight from "../../images/icons/arrow_right.svg";
 import { useNavigate, useParams } from "react-router-dom";
 import moment from "moment";
 import axiosInstance from "../../helpers/axios";
-import { API_URL } from "../../utils";
+// import { process.env.REACT_APP_DASHBOARD_URL } from "../../utils";
 import { jwtDecode } from "jwt-decode";
 import { Modal, ModalHeader, ModalBody, ModalFooter } from "reactstrap";
 import { createApplication } from "../../services/application";
 import { Console } from "console";
 import LoginDialog from "./components/LoginDialog";
+import axios from "axios";
 function LoanStepsBasicDetails() {
   const navigate = useNavigate();
   // Define types or interfaces if necessary
@@ -84,8 +85,10 @@ function LoanStepsBasicDetails() {
   const [isChecked, setIsChecked] = useState(false); // State to track checkbox status
   const [dateOfBirth, setDOB] = useState("");
   const [open, setOpen] = useState(false);
+  const [data, setData] = useState({});
   const user = sessionStorage.getItem("auth_token") || "";
   // console.log(JSON.parse(user).value)
+  const headerVal = JSON.parse(user).value;
   const decode = jwtDecode(JSON.parse(user).value) as any;
   // console.log(decode?.userId)
   const toggle = () => {
@@ -193,10 +196,39 @@ function LoanStepsBasicDetails() {
 
   const [addFiles, setAddFiles] = useState(false);
   const [errors, setErrors] = useState({});
+  const createLoanApplication = () => {
+    // const headerVal = sessionStorage.getItem('auth_token') || "";
+    handleLocationClick();
+    const userId = decode?.userId; // Ensure userId is available
+    if (userId) {
+      const data2 = {
+        // userId,
+        latitude: location.latitude,
+        longitude: location.longitude,
+      };
 
+      // Make API call to submit data
+      axios
+        .post(`${process.env.REACT_APP_DASHBOARD_URL}/end-user/submit`, data2, {
+          headers: {
+            Authorization: `Bearer ${headerVal}`,
+            "Content-Type": "application/json",
+          },
+        })
+        .then((response) => {
+          // Handle success response if needed
+
+          console.log("Data submitted successfully:", response.data);
+        })
+        .catch((error) => {
+          // Handle error response if needed
+          console.error("Error submitting data:", error);
+        });
+    }
+  };
   const getPanPro = () => {
     setLoading(true);
-    const panProUrl = `${API_URL}/pay-later-flow/create-from-pan`;
+    const panProUrl = `${process.env.REACT_APP_DASHBOARD_URL}/pay-later-flow/create-from-pan`;
     const panBody = {
       panId: pan,
       dob: moment(dob).format("DD/MM/YYYY"),
@@ -222,15 +254,37 @@ function LoanStepsBasicDetails() {
         .post(panProUrl, panBody)
         .then((res: any) => {
           setLoading(false);
-          console.log(res?.data?.data);
+          console.log("res?.data?.data---->",res?.data?.data);
           if (res?.data?.data?.currentState?.length > 0) {
             setpanProDetails(res?.data?.data);
           } else {
             fetchCKYCDetails();
             // window.alert("Invalid PAN Details or Date of Birth")
           }
+          handleStartSession(res?.data?.data);
 
-          // handleStartSession(res?.data)
+          const data2 = {
+            userId:decode?.userId,
+            latitude: location.latitude,
+            longitude: location.longitude,
+          };
+          axios
+          .post(`${process.env.REACT_APP_DASHBOARD_URL}/end-user/submit`, data2, {
+            headers: {
+              Authorization: `Bearer ${headerVal}`,
+              "Content-Type": "application/json",
+            },
+          })
+          .then((response) => {
+            // Handle success response if needed
+  
+            console.log("Data submitted successfully:", response.data);
+          })
+          .catch((error) => {
+            // Handle error response if needed
+            console.error("Error submitting data:", error);
+          });
+          handleStartSession(res?.data)
           const headers = {
             Authorization: `Bearer ${user}`,
             "Content-Type": "application/json",
@@ -286,7 +340,7 @@ function LoanStepsBasicDetails() {
             ocrId: "",
             channel: 4,
           };
-
+          setData(data)
           handleLocationClick();
 
           const userId = decode?.userId; // Ensure userId is available
@@ -301,7 +355,7 @@ function LoanStepsBasicDetails() {
             console.log(data);
             const mobileNumber = decode?.mobile;
             axiosInstance
-              .get(`${API_URL}/rules/eligibility?phone=${mobileNumber}`)
+              .get(`${process.env.REACT_APP_DASHBOARD_URL}/rules/eligibility?phone=${mobileNumber}`)
               .then((res) => {
                 const qecBody = {
                   applicationId: decode?.applicationId,
@@ -318,15 +372,15 @@ function LoanStepsBasicDetails() {
                 console.log(qecBody);
 
                 axiosInstance
-                  .post(`${API_URL}/rules/create/eligibility`, qecBody)
+                  .post(`${process.env.REACT_APP_DASHBOARD_URL}/rules/create/eligibility`, qecBody)
                   .then((result) => {
                     console.log(result);
 
                     // Navigate to loan steps start after successful API calls
                     // setToggleConsent(false);
-                    setTimeout(() => {
-                      navigate("/loan-steps-start", { state: { data, data2 } });
-                    }, 500);
+                    // setTimeout(() => {
+                    //   navigate("/loan-steps-start", { state: { data, data2 } });
+                    // }, 500);
                   })
                   .catch((err) => {
                     console.log(err);
@@ -339,7 +393,7 @@ function LoanStepsBasicDetails() {
         })
 
         .catch((err: any) => {
-          console.log(err);
+          console.log("err-------->",err);
           window.alert("Invalid PAN Details or Date of Birth");
           setAttempts((prev) => {
             const newAttempts = prev + 1;
@@ -358,7 +412,7 @@ function LoanStepsBasicDetails() {
 
     // Make sure userId and applicationId are available
 
-    const ckycUrl = `${API_URL}/ckyc/create`;
+    const ckycUrl = `${process.env.REACT_APP_DASHBOARD_URL}/ckyc/create`;
     const ckycBody = {
       userId: decode?.userId,
       panNumber: pan,
@@ -380,48 +434,49 @@ function LoanStepsBasicDetails() {
         });
       });
   };
+console.log("panprodetails--->",panProDetails)
+  const [toggleConsent,setToggleConsent]=useState(false)
 
-  // const [toggleConsent,setToggleConsent]=useState(false)
+   const handleStartSession=(item : any)=>{
+    console.log("item--->",item)
+    const randomGen= Date.now().toString(36) + Math.random().toString(36).substr(2);
 
-  //  const handleStartSession=(item : any)=>{
-  //   const randomGen= Date.now().toString(36) + Math.random().toString(36).substr(2);
+    (window as any). getBureauSession('708587bad0904485abe1127847dd62cd',randomGen,item.firstName,'',item.lastName,decode?.mobile).then((res :any)=>{
+    console.log(res)
+    setToggleConsent(true)
+    setLink(res)
+    }
+    )
+  }
 
-  //   (window as any). getBureauSession('708587bad0904485abe1127847dd62cd',randomGen,item.user_full_name_split[0].trim(),'',item.user_full_name_split[2].trim(),decode?.mobile).then((res :any)=>{
-  //   console.log(res)
-  //   setToggleConsent(true)
-  //   setLink(res)
-  //   }
-  //   )
-  // }
+    const handleLoadSession = async () => {
+      const result = await (window as any).startBureauSession();
+      if (result) {
+          switch (result.status) {
+              case "SUCCESS":
+                  const headers = {
+                      'Authorization': `Bearer ${user}`,
+                      'Content-Type': 'application/json',
+                  };
+                  navigate("/loan-steps-start", { state: { data } });
+                  break;
 
-  //   const handleLoadSession = async () => {
-  //     const result = await (window as any).startBureauSession();
-  //     if (result) {
-  //         switch (result.status) {
-  //             case "SUCCESS":
-  //                 const headers = {
-  //                     'Authorization': `Bearer ${user}`,
-  //                     'Content-Type': 'application/json',
-  //                 };
+              case "EXIT":
+                  alert("Retry Submit");
+                  toggle();
+                  break;
 
-  //                 break;
+              case "ERROR":
+                  alert("Error Please Try Later");
+                  toggle();
+                  break;
 
-  //             case "EXIT":
-  //                 alert("Retry Submit");
-  //                 toggle();
-  //                 break;
-
-  //             case "ERROR":
-  //                 alert("Error Please Try Later");
-  //                 toggle();
-  //                 break;
-
-  //             default:
-  //                 alert("Contact ouri co team for assistance");
-  //                 break;
-  //         }
-  //     }
-  // };
+              default:
+                  alert("Contact ouri co team for assistance");
+                  break;
+          }
+      }
+  };
 
   const isBlocked = () => {
     if (blockTimestamp === null) return false;
@@ -454,16 +509,64 @@ function LoanStepsBasicDetails() {
     <>
       <div className={styles.body}>
         <div className={styles.container}>
-          {loading ? ( // Show loading screen if loading is true
-            <LoginDialog />
-          ) : (
+        {toggleConsent ? (
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              paddingTop: "1rem",
+              paddingBottom: "1rem",
+              justifyContent: "center",
+              alignItems: "center",
+              marginTop: "4rem",
+            }}
+          >
+            <div>
+              <div
+                style={{
+                  display: "flex",
+                  flexDirection: "row",
+                  justifyContent: "space-between",
+                }}
+              >
+                <p
+                  style={{
+                    paddingTop: "0.5rem",
+                    fontWeight: "bold",
+                    fontSize: "1.3rem",
+                  }}
+                >
+                  Consent:
+                </p>
+                <img
+                  src={closee}
+                  style={{
+                    width: "2rem",
+                    cursor: "pointer",
+                    paddingBottom: "0.5rem",
+                  }}
+                  onClick={() => setToggleConsent(!toggleConsent)}
+                />
+              </div>
+              <div>
+                <iframe
+                  style={{ top: "0" }}
+                  width="350"
+                  height="600"
+                  src={consentLink}
+                  onLoad={handleLoadSession}
+                ></iframe>
+              </div>
+            </div>
+          </div>
+        )  : (
             // Show main content if toggleConsent is false
             <div className={styles.main}>
               <div className={styles.Header}>
                 <button
                   style={{ border: "none", background: "none" }}
                   onClick={() => {
-                    navigate("/loan-steps");
+                    navigate(-1);
                   }}
                 >
                   <img
@@ -486,7 +589,7 @@ function LoanStepsBasicDetails() {
                 image={BasicDetails}
                 tiime="1 min"
               />
-              <br />
+              {/* <br /> */}
               <div className={styles.inputField}>
                 <Label text="Date of birth" />
                 <div className={styles.dateInputWrapper}>
@@ -550,10 +653,10 @@ function LoanStepsBasicDetails() {
                 </p>
               )}
 
+              {/* <br />
               <br />
               <br />
-              <br />
-              <br />
+              <br /> */}
               {!loading && ( // Render checkbox only when loading and toggleConsent are false
                 <div
                   style={{
@@ -575,7 +678,7 @@ function LoanStepsBasicDetails() {
                       marginBottom: "1rem",
                       paddingBottom: "1rem",
                       color: "#667085",
-                      fontSize: "1.2rem",
+                      fontSize: "1rem",
                     }}
                   >
                     I consent and authorize{" "}

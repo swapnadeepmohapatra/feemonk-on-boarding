@@ -35,7 +35,7 @@ function BottomNavigationBar({ active }: BottomNavigationBarProps) {
       <div
         className={styles.bottomNav}
         style={{ backgroundColor: active === "Profile" ? "#d32028" : "white" }}
-        onClick={() => navigate("/")}
+        onClick={() => navigate("/profile")}
       >
         <img
           src={active === "Profile" ? UserIconWhite : UserIconBlack}

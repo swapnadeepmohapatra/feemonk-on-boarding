@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import styles from "./index.module.css";
 // import SideBar from "../../components/molecules/SideBar";
 import Button from "../../../components/atoms/Button";
-import { API_URL } from "../../../utils";
+// import { process.env.REACT_APP_DASHBOARD_URL } from "../../../utils";
 import { useLocalStorage } from "../../../hooks/useLocalStorage";
 import { useLocation, useNavigate } from "react-router-dom";
 import { jwtDecode } from "jwt-decode";
@@ -29,16 +29,16 @@ function AccountAggregator() {
       };
 
       const response = await fetch(
-        // `${API_URL_STAGING}/account-aggregator/generate`,
-        // `${API_URL_STAGING}/account-aggregator/finbox`,
-        `${API_URL}/account-aggregator/finbox`,
+        // `${process.env.REACT_APP_DASHBOARD_URL_STAGING}/account-aggregator/generate`,
+        // `${process.env.REACT_APP_DASHBOARD_URL_STAGING}/account-aggregator/finbox`,
+        `${process.env.REACT_APP_DASHBOARD_URL}/account-aggregator/finbox`,
         {
           method: "POST",
           headers: headers,
           redirect: "follow",
           body: JSON.stringify({
             bank: (state as any)?.bank?.Name,
-            redirectUrl: `http://localhost:3000/parking-page`,
+            redirectUrl: `http://localhost:3000/view-offer`,
           }),
         }
       );

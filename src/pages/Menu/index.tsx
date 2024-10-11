@@ -14,30 +14,30 @@ import FeepaymentsCard from "./components/FeepaymentsCard";
 import axios from "axios";
 
 function renderSections(
-  page: "Applications" | "Loans" | "Repayment" | "Fee Payment",
+  page: "Loans",
   applications: any[] = []
 ) {
   switch (page) {
-    case "Applications":
-      return (
-        <div className={styles.loanSectionBody}>
-          <h3 className={styles.heading}>Active Applications</h3>
-          {applications.map((application) => (
-            <ApplicationsCard
-              // status="In Progress"
-              status={application?.obj?.applicationProfile?.status}
-              appliedOn={application.appliedOn}
-              applicationId={application?.obj?.data?.applicationId}
-              // status={application.status}
-              // key={application.applicationId}
-            />
-          ))}
-          {/* <ApplicationsCard status="In Progress" /> */}
-          <h3 className={styles.heading}>Previous Applications</h3>
-          <ApplicationsCard status="In Submission" />
-          <ApplicationsCard status="Rejected" />
-        </div>
-      );
+    // case "Applications":
+    //   return (
+    //     <div className={styles.loanSectionBody}>
+    //       <h3 className={styles.heading}>Active Applications</h3>
+    //       {applications.map((application) => (
+    //         <ApplicationsCard
+    //           // status="In Progress"
+    //           status={application?.obj?.applicationProfile?.status}
+    //           appliedOn={application.appliedOn}
+    //           applicationId={application?.obj?.data?.applicationId}
+    //           // status={application.status}
+    //           // key={application.applicationId}
+    //         />
+    //       ))}
+    //       {/* <ApplicationsCard status="In Progress" /> */}
+    //       <h3 className={styles.heading}>Previous Applications</h3>
+    //       <ApplicationsCard status="In Submission" />
+    //       <ApplicationsCard status="Rejected" />
+    //     </div>
+    //   );
     case "Loans":
       return (
         <div className={styles.loanSectionBody}>
@@ -49,26 +49,26 @@ function renderSections(
           <LoansCard status="Inactive" />
         </div>
       );
-    case "Repayment":
-      return (
-        <div className={styles.loanSectionBody}>
-          <h3 className={styles.heading}>Active Repayments</h3>
-          <RepaymentsCard status="Active" />
-          <h3 className={styles.heading}>Previous Repayments</h3>
-          <RepaymentsCard status="Inactive" />
-        </div>
-      );
-    case "Fee Payment":
-      return (
-        <div className={styles.FeepaymentSectionBody}>
-          <h3 className={styles.heading}>Current Fee Payments</h3>
-          <FeepaymentsCard status="Active" />
-          <FeepaymentsCard status="Active" />
-          <h3 className={styles.heading}>Previous Fee Payments</h3>
-          <FeepaymentsCard status="Inactive" />
-          <FeepaymentsCard status="Inactive" />
-        </div>
-      );
+    // case "Repayment":
+    //   return (
+    //     <div className={styles.loanSectionBody}
+    //       <h3 className={styles.heading}>Active Repayments</h3>
+    //       <RepaymentsCard status="Active" />
+    //       <h3 className={styles.heading}>Previous Repayments</h3>
+    //       <RepaymentsCard status="Inactive" />
+    //     </div>
+    //   );
+    // case "Fee Payment":
+    //   return (
+    //     <div className={styles.FeepaymentSectionBody}>
+    //       <h3 className={styles.heading}>Current Fee Payments</h3>
+    //       <FeepaymentsCard status="Active" />
+    //       <FeepaymentsCard status="Active" />
+    //       <h3 className={styles.heading}>Previous Fee Payments</h3>
+    //       <FeepaymentsCard status="Inactive" />
+    //       <FeepaymentsCard status="Inactive" />
+    //     </div>
+    //   );
     default:
       return (
         <div className={styles.loanSectionBody}>
@@ -87,8 +87,8 @@ function renderSections(
 
 function Menu() {
   const [activePage, setActivePage] = useState<
-    "Applications" | "Loans" | "Repayment" | "Fee Payment"
-  >("Applications");
+    "Loans"
+  >("Loans");
   const [applications, setApplications] = useState<any[]>([]);
 
   useEffect(() => {
@@ -122,7 +122,7 @@ function Menu() {
             <img className={styles.logo} src="main_logo.png" alt="" />
             <img className={styles.icon} src={redProfile} alt="" />
           </div>
-          <div className="menuContainer">
+          {/* <div className="menuContainer">
             <div className={styles.navbar}>
               <div
                 className={
@@ -169,7 +169,7 @@ function Menu() {
                 <p>Fee Payment</p>
               </div>
             </div>
-          </div>
+          </div> */}
 
           {renderSections(activePage, applications)}
         </div>

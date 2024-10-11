@@ -1,11 +1,11 @@
-import { API_URL } from "../utils/keys";
+// import { process.env.REACT_APP_DASHBOARD_URL } from "../utils/keys";
 
 export const createDigilocker = async (
   applicationId: string,
   userId: string
 ) => {
   return fetch(
-    `${API_URL}/pay-later-flow/digilocker/create?applicationId=${applicationId}&userId=${userId}`,
+    `${process.env.REACT_APP_DASHBOARD_URL}/pay-later-flow/digilocker/create?applicationId=${applicationId}&userId=${userId}`,
     {
       method: "POST",
       headers: {
@@ -25,7 +25,7 @@ export const createDigilocker = async (
 
 export const createSelfie = async (applicationId: string, userId: string) => {
   return fetch(
-    `${API_URL}/pay-later-flow/selfie/create?applicationId=${applicationId}&userId=${userId}`,
+    `${process.env.REACT_APP_DASHBOARD_URL}/pay-later-flow/selfie/create?applicationId=${applicationId}&userId=${userId}`,
     {
       method: "POST",
       headers: {
@@ -47,7 +47,7 @@ export const createAgreement = async (
   userId: string
 ) => {
   return fetch(
-    `${API_URL}/pay-later-flow/agreement/generate?applicationId=${applicationId}&userId=${userId}`,
+    `${process.env.REACT_APP_DASHBOARD_URL}/pay-later-flow/agreement/generate?applicationId=${applicationId}&userId=${userId}`,
     {
       method: "POST",
       headers: {
@@ -65,7 +65,7 @@ export const createAgreement = async (
 };
 
 export const createNach = async (data: any) => {
-  return fetch(`${API_URL}/pay-later-flow/nach/register`, {
+  return fetch(`${process.env.REACT_APP_DASHBOARD_URL}/pay-later-flow/nach/register`, {
     method: "POST",
     headers: {
       Accept: "application/JSON",
