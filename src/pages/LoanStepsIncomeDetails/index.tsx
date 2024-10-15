@@ -19,7 +19,7 @@ import Label from "../../components/atoms/Label";
 import { useNavigate, useLocation } from "react-router-dom";
 import { relative } from "path";
 // import { process.env.REACT_APP_DASHBOARD_URL } from "../../utils";
-
+import BottomNavigationBar from "../../components/molecules/BottomNavBar";
 import { jwtDecode } from "jwt-decode";
 import { data } from "../../helpers/ckyc_sample_data";
 
@@ -300,6 +300,7 @@ function IncomeDetails() {
 
           <></>
           <br />
+          <div style={{marginBottom:'20%'}}>
           <Button
           onPress={async () => {
             const isSuccess = await handleSaveWorkDetails();
@@ -312,7 +313,10 @@ function IncomeDetails() {
           imageRight={ArrowRight}
           fullWidth
         />
+          </div>
+        
         </div>
+        <BottomNavigationBar active="Home"/>
       </div>
     </div>
   );

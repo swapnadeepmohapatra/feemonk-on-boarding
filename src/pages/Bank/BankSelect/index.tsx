@@ -6,7 +6,9 @@ import { BANK_LIST } from "../../../helpers/banks_list";
 import { useNavigate, useLocation } from "react-router-dom";
 // import { process.env.REACT_APP_DASHBOARD_URL } from "../../../utils";
 import { useLocalStorage } from "../../../hooks";
-
+import BottomNavigationBar from "../../../components/molecules/BottomNavBar";
+import BackArrow from "../../../images/icons/arrow-left-circle.svg";
+import BankStatement from "../../../images/icons/bankStatement.png"
 function BankSelect() {
   const navigate = useNavigate();
   // const [authToken] = useLocalStorage("feemonk_data", "");
@@ -53,9 +55,45 @@ function BankSelect() {
   }, [navigate, authToken]);
 
   return (
-    <div className={styles.main}>
-      <div className={styles.body}>
-        <div className={styles.container}>
+    <div className={styles.body}>
+      <div className={styles.container}>
+        <div className={styles.main}>
+        <div className={styles.Header}>
+                <button
+                  style={{ border: "none", background: "none" }}
+                  onClick={() => {
+                    navigate(-1);
+                  }}
+                >
+                  <img
+                    style={{ marginLeft: "0.5rem", height: "1.5rem" }}
+                    src={BackArrow}
+                    alt=""
+                  />
+                </button>
+                <p style={{ marginRight: "0.5rem", fontWeight: "bold" }}>T&C</p>
+          </div>
+          <div className={styles.mainContainer}>
+          <div
+                    style={{
+                     
+                      gap: "1rem",
+                      padding: "1rem",
+                      background: "#FFF7F2",
+                      border: "1px solid #F9D8D6",
+                      borderRadius:"12px",
+                      transition: "border-radius 0.3s ease",
+                      marginBottom:'0.5rem'
+                    }}
+                  >
+                    <div style={{display:'flex'}}>
+                    <img src={BankStatement}/>
+                    <p style={{marginLeft:'1rem',fontWeight:'bold'}}>Bank Statement</p>
+                    </div>
+                    
+                    <p style={{fontSize:'14px',marginTop:'0.5rem'}}>Uploading a bank account statement can enhance your chances of availing better loan amount</p>
+
+                  </div>
           <h3 style={{ marginBottom: "0.5rem" }}>Select your bank</h3>
           <InputText
             placeholder="Search banks"
@@ -97,6 +135,7 @@ function BankSelect() {
                 </div>
               ))}
           </div>
+          <div style={{display:'flex',justifyContent:'center',alignItems:'center',marginBottom:'15%'}}>
           <Button
             text={"Continue"}
             onPress={() => {
@@ -121,7 +160,13 @@ function BankSelect() {
             }}
             disabled={!selectedBank}
           />
+          </div>
+          
         </div>
+        </div>
+    
+        <BottomNavigationBar active="Home"/>
+
       </div>
     </div>
   );

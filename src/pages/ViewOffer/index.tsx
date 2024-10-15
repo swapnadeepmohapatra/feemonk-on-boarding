@@ -5,7 +5,7 @@ import styles from "./index.module.css";
 import ArrowRight from "../../images/icons/arrow_right.svg";
 import Label from "../../components/atoms/Label";
 import InputText from "../../components/atoms/InputText";
-import BackArrow from "../../images/icons/close-btn.svg";
+import BackArrow from "../../images/icons/arrow-left-circle.svg";
 import bigcalendar from "../../images/static_assests/bigcalendar.svg";
 import bigemi from "../../images/static_assests/bigemi.svg";
 import emi from "../../images/static_assests/emi.png"
@@ -17,6 +17,7 @@ import axios from "axios";
 import { formatToIndianRupees } from "../../utils/formatToIndianRpuees";
 import { getNextFifthDate } from "../../utils/getNextFifthDate";
 import selected from "../../images/static_assests/selected.png"
+import BottomNavigationBar from "../../components/molecules/BottomNavBar";
 // Define the structure of summary data
 interface SummaryData {
   mobile: string;
@@ -214,7 +215,7 @@ function ViewOffer() {
                 alt=""
               />
             </button>
-            <p style={{ marginRight: "0.5rem", fontWeight: "bold" }}>Help</p>
+            <p style={{ marginRight: "0.5rem", fontWeight: "bold" }}>T&C</p>
           </div>
           <br />
           <br />
@@ -510,7 +511,7 @@ function ViewOffer() {
             />
           </div>
           <p></p>
-          <div style={{marginTop:'1rem'}}> <Button
+          <div style={{marginTop:'1rem',marginBottom:'10rem'}}> <Button
             text={"Continue"}
             onPress={handleButtonClick}
             imageRight={ArrowRight}
@@ -518,6 +519,7 @@ function ViewOffer() {
           /></div>
          
         </div>
+        <BottomNavigationBar active="Home"/>
       </div>
     </div>
   );

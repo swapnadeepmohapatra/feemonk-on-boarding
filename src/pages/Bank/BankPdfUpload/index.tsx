@@ -10,6 +10,8 @@ import styles from "./styles.module.css";
 import Dropzone from "react-dropzone";
 import InputText from "../../../components/atoms/InputText";
 import { Label } from "reactstrap";
+import BottomNavigationBar from "../../../components/molecules/BottomNavBar";
+import BackArrow from "../../../images/icons/arrow-left-circle.svg"
 
 const BankPdfUpload: React.FC = () => {
   const [pdf, setPdf] = useState<File | null>(null);
@@ -60,7 +62,23 @@ const BankPdfUpload: React.FC = () => {
 
   return (
     <div className={styles.body}>
-      <div className={styles.container}>
+    <div className={styles.container}>
+      <div className={styles.main}>
+        <div className={styles.Header}>
+          <button
+            style={{ border: "none", background: "none" }}
+            onClick={() => {
+              navigate(-1);
+            }}
+          >
+            <img
+              style={{ marginLeft: "0.5rem", height: "1.5rem" }}
+              src={BackArrow}
+              alt=""
+            />
+          </button>
+          <p style={{ marginRight: "0.5rem", fontWeight: "bold" }}>T&C</p>
+        </div>
         <div className={styles.box}>
           <h1>Upload Bank Statement PDF</h1>
           <Dropzone onDrop={(acceptedFiles) => setPdf(acceptedFiles[0])}>
@@ -132,8 +150,13 @@ const BankPdfUpload: React.FC = () => {
             text="Proceed"
           />
         </div>
+          
       </div>
+      <BottomNavigationBar active="Home"/>
+
     </div>
+
+  </div>
   );
 };
 

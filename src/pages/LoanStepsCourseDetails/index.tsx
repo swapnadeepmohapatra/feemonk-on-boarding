@@ -28,6 +28,7 @@ import { useNavigate, useLocation } from "react-router-dom";
 import { relative } from "path";
 import axiosInstance from "../../helpers/axios";
 import { jwtDecode } from "jwt-decode";
+import BottomNavigationBar from "../../components/molecules/BottomNavBar";
 // import { process.env.REACT_APP_DASHBOARD_URL } from "../../utils";
 
 import closee from "../../images/static_assests/redClose.svg";
@@ -380,59 +381,7 @@ function LoanStepsCourseDetails() {
 
   return (
     <div className={styles.body}>
-      <div className={styles.container}>
-        {toggleConsent ? (
-          <div
-            style={{
-              display: "flex",
-              flexDirection: "column",
-              paddingTop: "1rem",
-              paddingBottom: "1rem",
-              justifyContent: "center",
-              alignItems: "center",
-              marginTop: "4rem",
-            }}
-          >
-            <div>
-              <div
-                style={{
-                  display: "flex",
-                  flexDirection: "row",
-                  justifyContent: "space-between",
-                }}
-              >
-                <p
-                  style={{
-                    paddingTop: "0.5rem",
-                    fontWeight: "bold",
-                    fontSize: "1.3rem",
-                  }}
-                >
-                  Consent:
-                </p>
-                <img
-                  src={closee}
-                  style={{
-                    width: "2rem",
-                    cursor: "pointer",
-                    paddingBottom: "0.5rem",
-                  }}
-                  onClick={() => setToggleConsent(!toggleConsent)}
-                />
-              </div>
-              <div>
-                <iframe
-                  style={{ top: "0" }}
-                  width="350"
-                  height="600"
-                  src={consentLink}
-                  onLoad={handleLoadSession}
-                ></iframe>
-              </div>
-            </div>
-          </div>
-        ) : (
-          <>
+      <div className={styles.container}>    
             <div className={styles.main}>
               <div className={styles.Header}>
                 <button
@@ -623,12 +572,7 @@ function LoanStepsCourseDetails() {
                   <br />
                 </>
               }
-
-              <br />
-              <br />
-
-              <></>
-              <br />
+              <div style={{marginBottom:'20%'}}>
               <Button
                 onPress={async () => {
                   const isSuccess = await handleContinueClick();
@@ -641,9 +585,10 @@ function LoanStepsCourseDetails() {
                 fullWidth
                 disabled={isContinueDisabled}
               />
-            </div>
-          </>
-        )}
+              </div>
+              
+            </div>  
+            <BottomNavigationBar active="Home"/>     
       </div>
     </div>
   );

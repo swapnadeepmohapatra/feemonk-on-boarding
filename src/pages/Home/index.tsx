@@ -18,7 +18,7 @@ import "react-circular-progressbar/dist/styles.css";
 import RightArrow from "../../images/icons/RedArrow.svg"
 import monkImage from "../../images/monk_illustration.png"
 import wallet from "../../images/static_assests/wallet.svg";
-
+import Loading from "../Menu/components/Loading";
 const loanAd = {
   title: "Avail up to",
   amount: "₹ 10 lakhs of loan",
@@ -318,14 +318,8 @@ function Home() {
             </div>
           ))}
         </div> */}
-        <>
-        <img src={MonkHeroImage} alt="" style={{padding: '1rem 5rem'}} />
-        <br />
-          <h3 style={{display:'flex',textAlign:'center',justifyContent:'center'}}>No active Loans</h3>
-          <br />
-          <br />
-        <div style={{ flex: 1 }}></div>
-        </>
+        <img src={MonkHeroImage} alt="" style={{height:'100%',padding:'1rem'}} />
+          <h3 style={{display:'flex',textAlign:'center',justifyContent:'center',marginBottom:'5rem'}}>No active Loans</h3>
        
         {/* <>
         <div style={{display:'flex',alignItems:'center',flexDirection:'column'}}>

@@ -25,9 +25,8 @@ import terms from "../../images/icons/terms.svg";
 import privacy from "../../images/icons/privacy.svg";
 
 import support from "../../images/icons/support.svg";
-
-import Logout from "../../images/icons/Logout.svg";
 import BottomNavigationBar from "../../components/molecules/BottomNavBar";
+import Logout from "../../images/icons/Logout.svg";
 import { useSessionStorage } from "../../hooks/useSessionStorage";
 import { useNavigate } from "react-router-dom";
 import { Rate } from "rsuite";
@@ -88,7 +87,7 @@ function Profile() {
             src={redClose}
             alt={"Close"}
             onClick={() => {
-              navigate("/home");
+              navigate(-1);
             }}
           />
         </div>
@@ -212,6 +211,7 @@ function Profile() {
             <p style={{ color: "#FD1313" }}> Logout</p>
           </div>
         </div>
+        <BottomNavigationBar active="Profile" />
       </div>
     </div>
   );

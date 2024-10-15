@@ -24,7 +24,8 @@ import Button from "../../components/atoms/Button";
 import CircularProgress from "@mui/material/CircularProgress";
 import Box from "@mui/material/Box";
 // import { process.env.REACT_APP_DASHBOARD_URL } from "../../utils";
-
+import { SubscriptionsCheckoutSdk } from "./cashfreeMandate";
+import { createNach } from "../../services/sanctions";
 let Digio: any;
 
 function Mandate() {
@@ -488,6 +489,21 @@ function Mandate() {
         }
       });
   }
+
+  async function getCashfreepayUrl() {
+    setLoading(true);
+    try {
+      const response = await createNach({
+        userId: decode.userId,
+        applicationId: decode?.applicationId,
+      });
+      const responseFromSdk = SubscriptionsCheckoutSdk(response?.data)
+    } catch (error) {
+      console.error("Error fetching Razorpay URL", error);
+    } finally {
+      setLoading(false);
+    }
+  }
   return (
     <div className={styles.main}>
       <div className={styles.backdrop}>
@@ -687,7 +703,7 @@ function Mandate() {
                 onPress={() => {
                   // navigate("/digio-mandate");
                   // navigate("/razorpay-mandate");
-                  toggleMandates();
+                  getCashfreepayUrl();
                 }}
                 imageRight={
                   mandateStatus?.enachStatus === 4 ? icon_check_circle : null

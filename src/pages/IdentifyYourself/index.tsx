@@ -6,7 +6,8 @@ import ParentsIcons from "../../images/static_assests/parents_icon.svg";
 import StudentIcons from "../../images/static_assests/student_icon.svg";
 import IdentityCard from "../../components/molecules/IdentifyCard";
 import { useNavigate, useLocation } from "react-router-dom";
-
+import BottomNavigationBar from "../../components/molecules/BottomNavBar";
+import BackArrow from "../../images/icons/arrow-left-circle.svg"
 type CardType = "parent" | "student" | null;
 
 function IdentifyYourself() {
@@ -26,14 +27,21 @@ function IdentifyYourself() {
     <div className={styles.body}>
       <div className={styles.container}>
         <div className={styles.main}>
-          <img
-            src="main_logo.png"
-            alt=""
-            style={{
-              width: "10rem",
-              marginBottom: "2rem",
-            }}
-          />
+          <div className={styles.Header}>
+            <button
+              style={{ border: "none", background: "none" }}
+              onClick={() => {
+                navigate("/loan-steps-start");
+              }}
+            >
+              <img
+                style={{ marginLeft: "0.5rem", height: "1.5rem" }}
+                src={BackArrow}
+                alt=""
+              />
+            </button>
+            <p style={{ marginRight: "0.5rem", fontWeight: "bold" }}>T&C</p>
+          </div>
           <h1>Identify Yourself!</h1>
           <br />
           <IdentityCard
@@ -49,6 +57,7 @@ function IdentifyYourself() {
             onClick={() => handleCardClick("student")} 
           />
           <br />
+          <div style={{marginTop:'10%'}}>
           <Button
             text="Proceed"
             onPress={() => {
@@ -58,7 +67,11 @@ function IdentifyYourself() {
             fullWidth
             disabled={!selectedCard} 
           />
+          </div>
+         
+        
         </div>
+        <BottomNavigationBar active="Home"/>
       </div>
     </div>
   );

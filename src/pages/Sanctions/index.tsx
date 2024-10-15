@@ -19,7 +19,7 @@ import { Modal, ModalHeader, ModalBody, ModalFooter } from "reactstrap";
 import Label from "../../components/atoms/Label";
 import InputText from "../../components/atoms/InputText";
 import axios from "axios";
-
+import BottomNavigationBar from "../../components/molecules/BottomNavBar";
 let Digio: any;
 
 function Sanctions() {
@@ -58,8 +58,8 @@ function Sanctions() {
     const url = `${process.env.REACT_APP_DASHBOARD_URL}/integrations-login/generate-token`;
     const requestData = {
       mobile: "9052978077",
-      userId: "c6d92b00-2115-4f1f-90b8-3ae75d06fadf",
-      applicationId: "FM24001155",
+      userId: token.userId,
+      applicationId: token.applicationId,
     };
      axios.post(url, requestData, {
         headers: {
@@ -391,8 +391,8 @@ function Sanctions() {
   const getRazorpayUrl = () => {
     const url = `${process.env.REACT_APP_DASHBOARD_URL}/pay-later-flow/nach/register`;
     const requestData = {
-      userId: "c6d92b00-2115-4f1f-90b8-3ae75d06fadf",
-      applicationId: "FM24001155",
+      userId: token.userId,
+      applicationId: token.applicationId,
     };
      axios.post(url, requestData, {
         headers: {
@@ -427,7 +427,7 @@ function Sanctions() {
                 alt=""
               />
             </button>
-            <p style={{ marginRight: "0.5rem", fontWeight: "bold" }}>Help</p>
+            <p style={{ marginRight: "0.5rem", fontWeight: "bold" }}>T&C</p>
           </div>
           
         <p style={{textAlign:'center',padding:'2.5rem',fontWeight:'bold',fontSize:'15px'}}>Complete the below following steps to proceed further</p>
@@ -543,6 +543,7 @@ function Sanctions() {
             </button>
             ):null}
         </div>
+        <BottomNavigationBar active="Home"/>
       </div>
     </div>
   );
