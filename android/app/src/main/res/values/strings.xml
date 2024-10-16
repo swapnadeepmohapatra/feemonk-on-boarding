@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">Feemonk</string>
+    <string name="title_activity_main">Feemonk</string>
+    <string name="package_name">Feemonk.app</string>
+    <string name="custom_url_scheme">Feemonk.app</string>
+</resources>
