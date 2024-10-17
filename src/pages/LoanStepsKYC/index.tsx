@@ -13,6 +13,7 @@ import minimize from "../../images/icons/minimize.svg";
 import BackArrow from "../../images/icons/arrow-left-circle.svg";
 import tick_mark from "../../images/static_assests/tick_mark.svg";
 // import { process.env.REACT_APP_DASHBOARD_URL } from "../../utils";
+import BottomNavigationBar from "../../components/molecules/BottomNavBar";
 import { jwtDecode } from "jwt-decode";
 
 function LoanStepsKYC() {
@@ -479,6 +480,7 @@ function LoanStepsKYC() {
           <br />
           <br />
           <br />
+          <div style={{marginBottom:'5rem'}}>
           <Button
           text="Save & Next"
           onPress={async () => {
@@ -491,8 +493,10 @@ function LoanStepsKYC() {
           imageRight={ArrowRight}
           disabled={!isFormValid} // Disable the button if the form is invalid
         />
-        </div>
+          </div>
         
+        </div>
+        <BottomNavigationBar active="Home" />
       </div>
     </div>
   );

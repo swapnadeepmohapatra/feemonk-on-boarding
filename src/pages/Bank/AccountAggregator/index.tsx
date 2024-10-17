@@ -6,7 +6,8 @@ import Button from "../../../components/atoms/Button";
 import { useLocalStorage } from "../../../hooks/useLocalStorage";
 import { useLocation, useNavigate } from "react-router-dom";
 import { jwtDecode } from "jwt-decode";
-
+import BottomNavigationBar from "../../../components/molecules/BottomNavBar";
+import BackArrow from "../../../images/icons/arrow-left-circle.svg"
 function AccountAggregator() {
   const [authToken] = useLocalStorage("feemonk_data", "");
   const navigate = useNavigate();
@@ -53,33 +54,51 @@ function AccountAggregator() {
   };
 
   return (
-    <div className={styles.main}>
-      <div className={styles.body}>
-        <div className={styles.container}>
-          <div className={styles.box}>
-            <h1>Account Aggregator</h1>
-            <br />
-            <br />
-            <br />
-
+    <div className={styles.body}>
+    <div className={styles.container}>
+      <div className={styles.main}>
+        <div className={styles.Header}>
+          <button
+            style={{ border: "none", background: "none" }}
+            onClick={() => {
+              navigate(-1);
+            }}
+          >
+            <img
+              style={{ marginLeft: "0.5rem", height: "1.5rem" }}
+              src={BackArrow}
+              alt=""
+            />
+          </button>
+          <p style={{ marginRight: "0.5rem", fontWeight: "bold" }}>T&C</p>
+        </div>
+        <div className={styles.box}>
+            <h1 style={{padding:'1rem'}}>Account Aggregator</h1>
+            <div style={{padding:'1rem'}}>
             <Button
               text={"Securely Share Bank Statement by OTP sent through bank"}
               onPress={() => {
                 getAARedirectLink();
               }}
             />
-            <br />
+            </div>
+            <div style={{padding:'1rem'}}>
             <Button
               text={"Upload Bank Statement"}
               onPress={() => {
                 navigate("/pdf-upload-bank", { state: { data1, stateData } });
               }}
             />
+            </div>
+          
           </div>
-          {/* {redirectLink && <p>{JSON.stringify(redirectLink)}</p>} */}
-        </div>
+          
       </div>
+      <BottomNavigationBar active="Home"/>
+
     </div>
+
+  </div>
   );
 }
 

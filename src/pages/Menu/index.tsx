@@ -12,10 +12,13 @@ import redProfile from "../../images/icons/redProfile.svg";
 import RepaymentsCard from "./components/RepaymentsCard";
 import FeepaymentsCard from "./components/FeepaymentsCard";
 import axios from "axios";
+import { jwtDecode } from "jwt-decode";
+import Loading from "./components/Loading";
 
 function renderSections(
   page: "Loans",
-  applications: any[] = []
+  activeLoans: any[] = [],
+  inactiveLoans: any[] = []
 ) {
   switch (page) {
     // case "Applications":
@@ -42,11 +45,30 @@ function renderSections(
       return (
         <div className={styles.loanSectionBody}>
           <h3 className={styles.heading}>Active Loans</h3>
-          <LoansCard status="Active" />
-          <LoansCard status="Active" />
+          {activeLoans.length > 0 ? (
+            activeLoans.map((loan, index) => (
+              <LoansCard key={index} status="Active" loan={loan} />
+            ))
+          ) : (
+            <div className={styles.loanSectionBody}>
+          <img src={MonkHeroImage} alt="" style={{height:'50%'}}/>
+          <br />
+          <h3 style={{display:'flex',textAlign:'center',justifyContent:'center',marginBottom:'-10rem'}}>No active Loans</h3>
+        </div>
+          )}
           <h3 className={styles.heading}>Closed Loans</h3>
-          <LoansCard status="Inactive" />
-          <LoansCard status="Inactive" />
+          {inactiveLoans.length > 0 ? (
+            inactiveLoans.map((loan, index) => (
+              <LoansCard key={index} status="Inactive" loan={loan} />
+            ))
+          ) : (
+            <div className={styles.loanSectionBody}>
+          <img src={MonkHeroImage} alt="" style={{height:'40%'}}/>
+          <br />
+          <h3 style={{display:'flex',textAlign:'center',justifyContent:'center'}}>No closed Loans</h3>
+          
+        </div>
+          )}
         </div>
       );
     // case "Repayment":
@@ -86,32 +108,43 @@ function renderSections(
 }
 
 function Menu() {
+  const user = sessionStorage.getItem("auth_token") || "";
+  const headerVal = JSON.parse(user).value
+  const decode = jwtDecode(JSON.parse(user).value) as any;
   const [activePage, setActivePage] = useState<
     "Loans"
   >("Loans");
   const [applications, setApplications] = useState<any[]>([]);
+  const [activeLoans, setActiveLoans] = useState<any[]>([]);
+  const [inactiveLoans, setInactiveLoans] = useState<any[]>([]);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    const fetchApplications = async (userNumber: string) => {
-      try {
-        const response = await axios.get(
-          `https://customer-apis.feemonk.com/applications/getApplications/${userNumber}`
-        );
-        setApplications(response.data.res || []);
-      } catch (err) {
-        console.error("Failed to fetch applications", err);
-      }
-    };
+    setLoading(true)
+    const url = `${process.env.REACT_APP_DASHBOARD_URL}/loan-repayment/user-loans?userId=${decode.userId}`
+    axios
+    .get(url, {
+      headers: {
+        Authorization: `Bearer ${headerVal}`,
+        "Content-Type": "application/json",
+      },
+    })
+    .then((response) => {
+      setTimeout(()=>{
+        setLoading(false)
+      },1500)
+      const loans = response.data.data;
+      const active = loans.filter((loan: any) => loan.status === 1);
+      const inactive = loans.filter((loan: any) => loan.status === 2);
+      setActiveLoans(active);
+      setInactiveLoans(inactive);
+    })
+    .catch((error) => {
+      console.error("Error submitting data:", error);
+    });
+    
 
-    const user = sessionStorage.getItem("auth_token") || "";
-    if (user) {
-      try {
-        const decoded = JSON.parse(user).mob as any;
-        fetchApplications(decoded);
-      } catch (error) {
-        console.error("Failed to parse user token", error);
-      }
-    }
+ 
   }, []);
 
   return (
@@ -170,8 +203,14 @@ function Menu() {
               </div>
             </div>
           </div> */}
-
-          {renderSections(activePage, applications)}
+          {loading ? (
+            <Loading/>
+          ):(
+            <>
+            {renderSections(activePage, activeLoans, inactiveLoans)}
+            </>
+          )}
+          
         </div>
         <BottomNavigationBar active="Menu" />
       </div>

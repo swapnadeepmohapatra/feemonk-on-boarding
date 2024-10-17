@@ -6,7 +6,7 @@ import Button from "../../components/atoms/Button";
 import { useNavigate, useLocation } from "react-router-dom";
 // import { process.env.REACT_APP_DASHBOARD_URL } from "../../utils/keys";
 import BackArrow from "../../images/icons/arrow-left-circle.svg"
-
+import BottomNavigationBar from "../../components/molecules/BottomNavBar";
 function PFCollection() {
   const navigate = useNavigate();
   const location = useLocation();
@@ -137,9 +137,9 @@ function PFCollection() {
     <div className={styles.Header}>
       <button
         style={{ border: "none", background: "none" }}
-        // onClick={() => {
-        //   navigate("/loan-steps");
-        // }}
+        onClick={() => {
+          navigate(-1);
+        }}
       >
         <img
           style={{ marginLeft: "0.5rem", height: "1.5rem" }}
@@ -147,7 +147,7 @@ function PFCollection() {
           alt=""
         />
       </button>
-      <p style={{ marginRight: "0.5rem", fontWeight: "bold" }}>Help</p>
+      <p style={{ marginRight: "0.5rem", fontWeight: "bold" }}>T&C</p>
     </div>
     
   <p style={{textAlign:'center',padding:'2.5rem',fontWeight:'bold',fontSize:'15px'}}>
@@ -163,7 +163,7 @@ function PFCollection() {
                     Number(product?.emi)
               )}{" "}</span> as Processing Fee / Advance EMI.</p>
 
-            <div style={{ display: "flex",justifyContent:'center' }}>
+            <div style={{ display: "flex",justifyContent:'center',alignItems:'center',margin:'auto'}}>
             <div>
               <p style={{textAlign:'center',padding:'0.5rem',fontWeight:'bold',fontSize:'15px'}}>Processing Fee</p>
               <p style={{textAlign:'center',padding:'0.5rem',fontWeight:'bold',fontSize:'15px'}}>GST On PF(18%)</p>
@@ -224,6 +224,7 @@ function PFCollection() {
           /> */}
   </div>
 </div>
+<BottomNavigationBar active="Home"/>
 </div>
  
     </div>

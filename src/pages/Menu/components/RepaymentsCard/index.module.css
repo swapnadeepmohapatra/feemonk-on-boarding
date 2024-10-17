@@ -174,3 +174,6 @@
   border-left: 1px solid #bdbdbd; /* Grey line */
   margin-left: 0.5rem; /* Adjust the spacing between the text and the line */
 }
+.card:last-child {
+  margin-bottom: 5rem; /* Adjust the value as needed */
+}

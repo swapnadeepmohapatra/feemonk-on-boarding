@@ -3,7 +3,7 @@ import styles from "./index.module.css";
 import BackArrow from "../../images/icons/arrow-left-circle.svg";
 import Progress from "../../images/static_assests/progress_first.svg";
 import BasicDetails from "../../images/static_assests/basic_details.svg";
-
+import Loading from "../Menu/components/Loading";
 import closee from "../../images/static_assests/redClose.svg";
 import Button from "../../components/atoms/Button";
 import LoanStepCard from "../LoanSteps/components/Card";
@@ -18,6 +18,7 @@ import { jwtDecode } from "jwt-decode";
 import { Modal, ModalHeader, ModalBody, ModalFooter } from "reactstrap";
 import { createApplication } from "../../services/application";
 import { Console } from "console";
+import BottomNavigationBar from "../../components/molecules/BottomNavBar";
 import LoginDialog from "./components/LoginDialog";
 import axios from "axios";
 function LoanStepsBasicDetails() {
@@ -578,30 +579,29 @@ console.log("panprodetails--->",panProDetails)
                 <p style={{ marginRight: "0.5rem", fontWeight: "bold" }}>T&C</p>
               </div>
               <br />
+              <div>
               <img
                 style={{ maxWidth: "90%", paddingLeft: "2rem" }}
                 src={Progress}
                 alt=""
               />
-              <br />
+              </div>
+              <div>
               <LoanStepCard
                 title="Basic Details"
                 image={BasicDetails}
                 tiime="1 min"
               />
-              {/* <br /> */}
-              <div className={styles.inputField}>
-                <Label text="Date of birth" />
-                <div className={styles.dateInputWrapper}>
-                  <InputText
-                    placeholder="Date of birth"
-                    type="date"
-                    value={dob}
-                    changeHandler={handleDateChange}
-                  />
-                </div>
               </div>
-              {dobError && (
+              {/* <br /> */}
+              {loading ? (
+                <Loading/>
+              ):(
+<div style={{display:'flex',flexDirection:'column',justifyContent:'space-between'}}>
+              <div className={styles.inputField}>
+                <div style={{display:'flex',alignItems:'center'}}>
+                <Label text="Date of birth" />
+                {dobError && (
                 <p
                   style={{
                     color: "#d32028",
@@ -612,16 +612,22 @@ console.log("panprodetails--->",panProDetails)
                   Date of birth is required.
                 </p>
               )}
-              <div className={styles.inputField}>
-                <Label text="PAN number" />
-                <InputText
-                  placeholder="EBP0000000XR"
-                  type="text"
-                  value={pan}
-                  changeHandler={handlePanChange}
-                />
+                </div>
+
+                <div className={styles.dateInputWrapper}>
+                  <InputText
+                    placeholder="Date of birth"
+                    type="date"
+                    value={dob}
+                    changeHandler={handleDateChange}
+                  />
+                </div>
               </div>
-              {panError && (
+              
+              <div className={styles.inputField}>
+                <div style={{display:'flex',alignItems:'center'}}>
+                <Label text="PAN number" />
+                {panError && (
                 <p
                   style={{
                     color: "#d32028",
@@ -632,16 +638,20 @@ console.log("panprodetails--->",panProDetails)
                   PAN number is required.
                 </p>
               )}
-              <div className={styles.inputField}>
-                <Label text="Email" />
+                </div>
+               
                 <InputText
-                  placeholder="Enter your email"
-                  type="email"
-                  value={email}
-                  changeHandler={handleEmailChange}
+                  placeholder="EBP0000000XR"
+                  type="text"
+                  value={pan}
+                  changeHandler={handlePanChange}
                 />
               </div>
-              {emailError && (
+              
+              <div className={styles.inputField}>
+                <div style={{display:'flex',alignItems:'center'}}>
+                <Label text="Email" />
+                {emailError && (
                 <p
                   style={{
                     color: "#d32028",
@@ -652,12 +662,24 @@ console.log("panprodetails--->",panProDetails)
                   Invalid Email address
                 </p>
               )}
-
+                </div>
+                
+                <InputText
+                  placeholder="Enter your email"
+                  type="email"
+                  value={email}
+                  changeHandler={handleEmailChange}
+                />
+              </div>
+             
+              </div>
+              )}
+              
               {/* <br />
               <br />
               <br />
               <br /> */}
-              {!loading && ( // Render checkbox only when loading and toggleConsent are false
+              {/* {!loading && ( // Render checkbox only when loading and toggleConsent are false
                 <div
                   style={{
                     display: "flex",
@@ -687,7 +709,7 @@ console.log("panprodetails--->",panProDetails)
                     background check and a consumer credit report on me
                   </p>
                 </div>
-              )}
+              )} */}
               {isBlocked() ? (
                 <p
                   style={{
@@ -700,16 +722,19 @@ console.log("panprodetails--->",panProDetails)
                   Please try again in <strong>{renderRemainingTime()}</strong>.
                 </p>
               ) : (
+                <div style={{marginBottom:'20%',marginTop:'2rem'}}>
                 <Button
                   onPress={getPanPro}
                   text={"Verify"}
                   imageRight={ArrowRight}
                   fullWidth
-                  disabled={!isChecked || dobError || panError} // Disable button if attempts >= 5
+                  disabled={ dobError || panError} // Disable button if attempts >= 5
                 />
+                </div>
               )}
             </div>
           )}
+          <BottomNavigationBar active="Home"/>
         </div>
       </div>
     </>
